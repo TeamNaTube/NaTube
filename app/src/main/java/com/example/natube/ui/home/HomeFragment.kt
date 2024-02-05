@@ -32,18 +32,7 @@ class HomeFragment : Fragment() {
             ViewModelProvider(this).get(HomeViewModel::class.java)
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-        val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
-        textView.setOnClickListener {
-            CoroutineScope(Dispatchers.IO).launch{
-                val item = RetrofitInstance.api.getTrendingVideos().items
-            }
-        }
-        return root
+        return binding.root
     }
 
     override fun onDestroyView() {
