@@ -13,13 +13,13 @@
 
     <fragment
         android:id="@+id/navigation_search"
-        android:name="com.example.natube.ui.dashboard.DashboardFragment"
+        android:name="com.example.natube.ui.search.SearchFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_search" />
 
     <fragment
         android:id="@+id/navigation_my_video"
-        android:name="com.example.natube.ui.notifications.NotificationsFragment"
+        android:name="com.example.natube.ui.myvideo.MyVideoFragment"
         android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_my_videos" />
 </navigation>
