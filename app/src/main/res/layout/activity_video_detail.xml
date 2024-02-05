@@ -29,7 +29,8 @@
                 android:scaleType="fitCenter"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@string/go_back" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -42,7 +43,8 @@
         android:src="@drawable/thumbnail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/activity_detail_toolbar" />
+        app:layout_constraintTop_toBottomOf="@id/activity_detail_toolbar"
+        android:contentDescription="@string/share" />
 
     <TextView
         android:id="@+id/activity_detail_title"
@@ -75,7 +77,8 @@
         android:scaleType="fitXY"
         android:layout_marginEnd="20dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_detail_thumbnail" />
+        app:layout_constraintTop_toBottomOf="@+id/activity_detail_thumbnail"
+        android:contentDescription="@string/share" />
 
     <ImageButton
         android:id="@+id/activity_detail_btn_like"
@@ -85,7 +88,8 @@
         android:scaleType="fitXY"
         android:src="@drawable/empty_heart"
         app:layout_constraintEnd_toStartOf="@id/activity_detail_btn_share"
-        app:layout_constraintTop_toBottomOf="@+id/activity_detail_thumbnail" />
+        app:layout_constraintTop_toBottomOf="@+id/activity_detail_thumbnail"
+        android:contentDescription="@string/like" />
 
 
 
