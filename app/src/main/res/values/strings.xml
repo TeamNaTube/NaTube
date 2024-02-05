@@ -12,4 +12,6 @@
     <string name="like">like</string>
     <string name="channel_name">Channel Name</string>
     <string name="upload_date">Upload Date</string>
+    <string name="title_search">Search</string>
+    <string name="title_my_video">My Video</string>
 </resources>
