@@ -7,7 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.hwangtube.network.RetrofitInstance
 import com.example.natube.databinding.FragmentDashboardBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class DashboardFragment : Fragment() {
 
@@ -31,6 +35,11 @@ class DashboardFragment : Fragment() {
         val textView: TextView = binding.textDashboard
         dashboardViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
+        }
+        textView.setOnClickListener {
+            CoroutineScope(Dispatchers.IO).launch{
+                val item = RetrofitInstance.api.getSearchingVideos(query = "설현").items
+            }
         }
         return root
     }
