@@ -14,4 +14,7 @@
     <string name="upload_date">Upload Date</string>
     <string name="title_search">Search</string>
     <string name="title_my_video">My Video</string>
+    <string name="natube">NaTube</string>
+    <string name="user_name">이 름</string>
+    <string name="user_description">내 채널 설명은 여기에~</string>
 </resources>

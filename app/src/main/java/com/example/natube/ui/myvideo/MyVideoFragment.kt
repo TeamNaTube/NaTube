@@ -28,10 +28,7 @@ class MyVideoFragment : Fragment() {
         _binding = FragmentMyVideosBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textNotifications
-        myVideoViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
+
         return root
     }
 

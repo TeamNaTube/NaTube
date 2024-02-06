@@ -61,4 +61,5 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     // OKHttp for 통신 로그
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.0")
+
 }
