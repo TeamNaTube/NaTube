@@ -1,7 +1,6 @@
 package com.example.natube.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,8 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.natube.databinding.FragmentHomeBinding
-import com.example.natube.model.Category
-import com.example.natube.model.UnifiedItem
 
 class HomeFragment : Fragment() {
 
@@ -39,6 +36,10 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         with(homeViewModel){
             mCategoryList.observe(viewLifecycleOwner) {
+                homeViewModel.fetchSearchVideoByCategory()
+                viewDummyData()
+            }
+            mUnifiedItemList.observe(viewLifecycleOwner){
                 viewDummyData()
             }
         }
@@ -47,18 +48,8 @@ class HomeFragment : Fragment() {
     private fun viewDummyData() {
 
         var list = mutableListOf<HomeWidget>()
-        var categoryList = homeViewModel.mCategoryList
-        var dummyVideoItem = UnifiedItem(
-            videoTitle = "비디오 이름",
-            channelTitle = "채널명",
-            description = "",
-            dateTime = "20240206",
-            thumbnailsUrl = "",
-            categoryId = ""
-        )
-        var videoList = listOf(
-            dummyVideoItem, dummyVideoItem, dummyVideoItem, dummyVideoItem, dummyVideoItem
-        )
+        var categoryList = homeViewModel.mCategoryList.value!!
+        var videoList = homeViewModel.mUnifiedItemList.value!!
         /**
          *  카테고리 부분
          */
@@ -67,7 +58,7 @@ class HomeFragment : Fragment() {
         list.add(HomeWidget.TitleWidget("카테고리"))
 
         // 버튼 리스트
-        list.add(HomeWidget.CategoryWidget(categoryList.value?.toList()!!))
+        list.add(HomeWidget.CategoryWidget(categoryList))
 
         // 비디오 리스트
         list.add(HomeWidget.ListCategoryVideoItemWidget(videoList))
@@ -80,7 +71,7 @@ class HomeFragment : Fragment() {
         list.add(HomeWidget.TitleWidget("키워드"))
 
         // 버튼 리스트
-        list.add(HomeWidget.CategoryWidget(categoryList.value?.toList()!!))
+        list.add(HomeWidget.CategoryWidget(categoryList))
 
         // 비디오 리스트
         list.add(HomeWidget.ListKeywordVideoItemWidget(videoList + videoList))
