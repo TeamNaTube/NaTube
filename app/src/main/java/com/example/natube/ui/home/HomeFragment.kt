@@ -1,6 +1,7 @@
 package com.example.natube.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,14 +16,15 @@ class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+    private val homeAdapter: HomeAdapter by lazy { HomeAdapter(homeViewModel) }
 
-    private val homeAdapter = HomeAdapter()
+    private lateinit var homeViewModel: HomeViewModel
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        val homeViewModel =
+        homeViewModel =
             ViewModelProvider(this)[HomeViewModel::class.java]
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
@@ -35,9 +37,17 @@ class HomeFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        with(homeViewModel){
+            mCategoryList.observe(viewLifecycleOwner) {
+                viewDummyData()
+            }
+        }
+    }
+
+    private fun viewDummyData() {
 
         var list = mutableListOf<HomeWidget>()
-        var categoryList = listOf(Category("1"), Category("10"), Category("21"), Category("31"))
+        var categoryList = homeViewModel.mCategoryList
         var dummyVideoItem = UnifiedItem(
             videoTitle = "비디오 이름",
             channelTitle = "채널명",
@@ -57,7 +67,7 @@ class HomeFragment : Fragment() {
         list.add(HomeWidget.TitleWidget("카테고리"))
 
         // 버튼 리스트
-        list.add(HomeWidget.CategoryWidget(categoryList))
+        list.add(HomeWidget.CategoryWidget(categoryList.value?.toList()!!))
 
         // 비디오 리스트
         list.add(HomeWidget.ListCategoryVideoItemWidget(videoList))
@@ -70,10 +80,10 @@ class HomeFragment : Fragment() {
         list.add(HomeWidget.TitleWidget("키워드"))
 
         // 버튼 리스트
-        list.add(HomeWidget.CategoryWidget(categoryList.shuffled()))
+        list.add(HomeWidget.CategoryWidget(categoryList.value?.toList()!!))
 
         // 비디오 리스트
-        list.add(HomeWidget.ListKeywordVideoItemWidget(videoList+videoList))
+        list.add(HomeWidget.ListKeywordVideoItemWidget(videoList + videoList))
 
 
         homeAdapter.submitList(list)

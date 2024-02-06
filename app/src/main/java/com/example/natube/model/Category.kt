@@ -3,6 +3,7 @@ package com.example.natube.model
 data class Category(
     val categoryId: String,
     var name: String? = null,
+    var isClicked: Boolean = false,
 ) {
     companion object {
         val categoryMap = mapOf(

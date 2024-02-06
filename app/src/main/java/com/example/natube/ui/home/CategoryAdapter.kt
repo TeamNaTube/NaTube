@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.natube.databinding.VideoCategoryBinding
 import com.example.natube.model.Category
 
-class CategoryAdapter : ListAdapter<Category, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
+class CategoryAdapter(private val viewModel: HomeViewModel) : ListAdapter<Category, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Category>() {
             override fun areItemsTheSame(oldItem: Category, newItem: Category): Boolean {
@@ -34,8 +34,19 @@ class CategoryAdapter : ListAdapter<Category, RecyclerView.ViewHolder>(DIFF_CALL
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = getItem(position)
-        (holder as CategoryViewHolder).apply{
-            button.text = item.name
+        (holder as CategoryViewHolder).apply {
+            button.apply{
+                text = item.name
+                textOn = item.name
+                textOff = item.name
+                isChecked = item.isClicked
+
+                setOnClickListener {
+                    viewModel.setSelectedItemPosition(position)
+                    notifyDataSetChanged()
+                }
+            }
+
         }
     }
 }

@@ -17,7 +17,7 @@ import com.example.natube.databinding.FragmentHomeTitleBinding
  *  2. 해당 ViewType 에따른 ViewHolder 생성 및 연결
  *  3. 연결된 ViewHolder 에 저장한 값들 Binding
  */
-class HomeAdapter : ListAdapter<HomeWidget, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
+class HomeAdapter(private val viewModel: HomeViewModel) : ListAdapter<HomeWidget, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<HomeWidget>() {
             override fun areItemsTheSame(oldItem: HomeWidget, newItem: HomeWidget): Boolean {
@@ -119,7 +119,7 @@ class HomeAdapter : ListAdapter<HomeWidget, RecyclerView.ViewHolder>(DIFF_CALLBA
     inner class CategoryViewHolder(binding: FragmentHomeRvCategoryBtnBinding) :
         RecyclerView.ViewHolder(binding.root) {
         private val rvCategory = binding.rvCategory
-        val categoryAdapter = CategoryAdapter()
+        val categoryAdapter = CategoryAdapter(viewModel)
 
         init {
             rvCategory.layoutManager =
