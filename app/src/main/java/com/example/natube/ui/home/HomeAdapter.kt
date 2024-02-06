@@ -3,8 +3,10 @@ package com.example.natube.ui.home
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.natube.databinding.FragmentHomeRvCategoryBtnBinding
 import com.example.natube.databinding.FragmentHomeTitleBinding
 
 /**
@@ -26,11 +28,13 @@ class HomeAdapter : ListAdapter<HomeWidget, RecyclerView.ViewHolder>(DIFF_CALLBA
         }
         //ViewType 정의
         private const val TYPE_TITLE = 0
+        private const val TYPE_CATEGORY = 1
     }
 
     override fun getItemViewType(position: Int): Int {
         return when(getItem(position)){
-            is HomeWidget.Title -> TYPE_TITLE
+            is HomeWidget.TitleWidget -> TYPE_TITLE
+            is HomeWidget.CategoryWidget -> TYPE_CATEGORY
         }
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -40,6 +44,11 @@ class HomeAdapter : ListAdapter<HomeWidget, RecyclerView.ViewHolder>(DIFF_CALLBA
                 val binding =
                     FragmentHomeTitleBinding.inflate(inflater, parent, false)
                 return TitleViewHolder(binding)
+            }
+            TYPE_CATEGORY ->{
+                val binding =
+                    FragmentHomeRvCategoryBtnBinding.inflate(inflater,parent,false)
+                return CategoryViewHolder(binding)
             }
             else -> throw IllegalArgumentException("Invalid view type")
         }
@@ -51,8 +60,13 @@ class HomeAdapter : ListAdapter<HomeWidget, RecyclerView.ViewHolder>(DIFF_CALLBA
      */
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (val item = getItem(position)) {
-            is HomeWidget.Title ->{
+            is HomeWidget.TitleWidget ->{
                 (holder as TitleViewHolder).tvTitle.text = item.title
+            }
+            is HomeWidget.CategoryWidget ->{
+                (holder as CategoryViewHolder).apply{
+                    categoryAdapter.submitList(item.mCategories)
+                }
             }
         }
     }
@@ -65,5 +79,15 @@ class HomeAdapter : ListAdapter<HomeWidget, RecyclerView.ViewHolder>(DIFF_CALLBA
     inner class TitleViewHolder(binding: FragmentHomeTitleBinding) :
         RecyclerView.ViewHolder(binding.root) {
         val tvTitle = binding.tvTitle
+    }
+
+    inner class CategoryViewHolder(binding: FragmentHomeRvCategoryBtnBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        val rvCategory = binding.rvCategory
+        val categoryAdapter = CategoryAdapter()
+        init{
+            rvCategory.layoutManager = LinearLayoutManager(rvCategory.context,LinearLayoutManager.HORIZONTAL,false)
+            rvCategory.adapter = categoryAdapter
+        }
     }
 }

@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.natube.databinding.FragmentHomeBinding
+import com.example.natube.model.Category
 
 class HomeFragment : Fragment() {
 
@@ -18,14 +19,14 @@ class HomeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         val homeViewModel =
             ViewModelProvider(this)[HomeViewModel::class.java]
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-        binding.rvFragmentHome.apply{
+        binding.rvFragmentHome.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = homeAdapter
         }
@@ -34,8 +35,13 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         var list = mutableListOf<HomeWidget>()
-        list.add(HomeWidget.Title("카테고리"))
-        list.add(HomeWidget.Title("키워드"))
+        list.add(HomeWidget.TitleWidget("카테고리"))
+
+        var categoryList = listOf(Category("1"), Category("10"), Category("21"), Category("31"))
+        list.add(HomeWidget.CategoryWidget(categoryList))
+
+        list.add(HomeWidget.TitleWidget("키워드"))
+
         homeAdapter.submitList(list)
     }
 
