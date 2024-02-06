@@ -57,7 +57,7 @@ class HomeAdapter(private val viewModel: HomeViewModel) : ListAdapter<HomeWidget
             TYPE_LIST_CHIP -> {
                 val binding =
                     FragmentHomeRvChipBinding.inflate(inflater, parent, false)
-                return CategoryViewHolder(binding)
+                return ListChipViewHolder(binding)
             }
 
             TYPE_LIST_CATEGORY_ITEM_VIDEO -> {
@@ -87,7 +87,7 @@ class HomeAdapter(private val viewModel: HomeViewModel) : ListAdapter<HomeWidget
             }
 
             is HomeWidget.ChipWidget -> {
-                (holder as CategoryViewHolder).apply {
+                (holder as ListChipViewHolder).apply {
                     categoryAdapter.submitList(item.mCategories)
                 }
             }
@@ -116,7 +116,7 @@ class HomeAdapter(private val viewModel: HomeViewModel) : ListAdapter<HomeWidget
         val tvTitle = binding.tvTitle
     }
 
-    inner class CategoryViewHolder(binding: FragmentHomeRvChipBinding) :
+    inner class ListChipViewHolder(binding: FragmentHomeRvChipBinding) :
         RecyclerView.ViewHolder(binding.root) {
         private val rvCategory = binding.rvCategory
         val categoryAdapter = CategoryAdapter(viewModel)
