@@ -62,4 +62,10 @@ dependencies {
     // OKHttp for 통신 로그
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.0")
 
+    /**
+     *  Url ->Image 형태로 변환 Glide
+     */
+    implementation("com.github.bumptech.glide:glide:4.12.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
+
 }

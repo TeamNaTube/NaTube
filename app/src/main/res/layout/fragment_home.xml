@@ -6,6 +6,45 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/activity_detail_toolbar2"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/teal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/fragment_my_video_natube_icon"
+                android:layout_width="45dp"
+                android:layout_height="50dp"
+                android:backgroundTint="@color/teal"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_natube"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/fragment_my_video_natube"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="@string/natube"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/fragment_my_video_natube_icon"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.appcompat.widget.Toolbar>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_fragment_home"
         android:layout_width="0dp"
@@ -13,5 +52,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/activity_detail_toolbar2" />
 </androidx.constraintlayout.widget.ConstraintLayout>

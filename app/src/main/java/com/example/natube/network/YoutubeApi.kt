@@ -21,7 +21,8 @@ interface YoutubeAPI {
         @Query("maxResults") maxResults: Int = API_MAX_RESULT,
         @Query("regionCode") regionCode: String = API_REGION,
         @Query("key") apiKey: String = YOUTUBE_API_KEY,
-        @Query("chart") chart : String = "mostPopular"
+        @Query("chart") chart : String = "mostPopular",
+        @Query("videoCategoryId") videoCategoryId : String,
     ) : VideoModel
 
     @GET("search")
