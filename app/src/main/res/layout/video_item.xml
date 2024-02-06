@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="10dp"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_width="205dp"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
 
     <ImageView
         android:id="@+id/iv_video_item_thumbnail"
-        android:layout_width="240dp"
+        android:layout_width="0dp"
         android:layout_height="135dp"
-        android:src="@drawable/img_thumbnail"
         android:scaleType="fitCenter"
+        android:src="@drawable/img_thumbnail"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -37,14 +38,12 @@
         android:id="@+id/tv_video_item_upload_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
         android:text="@string/upload_date"
         android:textSize="20sp"
-        android:layout_marginStart="4dp"
         app:layout_constraintBottom_toBottomOf="@id/tv_video_item_channel_name"
         app:layout_constraintStart_toEndOf="@id/tv_video_item_channel_name"
         app:layout_constraintTop_toTopOf="@id/tv_video_item_channel_name" />
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

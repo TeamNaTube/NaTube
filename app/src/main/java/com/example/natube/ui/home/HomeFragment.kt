@@ -60,14 +60,21 @@ class HomeFragment : Fragment() {
         list.add(HomeWidget.CategoryWidget(categoryList))
 
         // 비디오 리스트
-        list.add(HomeWidget.ListVideoItemWidget(videoList))
+        list.add(HomeWidget.ListCategoryVideoItemWidget(videoList))
+
         /**
          *  키워드 부분
          */
 
         // 타이틀
         list.add(HomeWidget.TitleWidget("키워드"))
+
+        // 버튼 리스트
         list.add(HomeWidget.CategoryWidget(categoryList.shuffled()))
+
+        // 비디오 리스트
+        list.add(HomeWidget.ListKeywordVideoItemWidget(videoList+videoList))
+
 
         homeAdapter.submitList(list)
     }

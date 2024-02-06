@@ -5,9 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.natube.databinding.VideoCategoryBinding
 import com.example.natube.databinding.VideoItemBinding
-import com.example.natube.model.Category
 import com.example.natube.model.UnifiedItem
 
 class ListVideoItemAdapter : ListAdapter<UnifiedItem, RecyclerView.ViewHolder>(DIFF_CALLBACK) {

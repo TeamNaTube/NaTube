@@ -3,6 +3,7 @@ package com.example.natube.ui.home
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -31,14 +32,16 @@ class HomeAdapter : ListAdapter<HomeWidget, RecyclerView.ViewHolder>(DIFF_CALLBA
         //ViewType 정의
         private const val TYPE_TITLE = 0
         private const val TYPE_CATEGORY = 1
-        private const val TYPE_LIST_ITEM_VIDEO = 2
+        private const val TYPE_LIST_CATEGORY_ITEM_VIDEO = 2
+        private const val TYPE_LIST_KEYWORD_ITEM_VIDEO = 3
     }
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
             is HomeWidget.TitleWidget -> TYPE_TITLE
             is HomeWidget.CategoryWidget -> TYPE_CATEGORY
-            is HomeWidget.ListVideoItemWidget -> TYPE_LIST_ITEM_VIDEO
+            is HomeWidget.ListCategoryVideoItemWidget -> TYPE_LIST_CATEGORY_ITEM_VIDEO
+            is HomeWidget.ListKeywordVideoItemWidget -> TYPE_LIST_KEYWORD_ITEM_VIDEO
         }
     }
 
@@ -57,10 +60,16 @@ class HomeAdapter : ListAdapter<HomeWidget, RecyclerView.ViewHolder>(DIFF_CALLBA
                 return CategoryViewHolder(binding)
             }
 
-            TYPE_LIST_ITEM_VIDEO -> {
+            TYPE_LIST_CATEGORY_ITEM_VIDEO -> {
                 val binding =
                     FragmentHomeRvCategoryItemBinding.inflate(inflater, parent, false)
-                return ListVideoItemViewHolder(binding)
+                return ListCategoryVideoItemViewHolder(binding)
+            }
+
+            TYPE_LIST_KEYWORD_ITEM_VIDEO -> {
+                val binding =
+                    FragmentHomeRvCategoryItemBinding.inflate(inflater, parent, false)
+                return ListKeywordVideoItemViewHolder(binding)
             }
 
             else -> throw IllegalArgumentException("Invalid view type")
@@ -83,9 +92,15 @@ class HomeAdapter : ListAdapter<HomeWidget, RecyclerView.ViewHolder>(DIFF_CALLBA
                 }
             }
 
-            is HomeWidget.ListVideoItemWidget -> {
-                (holder as ListVideoItemViewHolder).apply {
-                    listVideoAdapter.submitList(item.mUnifiedItem)
+            is HomeWidget.ListCategoryVideoItemWidget -> {
+                (holder as ListCategoryVideoItemViewHolder).apply {
+                    listCategoryVideoAdapter.submitList(item.mUnifiedItem)
+                }
+            }
+
+            is HomeWidget.ListKeywordVideoItemWidget -> {
+                (holder as ListKeywordVideoItemViewHolder).apply {
+                    listKeywordVideoAdapter.submitList(item.mUnifiedItem)
                 }
             }
         }
@@ -113,15 +128,27 @@ class HomeAdapter : ListAdapter<HomeWidget, RecyclerView.ViewHolder>(DIFF_CALLBA
         }
     }
 
-    inner class ListVideoItemViewHolder(binding: FragmentHomeRvCategoryItemBinding) :
+    inner class ListCategoryVideoItemViewHolder(binding: FragmentHomeRvCategoryItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         private val rvListVideoItem = binding.rvListVideoItem
-        val listVideoAdapter = ListVideoItemAdapter()
+        val listCategoryVideoAdapter = ListVideoItemAdapter()
 
         init {
             rvListVideoItem.layoutManager =
                 LinearLayoutManager(rvListVideoItem.context, LinearLayoutManager.HORIZONTAL, false)
-            rvListVideoItem.adapter = listVideoAdapter
+            rvListVideoItem.adapter = listCategoryVideoAdapter
+        }
+    }
+
+    inner class ListKeywordVideoItemViewHolder(binding: FragmentHomeRvCategoryItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        private val rvListVideoItem = binding.rvListVideoItem
+        val listKeywordVideoAdapter = ListVideoItemAdapter()
+
+        init {
+            rvListVideoItem.layoutManager =
+                GridLayoutManager(rvListVideoItem.context, 2)
+            rvListVideoItem.adapter = listKeywordVideoAdapter
         }
     }
 }
