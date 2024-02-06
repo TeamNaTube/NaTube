@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.natube.databinding.FragmentHomeBinding
 import com.example.natube.model.Category
+import com.example.natube.model.UnifiedItem
 
 class HomeFragment : Fragment() {
 
@@ -34,13 +35,39 @@ class HomeFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         var list = mutableListOf<HomeWidget>()
+        var categoryList = listOf(Category("1"), Category("10"), Category("21"), Category("31"))
+        var dummyVideoItem = UnifiedItem(
+            videoTitle = "비디오 이름",
+            channelTitle = "채널명",
+            description = "",
+            dateTime = "20240206",
+            thumbnailsUrl = "",
+            categoryId = ""
+        )
+        var videoList = listOf(
+            dummyVideoItem, dummyVideoItem, dummyVideoItem, dummyVideoItem, dummyVideoItem
+        )
+        /**
+         *  카테고리 부분
+         */
+
+        // 타이틀
         list.add(HomeWidget.TitleWidget("카테고리"))
 
-        var categoryList = listOf(Category("1"), Category("10"), Category("21"), Category("31"))
+        // 버튼 리스트
         list.add(HomeWidget.CategoryWidget(categoryList))
 
+        // 비디오 리스트
+        list.add(HomeWidget.ListVideoItemWidget(videoList))
+        /**
+         *  키워드 부분
+         */
+
+        // 타이틀
         list.add(HomeWidget.TitleWidget("키워드"))
+        list.add(HomeWidget.CategoryWidget(categoryList.shuffled()))
 
         homeAdapter.submitList(list)
     }

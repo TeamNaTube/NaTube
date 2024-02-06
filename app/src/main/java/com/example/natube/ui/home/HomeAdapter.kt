@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.natube.databinding.FragmentHomeRvCategoryBtnBinding
+import com.example.natube.databinding.FragmentHomeRvCategoryItemBinding
 import com.example.natube.databinding.FragmentHomeTitleBinding
 
 /**
@@ -26,17 +27,21 @@ class HomeAdapter : ListAdapter<HomeWidget, RecyclerView.ViewHolder>(DIFF_CALLBA
                 return oldItem == newItem
             }
         }
+
         //ViewType 정의
         private const val TYPE_TITLE = 0
         private const val TYPE_CATEGORY = 1
+        private const val TYPE_LIST_ITEM_VIDEO = 2
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when(getItem(position)){
+        return when (getItem(position)) {
             is HomeWidget.TitleWidget -> TYPE_TITLE
             is HomeWidget.CategoryWidget -> TYPE_CATEGORY
+            is HomeWidget.ListVideoItemWidget -> TYPE_LIST_ITEM_VIDEO
         }
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
@@ -45,11 +50,19 @@ class HomeAdapter : ListAdapter<HomeWidget, RecyclerView.ViewHolder>(DIFF_CALLBA
                     FragmentHomeTitleBinding.inflate(inflater, parent, false)
                 return TitleViewHolder(binding)
             }
-            TYPE_CATEGORY ->{
+
+            TYPE_CATEGORY -> {
                 val binding =
-                    FragmentHomeRvCategoryBtnBinding.inflate(inflater,parent,false)
+                    FragmentHomeRvCategoryBtnBinding.inflate(inflater, parent, false)
                 return CategoryViewHolder(binding)
             }
+
+            TYPE_LIST_ITEM_VIDEO -> {
+                val binding =
+                    FragmentHomeRvCategoryItemBinding.inflate(inflater, parent, false)
+                return ListVideoItemViewHolder(binding)
+            }
+
             else -> throw IllegalArgumentException("Invalid view type")
         }
     }
@@ -60,12 +73,19 @@ class HomeAdapter : ListAdapter<HomeWidget, RecyclerView.ViewHolder>(DIFF_CALLBA
      */
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (val item = getItem(position)) {
-            is HomeWidget.TitleWidget ->{
+            is HomeWidget.TitleWidget -> {
                 (holder as TitleViewHolder).tvTitle.text = item.title
             }
-            is HomeWidget.CategoryWidget ->{
-                (holder as CategoryViewHolder).apply{
+
+            is HomeWidget.CategoryWidget -> {
+                (holder as CategoryViewHolder).apply {
                     categoryAdapter.submitList(item.mCategories)
+                }
+            }
+
+            is HomeWidget.ListVideoItemWidget -> {
+                (holder as ListVideoItemViewHolder).apply {
+                    listVideoAdapter.submitList(item.mUnifiedItem)
                 }
             }
         }
@@ -83,11 +103,25 @@ class HomeAdapter : ListAdapter<HomeWidget, RecyclerView.ViewHolder>(DIFF_CALLBA
 
     inner class CategoryViewHolder(binding: FragmentHomeRvCategoryBtnBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        val rvCategory = binding.rvCategory
+        private val rvCategory = binding.rvCategory
         val categoryAdapter = CategoryAdapter()
-        init{
-            rvCategory.layoutManager = LinearLayoutManager(rvCategory.context,LinearLayoutManager.HORIZONTAL,false)
+
+        init {
+            rvCategory.layoutManager =
+                LinearLayoutManager(rvCategory.context, LinearLayoutManager.HORIZONTAL, false)
             rvCategory.adapter = categoryAdapter
+        }
+    }
+
+    inner class ListVideoItemViewHolder(binding: FragmentHomeRvCategoryItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        private val rvListVideoItem = binding.rvListVideoItem
+        val listVideoAdapter = ListVideoItemAdapter()
+
+        init {
+            rvListVideoItem.layoutManager =
+                LinearLayoutManager(rvListVideoItem.context, LinearLayoutManager.HORIZONTAL, false)
+            rvListVideoItem.adapter = listVideoAdapter
         }
     }
 }
