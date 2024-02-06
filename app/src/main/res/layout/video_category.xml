@@ -6,14 +6,14 @@
     android:layout_height="wrap_content"
     android:padding="5dp">
 
-    <ToggleButton
-        android:id="@+id/btn_category"
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chip_category"
+        style="@style/Widget.MaterialComponents.Chip.Choice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/selector_toggle_btn"
+        android:text="Category"
         android:textColor="@color/black"
-        android:textOff="Category"
-        android:textOn="Category"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

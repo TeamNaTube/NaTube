@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.natube.databinding.FragmentHomeRvCategoryBtnBinding
-import com.example.natube.databinding.FragmentHomeRvCategoryItemBinding
+import com.example.natube.databinding.FragmentHomeRvChipBinding
+import com.example.natube.databinding.FragmentHomeRvItemBinding
 import com.example.natube.databinding.FragmentHomeTitleBinding
 
 /**
@@ -31,7 +31,7 @@ class HomeAdapter(private val viewModel: HomeViewModel) : ListAdapter<HomeWidget
 
         //ViewType 정의
         private const val TYPE_TITLE = 0
-        private const val TYPE_CATEGORY = 1
+        private const val TYPE_LIST_CHIP = 1
         private const val TYPE_LIST_CATEGORY_ITEM_VIDEO = 2
         private const val TYPE_LIST_KEYWORD_ITEM_VIDEO = 3
     }
@@ -39,7 +39,7 @@ class HomeAdapter(private val viewModel: HomeViewModel) : ListAdapter<HomeWidget
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
             is HomeWidget.TitleWidget -> TYPE_TITLE
-            is HomeWidget.CategoryWidget -> TYPE_CATEGORY
+            is HomeWidget.ChipWidget -> TYPE_LIST_CHIP
             is HomeWidget.ListCategoryVideoItemWidget -> TYPE_LIST_CATEGORY_ITEM_VIDEO
             is HomeWidget.ListKeywordVideoItemWidget -> TYPE_LIST_KEYWORD_ITEM_VIDEO
         }
@@ -54,21 +54,21 @@ class HomeAdapter(private val viewModel: HomeViewModel) : ListAdapter<HomeWidget
                 return TitleViewHolder(binding)
             }
 
-            TYPE_CATEGORY -> {
+            TYPE_LIST_CHIP -> {
                 val binding =
-                    FragmentHomeRvCategoryBtnBinding.inflate(inflater, parent, false)
+                    FragmentHomeRvChipBinding.inflate(inflater, parent, false)
                 return CategoryViewHolder(binding)
             }
 
             TYPE_LIST_CATEGORY_ITEM_VIDEO -> {
                 val binding =
-                    FragmentHomeRvCategoryItemBinding.inflate(inflater, parent, false)
+                    FragmentHomeRvItemBinding.inflate(inflater, parent, false)
                 return ListCategoryVideoItemViewHolder(binding)
             }
 
             TYPE_LIST_KEYWORD_ITEM_VIDEO -> {
                 val binding =
-                    FragmentHomeRvCategoryItemBinding.inflate(inflater, parent, false)
+                    FragmentHomeRvItemBinding.inflate(inflater, parent, false)
                 return ListKeywordVideoItemViewHolder(binding)
             }
 
@@ -86,7 +86,7 @@ class HomeAdapter(private val viewModel: HomeViewModel) : ListAdapter<HomeWidget
                 (holder as TitleViewHolder).tvTitle.text = item.title
             }
 
-            is HomeWidget.CategoryWidget -> {
+            is HomeWidget.ChipWidget -> {
                 (holder as CategoryViewHolder).apply {
                     categoryAdapter.submitList(item.mCategories)
                 }
@@ -94,13 +94,13 @@ class HomeAdapter(private val viewModel: HomeViewModel) : ListAdapter<HomeWidget
 
             is HomeWidget.ListCategoryVideoItemWidget -> {
                 (holder as ListCategoryVideoItemViewHolder).apply {
-                    listCategoryVideoAdapter.submitList(item.mUnifiedItem)
+                    listCategoryVideoAdapter.submitList(item.mUnifiedItems)
                 }
             }
 
             is HomeWidget.ListKeywordVideoItemWidget -> {
                 (holder as ListKeywordVideoItemViewHolder).apply {
-                    listKeywordVideoAdapter.submitList(item.mUnifiedItem)
+                    listKeywordVideoAdapter.submitList(item.mUnifiedItems)
                 }
             }
         }
@@ -116,7 +116,7 @@ class HomeAdapter(private val viewModel: HomeViewModel) : ListAdapter<HomeWidget
         val tvTitle = binding.tvTitle
     }
 
-    inner class CategoryViewHolder(binding: FragmentHomeRvCategoryBtnBinding) :
+    inner class CategoryViewHolder(binding: FragmentHomeRvChipBinding) :
         RecyclerView.ViewHolder(binding.root) {
         private val rvCategory = binding.rvCategory
         val categoryAdapter = CategoryAdapter(viewModel)
@@ -128,7 +128,7 @@ class HomeAdapter(private val viewModel: HomeViewModel) : ListAdapter<HomeWidget
         }
     }
 
-    inner class ListCategoryVideoItemViewHolder(binding: FragmentHomeRvCategoryItemBinding) :
+    inner class ListCategoryVideoItemViewHolder(binding: FragmentHomeRvItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         private val rvListVideoItem = binding.rvListVideoItem
         val listCategoryVideoAdapter = ListVideoItemAdapter()
@@ -140,7 +140,7 @@ class HomeAdapter(private val viewModel: HomeViewModel) : ListAdapter<HomeWidget
         }
     }
 
-    inner class ListKeywordVideoItemViewHolder(binding: FragmentHomeRvCategoryItemBinding) :
+    inner class ListKeywordVideoItemViewHolder(binding: FragmentHomeRvItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         private val rvListVideoItem = binding.rvListVideoItem
         val listKeywordVideoAdapter = ListVideoItemAdapter()

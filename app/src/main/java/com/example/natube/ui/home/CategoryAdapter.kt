@@ -23,7 +23,7 @@ class CategoryAdapter(private val viewModel: HomeViewModel) : ListAdapter<Catego
 
     inner class CategoryViewHolder(binding: VideoCategoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        val button = binding.btnCategory
+        val chip = binding.chipCategory
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -35,10 +35,8 @@ class CategoryAdapter(private val viewModel: HomeViewModel) : ListAdapter<Catego
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = getItem(position)
         (holder as CategoryViewHolder).apply {
-            button.apply{
+            chip.apply{
                 text = item.name
-                textOn = item.name
-                textOff = item.name
                 isChecked = item.isClicked
 
                 setOnClickListener {

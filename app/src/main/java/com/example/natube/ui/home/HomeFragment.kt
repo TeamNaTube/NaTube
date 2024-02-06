@@ -58,7 +58,7 @@ class HomeFragment : Fragment() {
         list.add(HomeWidget.TitleWidget("카테고리"))
 
         // 버튼 리스트
-        list.add(HomeWidget.CategoryWidget(categoryList))
+        list.add(HomeWidget.ChipWidget(categoryList))
 
         // 비디오 리스트
         list.add(HomeWidget.ListCategoryVideoItemWidget(videoList))
@@ -71,7 +71,7 @@ class HomeFragment : Fragment() {
         list.add(HomeWidget.TitleWidget("키워드"))
 
         // 버튼 리스트
-        list.add(HomeWidget.CategoryWidget(categoryList))
+        list.add(HomeWidget.ChipWidget(categoryList))
 
         // 비디오 리스트
         list.add(HomeWidget.ListKeywordVideoItemWidget(videoList + videoList))
