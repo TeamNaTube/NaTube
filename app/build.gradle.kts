@@ -62,4 +62,8 @@ dependencies {
     // OKHttp for 통신 로그
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.0")
 
+    //viewModels 사용
+    implementation("androidx.activity:activity-ktx:1.8.0")
+    implementation("androidx.fragment:fragment-ktx:1.6.2")
+
 }
