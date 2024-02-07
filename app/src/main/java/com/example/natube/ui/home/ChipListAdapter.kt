@@ -39,10 +39,26 @@ class ChipListAdapter(private val viewModel: HomeViewModel) : ListAdapter<Chip, 
                 text = item.name
                 isChecked = item.isClicked
 
-                setOnClickListener {
-                    viewModel.setSelectedCategoryPosition(position)
-                    notifyDataSetChanged()
+                when(item.categoryId){
+                    // Keyword 의 경우
+                    "-1" ->{
+                        setOnClickListener {
+                            viewModel.setKeywordPosition(position)
+                            notifyDataSetChanged()
+                        }
+                    }
+                    // 아이디 값이 "-1"이 아닐 경우 Category
+                    else ->{
+                        setOnClickListener {
+                            viewModel.setSelectedCategoryPosition(position)
+                            notifyDataSetChanged()
+                        }
+                    }
                 }
+
+
+
+
             }
 
         }

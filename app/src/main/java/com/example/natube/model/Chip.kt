@@ -1,5 +1,8 @@
 package com.example.natube.model
 
+/**
+ *  categoryId = -1 : Keyword 으로 간주
+ */
 data class Chip(
     val categoryId: String,
     var name: String? = null,

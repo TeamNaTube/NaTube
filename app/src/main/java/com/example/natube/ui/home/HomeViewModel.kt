@@ -21,6 +21,7 @@ class HomeViewModel : ViewModel() {
     private var _mKeywordList = MutableLiveData<List<Chip>>(listOf())
     val mKeywordList: LiveData<List<Chip>> get() = _mKeywordList
 
+    private var KeywordQuery = ""
     //선택한 Category 리스트
     private var _mSelectedCategoryList = MutableLiveData<List<Chip>>(listOf())
     val mSelectedCategoryList: LiveData<List<Chip>> get() = _mSelectedCategoryList
@@ -127,7 +128,18 @@ class HomeViewModel : ViewModel() {
     }
     fun initKeywordList() {
         var list = mKeywordList.value ?: listOf()
+        list[0].isClicked = true
         _mKeywordList.value = list
+    }
+
+    // HomeFragment 에서 칩(키워드) 하나만 선택 할수 있게 해주는 함수
+    fun setKeywordPosition(position: Int) {
+        val newList = mKeywordList.value ?: listOf()
+        for (idx in newList.indices) {
+            newList[idx].isClicked = idx == position
+        }
+        KeywordQuery = newList[position].name ?:""
+        _mKeywordList.value = newList
     }
 
 }
