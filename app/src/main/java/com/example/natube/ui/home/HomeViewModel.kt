@@ -14,20 +14,30 @@ import kotlinx.coroutines.withContext
 
 class HomeViewModel : ViewModel() {
 
+    //Category 리스트
     private var _mCategoryList = MutableLiveData<List<Chip>>(listOf())
     val mCategoryList: LiveData<List<Chip>> get() = _mCategoryList
 
+    //선택한 Category 리스트
     private var _mSelectedCategoryList = MutableLiveData<List<Chip>>(listOf())
     val mSelectedCategoryList: LiveData<List<Chip>> get() = _mSelectedCategoryList
 
+    //HomeFragment에 선택된 CategoryId
     private var selectedCategoryId = "-1"
 
+    //Category 에 따른 해당 비디오 리스트
     private var _mItemByCategoryList = MutableLiveData<List<UnifiedItem>>(listOf())
     val mItemByCategoryList: LiveData<List<UnifiedItem>> get() = _mItemByCategoryList
 
+    /**
+     *  뷰모델 생성시 기본값들 정의
+     *  - CategoryList 를 저장
+     *  - SharedPreference 에 저장된 값을 초기화(!)
+     */
     init {
         initCategoryList()
     }
+
 
     private fun initCategoryList() {
         val list = mutableListOf<Chip>()
@@ -39,6 +49,12 @@ class HomeViewModel : ViewModel() {
 
     }
 
+    /**
+     *  SettingChipsDialog 부분 기능 함수
+     */
+
+
+    // 해당 아이템 을 클릭시 mCategoryList 의 isClicked 를 변경
     fun isClickedItem(position: Int) {
         val list = _mCategoryList.value ?: listOf()
         list[position].isClicked = !list[position].isClicked
@@ -46,8 +62,10 @@ class HomeViewModel : ViewModel() {
     }
 
     /**
-     *  카테고리 선택 부분
+     *  카테 고리 부분
      */
+
+    // mCategoryList 에서 isClicked 가 True 인 경우 를 모아서 mSelectedCategoryList 에 저장
     fun initSelectedCategoryList() {
         var list = mCategoryList.value?.map { it.copy() }?.filter { it.isClicked } ?: listOf()
 
@@ -59,8 +77,9 @@ class HomeViewModel : ViewModel() {
         _mSelectedCategoryList.value = list
     }
 
+    // HomeFragment 에서 칩(카테고리) 하나만 선택 할수 있게 해주는 함수
     fun setSelectedItemPosition(position: Int) {
-        val newList = mSelectedCategoryList.value!!
+        val newList = mSelectedCategoryList.value ?: listOf()
         for (idx in newList.indices) {
             newList[idx].isClicked = idx == position
         }
@@ -68,6 +87,7 @@ class HomeViewModel : ViewModel() {
         _mSelectedCategoryList.value = newList
     }
 
+    // selectedCategoryId 기반 검색 실행
     fun fetchSearchVideoByCategory() {
         // Id 가 default값(-1)이면 검색 x
         if (selectedCategoryId == "-1") return
