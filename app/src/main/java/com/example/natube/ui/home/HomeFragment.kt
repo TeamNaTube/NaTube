@@ -53,8 +53,8 @@ class HomeFragment : Fragment() {
     private fun viewDummyData() {
 
         var list = mutableListOf<HomeWidget>()
-        var categoryList = homeViewModel.mSelectedCategoryList.value!!
-        var videoList = homeViewModel.mItemByCategoryList.value!!
+        var categoryList = homeViewModel.mSelectedCategoryList.value ?: listOf()
+        var videoList = homeViewModel.mItemByCategoryList.value ?: listOf()
         /**
          *  카테고리 부분
          */

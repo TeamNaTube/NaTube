@@ -15,12 +15,12 @@ import kotlinx.coroutines.withContext
 class HomeViewModel : ViewModel() {
 
     private var _mCategoryList = MutableLiveData<List<Chip>>(listOf())
-    val mCategoryList : LiveData<List<Chip>> get() = _mCategoryList
+    val mCategoryList: LiveData<List<Chip>> get() = _mCategoryList
 
     private var _mSelectedCategoryList = MutableLiveData<List<Chip>>(listOf())
     val mSelectedCategoryList: LiveData<List<Chip>> get() = _mSelectedCategoryList
 
-    private var selectedCategoryId = "1"
+    private var selectedCategoryId = "-1"
 
     private var _mItemByCategoryList = MutableLiveData<List<UnifiedItem>>(listOf())
     val mItemByCategoryList: LiveData<List<UnifiedItem>> get() = _mItemByCategoryList
@@ -37,10 +37,9 @@ class HomeViewModel : ViewModel() {
 
         _mCategoryList.value = list
 
-//        _mSelectedCategoryList.value = list
     }
 
-    fun isClickedItem(position: Int){
+    fun isClickedItem(position: Int) {
         val list = _mCategoryList.value ?: listOf()
         list[position].isClicked = !list[position].isClicked
         _mCategoryList.value = list
@@ -49,6 +48,16 @@ class HomeViewModel : ViewModel() {
     /**
      *  카테고리 선택 부분
      */
+    fun initSelectedCategoryList() {
+        var list = mCategoryList.value?.map { it.copy() }?.filter { it.isClicked } ?: listOf()
+
+        for (idx in 1..list.lastIndex) {
+            list[idx].isClicked = false
+        }
+
+        selectedCategoryId = list[0].categoryId
+        _mSelectedCategoryList.value = list
+    }
 
     fun setSelectedItemPosition(position: Int) {
         val newList = mSelectedCategoryList.value!!
@@ -60,6 +69,9 @@ class HomeViewModel : ViewModel() {
     }
 
     fun fetchSearchVideoByCategory() {
+        // Id 가 default값(-1)이면 검색 x
+        if (selectedCategoryId == "-1") return
+
         viewModelScope.launch {
             val unifiedItems = searchVideoByCategory()
             _mItemByCategoryList.value = unifiedItems

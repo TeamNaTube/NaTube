@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.natube.databinding.DialogSettingChipsBinding
 import com.example.natube.ui.home.HomeViewModel
@@ -14,7 +13,7 @@ import com.example.natube.ui.home.HomeViewModel
 class SettingChipsDialog : DialogFragment() {
     private lateinit var binding: DialogSettingChipsBinding
     private val homeViewModel: HomeViewModel by activityViewModels()
-    private val categoryAdapter by lazy{ CategoryAdapter(homeViewModel)}
+    private val categoryAdapter by lazy { CategoryAdapter(homeViewModel) }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -30,10 +29,15 @@ class SettingChipsDialog : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        homeViewModel.mCategoryList.observe(viewLifecycleOwner){
+        with(homeViewModel) {
             val list = homeViewModel.mCategoryList.value
             categoryAdapter.submitList(list)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        homeViewModel.initSelectedCategoryList()
     }
 
 }
