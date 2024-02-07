@@ -19,6 +19,11 @@ import com.example.natube.databinding.FragmentHomeTitleBinding
  */
 class HomeAdapter(private val viewModel: HomeViewModel) : ListAdapter<HomeWidget, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
     companion object {
+        /**
+         *  현재 한꺼번에 데이터를 업로드하고있다
+         *  이로인해 개별로 처리해서 업로드 하려면 해당 함수를 수정하여
+         *  각 해당 아이템이 같은건지,내용이같은지를 세부적으로 판별하여 처리해야함
+         */
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<HomeWidget>() {
             override fun areItemsTheSame(oldItem: HomeWidget, newItem: HomeWidget): Boolean {
                 return oldItem == newItem

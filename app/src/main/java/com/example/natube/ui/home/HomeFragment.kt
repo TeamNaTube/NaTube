@@ -6,8 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.natube.ui.settingchips.SettingChipsDialog
 import com.example.natube.databinding.FragmentHomeBinding
@@ -52,9 +50,10 @@ class HomeFragment : Fragment() {
 
     private fun viewDummyData() {
 
-        var list = mutableListOf<HomeWidget>()
-        var categoryList = homeViewModel.mSelectedCategoryList.value ?: listOf()
-        var videoList = homeViewModel.mItemByCategoryList.value ?: listOf()
+        val list = mutableListOf<HomeWidget>()
+        val categoryList = homeViewModel.mSelectedCategoryList.value ?: listOf()
+        val videoList = homeViewModel.mItemByCategoryList.value ?: listOf()
+        val keywordList = homeViewModel.mKeywordList.value ?: listOf()
         /**
          *  카테고리 부분
          */
@@ -76,10 +75,10 @@ class HomeFragment : Fragment() {
         list.add(HomeWidget.TitleWidget("키워드"))
 
         // 버튼 리스트
-        list.add(HomeWidget.ChipWidget(categoryList))
+        list.add(HomeWidget.ChipWidget(keywordList))
 
         // 비디오 리스트
-        list.add(HomeWidget.ListKeywordVideoItemWidget(videoList + videoList))
+//        list.add(HomeWidget.ListKeywordVideoItemWidget(videoList))
 
 
         homeAdapter.submitList(list)

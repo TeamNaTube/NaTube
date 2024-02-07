@@ -40,7 +40,7 @@ class ChipListAdapter(private val viewModel: HomeViewModel) : ListAdapter<Chip, 
                 isChecked = item.isClicked
 
                 setOnClickListener {
-                    viewModel.setSelectedItemPosition(position)
+                    viewModel.setSelectedCategoryPosition(position)
                     notifyDataSetChanged()
                 }
             }

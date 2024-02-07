@@ -21,6 +21,7 @@
         android:layout_width="360dp"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
+        android:padding="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_title_category" />
@@ -59,22 +60,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/et_keyword" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_keyword_chips"
-        android:layout_width="0dp"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_keyword_chips"
+        android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_keyword">
+        app:layout_constraintTop_toBottomOf="@+id/et_keyword" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_keyword_chips"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

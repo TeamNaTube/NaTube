@@ -23,6 +23,6 @@ data class Chip(
     }
 
     init {
-        name = categoryMap[categoryId].toString()
+        if (name == null) name = categoryMap[categoryId].toString()
     }
 }

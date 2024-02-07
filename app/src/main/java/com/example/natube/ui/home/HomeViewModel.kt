@@ -1,6 +1,5 @@
 package com.example.natube.ui.home
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,6 +16,10 @@ class HomeViewModel : ViewModel() {
     //Category 리스트
     private var _mCategoryList = MutableLiveData<List<Chip>>(listOf())
     val mCategoryList: LiveData<List<Chip>> get() = _mCategoryList
+
+    //Keyword 리스트
+    private var _mKeywordList = MutableLiveData<List<Chip>>(listOf())
+    val mKeywordList: LiveData<List<Chip>> get() = _mKeywordList
 
     //선택한 Category 리스트
     private var _mSelectedCategoryList = MutableLiveData<List<Chip>>(listOf())
@@ -78,7 +81,7 @@ class HomeViewModel : ViewModel() {
     }
 
     // HomeFragment 에서 칩(카테고리) 하나만 선택 할수 있게 해주는 함수
-    fun setSelectedItemPosition(position: Int) {
+    fun setSelectedCategoryPosition(position: Int) {
         val newList = mSelectedCategoryList.value ?: listOf()
         for (idx in newList.indices) {
             newList[idx].isClicked = idx == position
@@ -106,6 +109,25 @@ class HomeViewModel : ViewModel() {
             unifiedItems.add(item.toUnifiedItem())
         }
         unifiedItems
+    }
+
+    /**
+     *  Keyword 부분
+     */
+    fun addKeywordChip(query : String){
+        val keywordChip = Chip(categoryId = "-1",name = query)
+        val list = mKeywordList.value?.toMutableList() ?: mutableListOf()
+        list.add(keywordChip)
+        _mKeywordList.value = list
+    }
+    fun deleteKeywordChip(chip: Chip){
+        val list = mKeywordList.value?.toMutableList() ?: mutableListOf()
+        list?.remove(chip)
+        _mKeywordList.value = list
+    }
+    fun initKeywordList() {
+        var list = mKeywordList.value ?: listOf()
+        _mKeywordList.value = list
     }
 
 }
