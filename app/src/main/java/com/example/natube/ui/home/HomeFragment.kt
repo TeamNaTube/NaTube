@@ -5,8 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.natube.ui.settingchips.SettingChipsDialog
 import com.example.natube.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
@@ -15,14 +18,12 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
     private val homeAdapter: HomeAdapter by lazy { HomeAdapter(homeViewModel) }
 
-    private lateinit var homeViewModel: HomeViewModel
+    private val homeViewModel: HomeViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        homeViewModel =
-            ViewModelProvider(this)[HomeViewModel::class.java]
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
@@ -35,21 +36,25 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         with(homeViewModel){
-            mCategoryList.observe(viewLifecycleOwner) {
-                homeViewModel.fetchSearchVideoByCategory()
+            mSelectedCategoryList.observe(viewLifecycleOwner) {
+                fetchSearchVideoByCategory()
                 viewDummyData()
             }
-            mUnifiedItemList.observe(viewLifecycleOwner){
+            mItemByCategoryList.observe(viewLifecycleOwner){
                 viewDummyData()
             }
+        }
+        binding.ivSettingChips.setOnClickListener {
+            val dialog = SettingChipsDialog()
+            dialog.show(childFragmentManager,"SettingChipsDialog")
         }
     }
 
     private fun viewDummyData() {
 
         var list = mutableListOf<HomeWidget>()
-        var categoryList = homeViewModel.mCategoryList.value!!
-        var videoList = homeViewModel.mUnifiedItemList.value!!
+        var categoryList = homeViewModel.mSelectedCategoryList.value!!
+        var videoList = homeViewModel.mItemByCategoryList.value!!
         /**
          *  카테고리 부분
          */

@@ -88,7 +88,7 @@ class HomeAdapter(private val viewModel: HomeViewModel) : ListAdapter<HomeWidget
 
             is HomeWidget.ChipWidget -> {
                 (holder as ListChipViewHolder).apply {
-                    categoryAdapter.submitList(item.mCategories)
+                    chipListAdapter.submitList(item.mCategories)
                 }
             }
 
@@ -119,12 +119,12 @@ class HomeAdapter(private val viewModel: HomeViewModel) : ListAdapter<HomeWidget
     inner class ListChipViewHolder(binding: FragmentHomeRvChipBinding) :
         RecyclerView.ViewHolder(binding.root) {
         private val rvCategory = binding.rvCategory
-        val categoryAdapter = CategoryAdapter(viewModel)
+        val chipListAdapter = ChipListAdapter(viewModel)
 
         init {
             rvCategory.layoutManager =
                 LinearLayoutManager(rvCategory.context, LinearLayoutManager.HORIZONTAL, false)
-            rvCategory.adapter = categoryAdapter
+            rvCategory.adapter = chipListAdapter
         }
     }
 

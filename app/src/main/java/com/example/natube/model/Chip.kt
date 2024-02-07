@@ -1,6 +1,6 @@
 package com.example.natube.model
 
-data class Category(
+data class Chip(
     val categoryId: String,
     var name: String? = null,
     var isClicked: Boolean = false,
