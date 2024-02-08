@@ -46,7 +46,7 @@ class VideoDetailActivity : AppCompatActivity() {
     }
 
     private fun setBackButton() {
-        binding.activityDetailBtnBack.setOnClickListener{
+        binding.btnActivityDetailBack.setOnClickListener{
             val returnIntent: Intent = intent
             intent.putExtra("message", true)
             setResult(Activity.RESULT_OK,returnIntent)
@@ -57,10 +57,10 @@ class VideoDetailActivity : AppCompatActivity() {
     private fun getSelectedItem() {
         if (intent.hasExtra("selected item")) {
             itemDetail = intent.getParcelableExtra<UnifiedItem>("selected item")!!
+            setView()
         }
-//        with(binding) {
 
-//        }
+
 //        activityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult ()) {
 //            if (it.resultCode == RESULT_OK) {
 //                val address = it.data?.getParcelableExtra<UnifiedItem>("selected item")
@@ -73,17 +73,17 @@ class VideoDetailActivity : AppCompatActivity() {
 ////        activityResultLauncher.launch(intent)
     }
 
-    private fun setView(address: UnifiedItem?) {
+    private fun setView() {
 
-        Log.d("happyvideoDetailactivity", "^^ $address")
+        Log.d("happyvideoDetailactivity", "^^ $itemDetail")
 
-        Glide.with(this).load(address?.thumbnailsUrl).into(binding.activityDetailThumbnail)
+        Glide.with(this).load(itemDetail?.thumbnailsUrl).into(binding.ivActivityDetailThumbnail)
 
         with(binding) {
-            activityDetailTitle.text = address?.videoTitle
-            activityDetailChannelName.text = address?.channelTitle
-            activityDetailUploadDate.text = address?.dateTime
-            activityDetailDescription.text = address?.description
+            tvActivityDetailTitle.text = itemDetail.videoTitle
+            tvActivityDetailChannelName.text = itemDetail.channelTitle
+            tvActivityDetailDescription.text = itemDetail.description
+            tvActivityDetailUploadDate.text = itemDetail.dateTime
         }
 
     }

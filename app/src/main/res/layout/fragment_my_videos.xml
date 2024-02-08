@@ -7,7 +7,7 @@
     tools:context=".ui.myvideo.MyVideoFragment">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/activity_detail_toolbar"
+        android:id="@+id/tb_activity_detail_toolbar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:background="@color/teal"
@@ -52,7 +52,7 @@
         android:src="@drawable/img_thumbnail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_detail_toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/tb_activity_detail_toolbar" />
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/iv_fragment_my_video_profile_image"
@@ -63,7 +63,7 @@
         android:layout_marginTop="180dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_detail_toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/tb_activity_detail_toolbar" />
 
     <TextView
         android:id="@+id/tv_fragment_my_video_username"
