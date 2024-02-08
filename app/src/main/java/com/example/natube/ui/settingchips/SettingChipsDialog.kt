@@ -1,6 +1,7 @@
 package com.example.natube.ui.settingchips
 
 import android.content.Context
+import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -22,6 +23,8 @@ class SettingChipsDialog : DialogFragment() {
     private val homeViewModel: HomeViewModel by activityViewModels()
     private val categoryAdapter by lazy { CategoryAdapter(homeViewModel) }
     private val keywordAdapter by lazy { KeywordAdapter(homeViewModel) }
+
+    private var isShotDown = true
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -45,6 +48,7 @@ class SettingChipsDialog : DialogFragment() {
 
         with(homeViewModel) {
             //최초 실행
+            backupChipList()
             val list = mCategoryList.value
             categoryAdapter.submitList(list)
 
@@ -93,6 +97,7 @@ class SettingChipsDialog : DialogFragment() {
             ivCheck.setOnClickListener {
                 homeViewModel.initSelectedCategoryList()
                 homeViewModel.initKeywordList()
+                isShotDown = false
                 dismiss()
             }
         }
@@ -105,8 +110,10 @@ class SettingChipsDialog : DialogFragment() {
         imm.hideSoftInputFromWindow(binding.root.windowToken, 0)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        if(isShotDown) homeViewModel.rollBackChipList()
+
     }
 
 }

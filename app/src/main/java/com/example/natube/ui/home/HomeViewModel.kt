@@ -50,6 +50,11 @@ class HomeViewModel : ViewModel() {
     private var _isValidated = MutableLiveData<Boolean>(false)
     val isValidated: LiveData<Boolean> get() = _isValidated
 
+
+    // 카테 고리,키워드 리스트 백업
+    private var categoryListBackup: List<Chip> = listOf()
+    private var keywordListBackup: List<Chip> = listOf()
+
     /**
      *  뷰모델 생성시 기본값들 정의
      *  - CategoryList 를 저장
@@ -73,7 +78,14 @@ class HomeViewModel : ViewModel() {
     /**
      *  SettingChipsDialog 부분 기능 함수
      */
-
+    fun backupChipList() {
+        categoryListBackup = mCategoryList.value?.map{it.copy()} ?: listOf()
+        keywordListBackup = preKeywordList.value ?: listOf()
+    }
+    fun rollBackChipList(){
+        _mCategoryList.value = categoryListBackup
+        _preKeywordList.value = keywordListBackup
+    }
 
     // 해당 아이템 을 클릭시 mCategoryList 의 isClicked 를 변경
     fun isClickedItem(position: Int) {
