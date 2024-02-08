@@ -86,9 +86,22 @@ class HomeViewModel : ViewModel() {
 
     // 유효성 검사
     private fun checkedValidate() {
-        val isCategoryValidated = (1..5).contains(mCategoryList.value?.filter{it.isClicked}?.size)
+        val isCategoryValidated =
+            (1..5).contains(mCategoryList.value?.filter { it.isClicked }?.size)
         val isKeywordValidated = (1..5).contains(preKeywordList.value?.size)
         _isValidated.value = isCategoryValidated && isKeywordValidated
+    }
+
+    // 키워드 유효성 검사
+    fun checkedQueryValidate(query: String): Int {
+        //1.빈 문자열 이면 안됨
+        if (query.trim().isEmpty()) return 1
+        //2.중복된 문자열 이면 안됨
+        preKeywordList.value?.forEach { chip ->
+            if (chip.name == query) return 2
+        }
+
+        return 0
     }
 
     /**

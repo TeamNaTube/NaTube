@@ -1,10 +1,12 @@
 package com.example.natube.ui.settingchips
 
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
@@ -13,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.natube.R
 import com.example.natube.databinding.DialogSettingChipsBinding
 import com.example.natube.ui.home.HomeViewModel
+import com.google.android.material.snackbar.Snackbar
 
 class SettingChipsDialog : DialogFragment() {
     private lateinit var binding: DialogSettingChipsBinding
@@ -31,7 +34,7 @@ class SettingChipsDialog : DialogFragment() {
                 adapter = categoryAdapter
             }
             rvKeywordChips.apply {
-                layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 adapter = keywordAdapter
             }
         }
@@ -49,13 +52,13 @@ class SettingChipsDialog : DialogFragment() {
             preKeywordList.observe(viewLifecycleOwner) {
                 keywordAdapter.submitList(it)
             }
-            isValidated.observe(viewLifecycleOwner){isChecked ->
-                binding.ivCheck.apply{
-                    if(isChecked){
+            isValidated.observe(viewLifecycleOwner) { isChecked ->
+                binding.ivCheck.apply {
+                    if (isChecked) {
                         setColorFilter(
-                            ContextCompat.getColor(context,R.color.green))
-                    }
-                    else{
+                            ContextCompat.getColor(context, R.color.green)
+                        )
+                    } else {
                         setColorFilter(Color.GRAY)
                     }
 
@@ -65,20 +68,41 @@ class SettingChipsDialog : DialogFragment() {
         }
 
         with(binding) {
+
+            //키워드 추가 버튼 클릭
             btnKeyword.apply {
                 setOnClickListener {
                     val query = etKeyword.text.toString()
-                    homeViewModel.addKeywordChip(query)
-                    etKeyword.text = null
-
+                    when(homeViewModel.checkedQueryValidate(query)){
+                        0 ->{
+                            homeViewModel.addKeywordChip(query)
+                            etKeyword.text = null
+                            hideKeyboard()
+                        }
+                        1 ->{
+                            Snackbar.make(view,"키워드가 비어 있습니다!",Snackbar.LENGTH_SHORT).show()
+                        }
+                        2 ->{
+                            Snackbar.make(view,"이미 존재하는 키워드 입니다!",Snackbar.LENGTH_SHORT).show()
+                        }
+                    }
                 }
             }
+
+            //유효성 검사 체크 버튼 클릭
             ivCheck.setOnClickListener {
                 homeViewModel.initSelectedCategoryList()
                 homeViewModel.initKeywordList()
                 dismiss()
             }
         }
+    }
+
+    // 키보드 내리기
+    private fun hideKeyboard() {
+        val imm =
+            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(binding.root.windowToken, 0)
     }
 
     override fun onDestroy() {
