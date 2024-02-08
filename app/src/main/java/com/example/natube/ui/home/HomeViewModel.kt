@@ -17,21 +17,32 @@ class HomeViewModel : ViewModel() {
     private var _mCategoryList = MutableLiveData<List<Chip>>(listOf())
     val mCategoryList: LiveData<List<Chip>> get() = _mCategoryList
 
-    //Keyword 리스트
-    private var _mKeywordList = MutableLiveData<List<Chip>>(listOf())
-    val mKeywordList: LiveData<List<Chip>> get() = _mKeywordList
-
-    private var KeywordQuery = ""
     //선택한 Category 리스트
     private var _mSelectedCategoryList = MutableLiveData<List<Chip>>(listOf())
     val mSelectedCategoryList: LiveData<List<Chip>> get() = _mSelectedCategoryList
 
-    //HomeFragment에 선택된 CategoryId
+    //HomeFragment 선택된 CategoryId
     private var selectedCategoryId = "-1"
 
     //Category 에 따른 해당 비디오 리스트
     private var _mItemByCategoryList = MutableLiveData<List<UnifiedItem>>(listOf())
     val mItemByCategoryList: LiveData<List<UnifiedItem>> get() = _mItemByCategoryList
+
+    //Keyword 리스트
+    private var _mKeywordList = MutableLiveData<List<Chip>>(listOf())
+    val mKeywordList: LiveData<List<Chip>> get() = _mKeywordList
+
+    // Dialog의  KeywordList
+    private var _preKeywordList = MutableLiveData<List<Chip>>(listOf())
+    val preKeywordList :LiveData<List<Chip>> get() =_preKeywordList
+
+    // keyword 에서 검색할 Query
+    private var _keywordQuery = MutableLiveData<String>()
+    val keywordQuery: LiveData<String> get() = _keywordQuery
+
+    // Keyword 에 따른 해당 비디오 리스트
+    private var _mItemByKeywordList = MutableLiveData<List<UnifiedItem>>(listOf())
+    val mItemByKeywordList: LiveData<List<UnifiedItem>> get() = _mItemByKeywordList
 
     /**
      *  뷰모델 생성시 기본값들 정의
@@ -115,20 +126,23 @@ class HomeViewModel : ViewModel() {
     /**
      *  Keyword 부분
      */
-    fun addKeywordChip(query : String){
-        val keywordChip = Chip(categoryId = "-1",name = query)
-        val list = mKeywordList.value?.toMutableList() ?: mutableListOf()
+    fun addKeywordChip(query: String) {
+        val keywordChip = Chip(categoryId = "-1", name = query)
+        val list = _preKeywordList.value?.toMutableList() ?: mutableListOf()
         list.add(keywordChip)
-        _mKeywordList.value = list
+        _preKeywordList.value = list
     }
-    fun deleteKeywordChip(chip: Chip){
-        val list = mKeywordList.value?.toMutableList() ?: mutableListOf()
-        list?.remove(chip)
-        _mKeywordList.value = list
+
+    fun deleteKeywordChip(chip: Chip) {
+        val list = _preKeywordList.value?.toMutableList() ?: mutableListOf()
+        list.remove(chip)
+        _preKeywordList.value = list
     }
+
     fun initKeywordList() {
-        var list = mKeywordList.value ?: listOf()
+        var list = preKeywordList.value ?: listOf()
         list[0].isClicked = true
+        _keywordQuery.value = list[0].name ?:""
         _mKeywordList.value = list
     }
 
@@ -138,8 +152,27 @@ class HomeViewModel : ViewModel() {
         for (idx in newList.indices) {
             newList[idx].isClicked = idx == position
         }
-        KeywordQuery = newList[position].name ?:""
+        _keywordQuery.value = newList[position].name ?: ""
         _mKeywordList.value = newList
     }
 
+    fun fetchSearchVideoByKeyword() {
+        // keywordQuery 에 값이 들어가있지 않으면 검색 x
+        if (keywordQuery.value == null) return
+
+        viewModelScope.launch {
+            val unifiedItems = searchVideoByKeyword()
+            _mItemByKeywordList.value = unifiedItems
+        }
+    }
+
+    private suspend fun searchVideoByKeyword() = withContext(Dispatchers.IO) {
+        val items =
+            RetrofitInstance.api.getSearchingVideos(query = keywordQuery.value.toString()).items
+        val unifiedItems = mutableListOf<UnifiedItem>()
+        items.forEach { item ->
+            unifiedItems.add(item.toUnifiedItem())
+        }
+        unifiedItems
+    }
 }

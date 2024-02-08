@@ -42,9 +42,8 @@ class SettingChipsDialog : DialogFragment() {
             val list = mCategoryList.value
             categoryAdapter.submitList(list)
             //관찰
-            mKeywordList.observe(viewLifecycleOwner) {
-                val keywordList = mKeywordList.value
-                keywordAdapter.submitList(keywordList)
+            preKeywordList.observe(viewLifecycleOwner) {
+                keywordAdapter.submitList(it)
             }
         }
 

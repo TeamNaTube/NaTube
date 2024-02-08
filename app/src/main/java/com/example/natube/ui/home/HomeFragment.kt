@@ -34,26 +34,51 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         with(homeViewModel){
+
+            /**
+             *  Category 부분 관찰
+             */
+            mItemByCategoryList.observe(viewLifecycleOwner){
+                updateUI()
+            }
+
             mSelectedCategoryList.observe(viewLifecycleOwner) {
                 fetchSearchVideoByCategory()
-                viewDummyData()
             }
-            mItemByCategoryList.observe(viewLifecycleOwner){
-                viewDummyData()
+            /**
+             *  Keyword 부분 관찰
+             */
+
+            mKeywordList.observe(viewLifecycleOwner){
+                updateUI()
+            }
+
+            mItemByKeywordList.observe(viewLifecycleOwner){
+                updateUI()
+            }
+
+            /**
+             *  실제 Keyword 검색 하는 부분(할당량 때문에 주석 처리)
+             */
+            keywordQuery.observe(viewLifecycleOwner){
+//                fetchSearchVideoByKeyword()
             }
         }
+
+        // 다이얼로그 수정 버튼
         binding.ivSettingChips.setOnClickListener {
             val dialog = SettingChipsDialog()
             dialog.show(childFragmentManager,"SettingChipsDialog")
         }
     }
 
-    private fun viewDummyData() {
+    private fun updateUI() {
 
         val list = mutableListOf<HomeWidget>()
         val categoryList = homeViewModel.mSelectedCategoryList.value ?: listOf()
-        val videoList = homeViewModel.mItemByCategoryList.value ?: listOf()
+        val categoryVideoList = homeViewModel.mItemByCategoryList.value ?: listOf()
         val keywordList = homeViewModel.mKeywordList.value ?: listOf()
+        val keywordVideoList = homeViewModel.mItemByKeywordList.value ?: listOf()
         /**
          *  카테고리 부분
          */
@@ -65,7 +90,7 @@ class HomeFragment : Fragment() {
         list.add(HomeWidget.ChipWidget(categoryList))
 
         // 비디오 리스트
-        list.add(HomeWidget.ListCategoryVideoItemWidget(videoList))
+        list.add(HomeWidget.ListCategoryVideoItemWidget(categoryVideoList))
 
         /**
          *  키워드 부분
@@ -78,8 +103,7 @@ class HomeFragment : Fragment() {
         list.add(HomeWidget.ChipWidget(keywordList))
 
         // 비디오 리스트
-//        list.add(HomeWidget.ListKeywordVideoItemWidget(videoList))
-
+        list.add(HomeWidget.ListKeywordVideoItemWidget(keywordVideoList))
 
         homeAdapter.submitList(list)
     }
