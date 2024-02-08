@@ -74,15 +74,15 @@ class SettingChipsDialog : DialogFragment() {
                 setOnClickListener {
                     val query = etKeyword.text.toString()
                     when(homeViewModel.checkedQueryValidate(query)){
-                        0 ->{
+                        0 ->{ //유효성 검사 성공시
                             homeViewModel.addKeywordChip(query)
                             etKeyword.text = null
                             hideKeyboard()
                         }
-                        1 ->{
+                        1 ->{// 키워드 에 빈 문자만 있을시
                             Snackbar.make(view,"키워드가 비어 있습니다!",Snackbar.LENGTH_SHORT).show()
                         }
-                        2 ->{
+                        2 ->{// 이미 존재하는 키워드 일 경우
                             Snackbar.make(view,"이미 존재하는 키워드 입니다!",Snackbar.LENGTH_SHORT).show()
                         }
                     }
