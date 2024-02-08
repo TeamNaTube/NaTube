@@ -1,12 +1,23 @@
 package com.example.natube.ui.home
 
+import android.app.Activity
+import android.app.Activity.RESULT_OK
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.natube.MainActivity
+import com.example.natube.SharedViewModel
+import com.example.natube.VideoDetailActivity
 import com.example.natube.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
@@ -15,14 +26,16 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
     private val homeAdapter: HomeAdapter by lazy { HomeAdapter(homeViewModel) }
 
-    private lateinit var homeViewModel: HomeViewModel
+    private val homeViewModel: HomeViewModel by viewModels()
+    val sharedViewModel by activityViewModels<SharedViewModel>()
+    private lateinit var mContext: Context
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        homeViewModel =
-            ViewModelProvider(this)[HomeViewModel::class.java]
+//        homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
@@ -30,20 +43,48 @@ class HomeFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
             adapter = homeAdapter
         }
+
         return binding.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        with(homeViewModel){
+        with(homeViewModel) {
             mCategoryList.observe(viewLifecycleOwner) {
                 homeViewModel.fetchSearchVideoByCategory()
                 viewDummyData()
             }
-            mUnifiedItemList.observe(viewLifecycleOwner){
+            mUnifiedItemList.observe(viewLifecycleOwner) {
                 viewDummyData()
             }
+// getting selected items in either category rv or keyword rv
+            selectedItem.observe(viewLifecycleOwner) {
+                /**
+                 * activity result launcher 사용 시도했는데 안 넘어가서 일단은 startactivity로 구현
+                 */
+
+//                val intent = Intent(activity, VideoDetailActivity::class.java).apply {
+//                    putExtra("selected item", it)
+//                }
+//                Log.d("happyHomeFragment", "^^$it")
+//                activity?.setResult(RESULT_OK, intent)
+//                if (activity?.isFinishing == false) activity?.finish()
+
+                val detailIntent = Intent(activity, VideoDetailActivity::class.java)
+                detailIntent.putExtra("selected item", it)
+                startActivity(detailIntent)
+
+            }
+
         }
     }
+
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mContext = context
+    }
+
 
     private fun viewDummyData() {
 
@@ -84,4 +125,5 @@ class HomeFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
 }

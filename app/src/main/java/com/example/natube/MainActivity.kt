@@ -1,10 +1,13 @@
 package com.example.natube
 
+import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.natube.databinding.ActivityMainBinding
 
@@ -30,5 +33,22 @@ class MainActivity : AppCompatActivity() {
         )
 //        setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+
+//        initViewModel()
     }
+
+//    private fun initViewModel() {
+//        // getting selected items in either category rv or keyword rv
+//        selectedItem.observe(viewLifecycleOwner){
+//
+//            val intent = Intent(activity, VideoDetailActivity::class.java).apply {
+//                putExtra("selected item", it)
+//            }
+//            activity?.setResult(RESULT_OK, intent)
+//            if (activity?.isFinishing == false) activity?.finish()
+//
+//
+//        }
+//    }
 }

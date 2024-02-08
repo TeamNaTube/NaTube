@@ -1,7 +1,12 @@
 package com.example.natube.ui.home
 
+import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.natube.databinding.FragmentHomeRvCategoryBtnBinding
 import com.example.natube.databinding.FragmentHomeRvCategoryItemBinding
 import com.example.natube.databinding.FragmentHomeTitleBinding
+import com.example.natube.databinding.VideoItemBinding
 
 /**
  *  HomeFragment 에 화면 구성
@@ -18,6 +24,8 @@ import com.example.natube.databinding.FragmentHomeTitleBinding
  *  3. 연결된 ViewHolder 에 저장한 값들 Binding
  */
 class HomeAdapter(private val viewModel: HomeViewModel) : ListAdapter<HomeWidget, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
+
+    private lateinit var mContext: Context
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<HomeWidget>() {
             override fun areItemsTheSame(oldItem: HomeWidget, newItem: HomeWidget): Boolean {
@@ -131,7 +139,9 @@ class HomeAdapter(private val viewModel: HomeViewModel) : ListAdapter<HomeWidget
     inner class ListCategoryVideoItemViewHolder(binding: FragmentHomeRvCategoryItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         private val rvListVideoItem = binding.rvListVideoItem
-        val listCategoryVideoAdapter = ListVideoItemAdapter()
+        val listCategoryVideoAdapter =
+            ListVideoItemAdapter(viewModel)
+
 
         init {
             rvListVideoItem.layoutManager =
@@ -140,10 +150,12 @@ class HomeAdapter(private val viewModel: HomeViewModel) : ListAdapter<HomeWidget
         }
     }
 
+
+
     inner class ListKeywordVideoItemViewHolder(binding: FragmentHomeRvCategoryItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         private val rvListVideoItem = binding.rvListVideoItem
-        val listKeywordVideoAdapter = ListVideoItemAdapter()
+        val listKeywordVideoAdapter = ListVideoItemAdapter(viewModel)
 
         init {
             rvListVideoItem.layoutManager =

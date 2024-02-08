@@ -20,6 +20,10 @@ class HomeViewModel : ViewModel() {
     private var _mUnifiedItemList = MutableLiveData<List<UnifiedItem>>(listOf())
     val mUnifiedItemList: LiveData<List<UnifiedItem>> get() = _mUnifiedItemList
 
+    private var _selectedItem = MutableLiveData<UnifiedItem?>()
+
+    val selectedItem : LiveData<UnifiedItem?> = _selectedItem
+
     init {
         initCategoryList()
     }
@@ -58,4 +62,8 @@ class HomeViewModel : ViewModel() {
         unifiedItems
     }
 
+    fun getSelectedItem(item: UnifiedItem?) {
+        val chosenItem: UnifiedItem? = item?.copy()
+        _selectedItem.value = chosenItem
+    }
 }
