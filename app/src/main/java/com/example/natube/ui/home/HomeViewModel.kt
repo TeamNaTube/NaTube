@@ -28,13 +28,14 @@ class HomeViewModel : ViewModel() {
     private var _mItemByCategoryList = MutableLiveData<List<UnifiedItem>>(listOf())
     val mItemByCategoryList: LiveData<List<UnifiedItem>> get() = _mItemByCategoryList
 
+    // Dialog의  KeywordList
+    private var _preKeywordList = MutableLiveData<List<Chip>>(listOf())
+    val preKeywordList: LiveData<List<Chip>> get() = _preKeywordList
+
     //Keyword 리스트
     private var _mKeywordList = MutableLiveData<List<Chip>>(listOf())
     val mKeywordList: LiveData<List<Chip>> get() = _mKeywordList
 
-    // Dialog의  KeywordList
-    private var _preKeywordList = MutableLiveData<List<Chip>>(listOf())
-    val preKeywordList :LiveData<List<Chip>> get() =_preKeywordList
 
     // keyword 에서 검색할 Query
     private var _keywordQuery = MutableLiveData<String>()
@@ -43,6 +44,11 @@ class HomeViewModel : ViewModel() {
     // Keyword 에 따른 해당 비디오 리스트
     private var _mItemByKeywordList = MutableLiveData<List<UnifiedItem>>(listOf())
     val mItemByKeywordList: LiveData<List<UnifiedItem>> get() = _mItemByKeywordList
+
+
+    // 유효성 검사
+    private var _isValidated = MutableLiveData<Boolean>(false)
+    val isValidated: LiveData<Boolean> get() = _isValidated
 
     /**
      *  뷰모델 생성시 기본값들 정의
@@ -74,6 +80,15 @@ class HomeViewModel : ViewModel() {
         val list = _mCategoryList.value ?: listOf()
         list[position].isClicked = !list[position].isClicked
         _mCategoryList.value = list
+        checkedValidate()
+
+    }
+
+    // 유효성 검사
+    private fun checkedValidate() {
+        val isCategoryValidated = (1..5).contains(mCategoryList.value?.filter{it.isClicked}?.size)
+        val isKeywordValidated = (1..5).contains(preKeywordList.value?.size)
+        _isValidated.value = isCategoryValidated && isKeywordValidated
     }
 
     /**
@@ -131,18 +146,21 @@ class HomeViewModel : ViewModel() {
         val list = _preKeywordList.value?.toMutableList() ?: mutableListOf()
         list.add(keywordChip)
         _preKeywordList.value = list
+        checkedValidate()
     }
 
     fun deleteKeywordChip(chip: Chip) {
         val list = _preKeywordList.value?.toMutableList() ?: mutableListOf()
         list.remove(chip)
         _preKeywordList.value = list
+        checkedValidate()
+
     }
 
     fun initKeywordList() {
         var list = preKeywordList.value ?: listOf()
         list[0].isClicked = true
-        _keywordQuery.value = list[0].name ?:""
+        _keywordQuery.value = list[0].name ?: ""
         _mKeywordList.value = list
     }
 
@@ -175,4 +193,5 @@ class HomeViewModel : ViewModel() {
         }
         unifiedItems
     }
+
 }
