@@ -118,7 +118,7 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
     }
 
     // 유효성 검사
-    private fun checkedValidate() {
+    fun checkedValidate() {
         val isCategoryValidated =
             (1..5).contains(mCategoryList.value?.filter { it.isClicked }?.size)
         val isKeywordValidated = (1..5).contains(preKeywordList.value?.size)

@@ -51,7 +51,7 @@ class SettingChipsDialog : DialogFragment() {
             backupChipList()
             val list = mCategoryList.value
             categoryAdapter.submitList(list)
-
+            checkedValidate()
             //관찰
             preKeywordList.observe(viewLifecycleOwner) {
                 keywordAdapter.submitList(it)
