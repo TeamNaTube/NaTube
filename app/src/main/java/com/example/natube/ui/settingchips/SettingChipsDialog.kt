@@ -95,8 +95,8 @@ class SettingChipsDialog : DialogFragment() {
 
             //유효성 검사 체크 버튼 클릭
             ivCheck.setOnClickListener {
-                homeViewModel.initSelectedCategoryList()
-                homeViewModel.initKeywordList()
+                homeViewModel.saveSelectedCategoryList()
+                homeViewModel.saveKeywordList()
                 isShotDown = false
                 dismiss()
             }
