@@ -11,7 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class HomeViewModel : ViewModel() {
+class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
 
     //Category 리스트
     private var _mCategoryList = MutableLiveData<List<Chip>>(listOf())
@@ -62,6 +62,8 @@ class HomeViewModel : ViewModel() {
      */
     init {
         initCategoryList()
+        initKeywordList()
+//        homeRepository.clearList()
     }
 
 
@@ -71,7 +73,25 @@ class HomeViewModel : ViewModel() {
             list.add(Chip(categoryId = map.key, name = map.value))
         }
 
+        // 초기가 아닐때 list가 선택되어 있어야함
+        if (!homeRepository.isEmptyList()) {
+            val prefList = homeRepository.getCategoryList()
+            prefList.forEach { savedChip ->
+                list.find{it.categoryId == savedChip.categoryId}?.isClicked = true
+            }
+        }
+
         _mCategoryList.value = list
+
+        if(!homeRepository.isEmptyList()){
+            saveSelectedCategoryList()
+        }
+    }
+    private fun initKeywordList(){
+        if(homeRepository.isEmptyList()) return
+        val list = homeRepository.getKeywordList()
+        _preKeywordList.value = list
+        saveKeywordList()
 
     }
 
@@ -79,10 +99,11 @@ class HomeViewModel : ViewModel() {
      *  SettingChipsDialog 부분 기능 함수
      */
     fun backupChipList() {
-        categoryListBackup = mCategoryList.value?.map{it.copy()} ?: listOf()
+        categoryListBackup = mCategoryList.value?.map { it.copy() } ?: listOf()
         keywordListBackup = preKeywordList.value ?: listOf()
     }
-    fun rollBackChipList(){
+
+    fun rollBackChipList() {
         _mCategoryList.value = categoryListBackup
         _preKeywordList.value = keywordListBackup
     }
@@ -121,7 +142,7 @@ class HomeViewModel : ViewModel() {
      */
 
     // mCategoryList 에서 isClicked 가 True 인 경우 를 모아서 mSelectedCategoryList 에 저장
-    fun initSelectedCategoryList() {
+    fun saveSelectedCategoryList() {
         var list = mCategoryList.value?.map { it.copy() }?.filter { it.isClicked } ?: listOf()
 
         for (idx in 1..list.lastIndex) {
@@ -130,6 +151,7 @@ class HomeViewModel : ViewModel() {
 
         selectedCategoryId = list[0].categoryId
         _mSelectedCategoryList.value = list
+        homeRepository.updatePrefCategory(list)
     }
 
     // HomeFragment 에서 칩(카테고리) 하나만 선택 할수 있게 해주는 함수
@@ -182,11 +204,15 @@ class HomeViewModel : ViewModel() {
 
     }
 
-    fun initKeywordList() {
+    fun saveKeywordList() {
         var list = preKeywordList.value ?: listOf()
         list[0].isClicked = true
+        for(idx in 1..list.lastIndex){
+            list[idx].isClicked = false
+        }
         _keywordQuery.value = list[0].name ?: ""
         _mKeywordList.value = list
+        homeRepository.updatePrefKeyword(list)
     }
 
     // HomeFragment 에서 칩(키워드) 하나만 선택 할수 있게 해주는 함수
