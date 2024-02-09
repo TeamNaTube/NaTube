@@ -33,12 +33,26 @@ class HomeFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        with(homeViewModel){
+        with(homeViewModel) {
+            /**
+             *  미설정 일때 마다 다이얼 로그 부르기
+             */
+            isPrefEmpty.observe(viewLifecycleOwner) { isPrefEmpty ->
+                if (isPrefEmpty) {
+                    val dialog = SettingChipsDialog()
+                    dialog.show(childFragmentManager, "SettingChipsDialog")
+                    binding.rvFragmentHome.visibility = View.GONE
+                    binding.clWaringView.visibility = View.VISIBLE
+                } else {
+                    binding.rvFragmentHome.visibility = View.VISIBLE
+                    binding.clWaringView.visibility = View.GONE
+                }
+            }
 
             /**
              *  Category 부분 관찰
              */
-            mItemByCategoryList.observe(viewLifecycleOwner){
+            mItemByCategoryList.observe(viewLifecycleOwner) {
                 updateUI()
             }
 
@@ -49,18 +63,18 @@ class HomeFragment : Fragment() {
              *  Keyword 부분 관찰
              */
 
-            mKeywordList.observe(viewLifecycleOwner){
+            mKeywordList.observe(viewLifecycleOwner) {
                 updateUI()
             }
 
-            mItemByKeywordList.observe(viewLifecycleOwner){
+            mItemByKeywordList.observe(viewLifecycleOwner) {
                 updateUI()
             }
 
             /**
              *  실제 Keyword 검색 하는 부분(할당량 때문에 주석 처리)
              */
-            keywordQuery.observe(viewLifecycleOwner){
+            keywordQuery.observe(viewLifecycleOwner) {
 //                fetchSearchVideoByKeyword()
             }
         }
@@ -68,7 +82,11 @@ class HomeFragment : Fragment() {
         // 다이얼로그 수정 버튼
         binding.ivSettingChips.setOnClickListener {
             val dialog = SettingChipsDialog()
-            dialog.show(childFragmentManager,"SettingChipsDialog")
+            dialog.show(childFragmentManager, "SettingChipsDialog")
+        }
+        binding.btnWaringSettingChipsBtn.setOnClickListener {
+            val dialog = SettingChipsDialog()
+            dialog.show(childFragmentManager, "SettingChipsDialog")
         }
     }
 

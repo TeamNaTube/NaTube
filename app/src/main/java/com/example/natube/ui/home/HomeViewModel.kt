@@ -55,15 +55,23 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
     private var categoryListBackup: List<Chip> = listOf()
     private var keywordListBackup: List<Chip> = listOf()
 
+    //Pref 에 저장된 값이 있는지 확인
+    private var _isPrefEmpty = MutableLiveData<Boolean>(false)
+    val isPrefEmpty :LiveData<Boolean> get() = _isPrefEmpty
     /**
      *  뷰모델 생성시 기본값들 정의
      *  - CategoryList 를 저장
-     *  - SharedPreference 에 저장된 값을 초기화(!)
+     *  - SharedPreference 에 저장된 값으로 초기화
      */
     init {
+//        homeRepository.clearList()
+        isEmptyChipsList()
         initCategoryList()
         initKeywordList()
-//        homeRepository.clearList()
+    }
+
+    private fun isEmptyChipsList(){
+        _isPrefEmpty.value =homeRepository.isEmptyList()
     }
 
 
@@ -213,6 +221,7 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
         _keywordQuery.value = list[0].name ?: ""
         _mKeywordList.value = list
         homeRepository.updatePrefKeyword(list)
+        _isPrefEmpty.value = false
     }
 
     // HomeFragment 에서 칩(키워드) 하나만 선택 할수 있게 해주는 함수
