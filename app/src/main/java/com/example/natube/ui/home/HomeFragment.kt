@@ -17,6 +17,8 @@ class HomeFragment : Fragment() {
     private val homeAdapter: HomeAdapter by lazy { HomeAdapter(homeViewModel) }
 
     private val homeViewModel: HomeViewModel by activityViewModels()
+
+    var isOpenApp = true
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -39,8 +41,11 @@ class HomeFragment : Fragment() {
              */
             isPrefEmpty.observe(viewLifecycleOwner) { isPrefEmpty ->
                 if (isPrefEmpty) {
-                    val dialog = SettingChipsDialog()
-                    dialog.show(childFragmentManager, "SettingChipsDialog")
+                    if(isOpenApp) {
+                        val dialog = SettingChipsDialog()
+                        dialog.show(childFragmentManager, "SettingChipsDialog")
+                        isOpenApp = false
+                    }
                     binding.rvFragmentHome.visibility = View.GONE
                     binding.clWaringView.visibility = View.VISIBLE
                 } else {
