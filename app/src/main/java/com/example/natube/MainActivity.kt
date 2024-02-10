@@ -5,10 +5,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.example.natube.databinding.ActivityMainBinding
-import com.example.natube.ui.home.AppData
 import com.example.natube.ui.home.HomeRepository
 import com.example.natube.ui.home.HomeViewModel
 

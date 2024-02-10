@@ -1,6 +1,8 @@
 package com.example.natube.ui.home
 
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
@@ -137,7 +139,6 @@ class HomeAdapter(private val viewModel: HomeViewModel) :
             rvListVideoItem.layoutManager =
                 LinearLayoutManager(rvListVideoItem.context, LinearLayoutManager.HORIZONTAL, false)
             rvListVideoItem.adapter = listCategoryVideoAdapter
-
             //추가 검색 실행
             rvListVideoItem.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -150,7 +151,7 @@ class HomeAdapter(private val viewModel: HomeViewModel) :
                     // 처음 상태 일때는 추가 검색 따로 실행 x
                     if (lastVisibleItemPosition == totalItemCount?.minus(1) && lastVisibleItemPosition != -1) {
                         viewModel.fetchSearchVideoByCategory()
-                        viewModel.lastPositionCategory = totalItemCount?.minus(1) ?:0
+                        viewModel.lastPositionCategory = totalItemCount?.minus(1) ?: 0
                     }
                 }
             })

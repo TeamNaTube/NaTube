@@ -29,8 +29,9 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
     val mItemByCategoryList: LiveData<List<UnifiedItem>> get() = _mItemByCategoryList
 
     //다음 페이지 정보가 들어간 위한 토큰
-    private var nextPageToken: String = ""
+    private var nextPageTokenByCategory: String = ""
     var lastPositionCategory = 0
+
     // Dialog의  KeywordList
     private var _preKeywordList = MutableLiveData<List<Chip>>(listOf())
     val preKeywordList: LiveData<List<Chip>> get() = _preKeywordList
@@ -48,6 +49,9 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
     private var _mItemByKeywordList = MutableLiveData<List<UnifiedItem>>(listOf())
     val mItemByKeywordList: LiveData<List<UnifiedItem>> get() = _mItemByKeywordList
 
+    //다음 페이지 정보가 들어간 위한 토큰
+    private var nextPageTokenByKeyword: String = ""
+    var lastPositionKeyword = 0
 
     // 유효성 검사
     private var _isValidated = MutableLiveData<Boolean>(false)
@@ -178,7 +182,7 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
 
         //선택 되어 지면 검색 실행(옵저버 에 연결)
         lastPositionCategory = 0
-        if (nextPageToken.isNotBlank()) nextPageToken = ""
+        if (nextPageTokenByCategory.isNotBlank()) nextPageTokenByCategory = ""
         _mItemByCategoryList.value = emptyList()
         _mSelectedCategoryList.value = newList
 
@@ -202,10 +206,10 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
         val response =
             RetrofitInstance.api.getTrendingVideos(
                 videoCategoryId = selectedCategoryId,
-                nextPageToken = nextPageToken
+                nextPageToken = nextPageTokenByCategory
             )
         val items = response.items
-        nextPageToken = response.nextPageToken
+        nextPageTokenByCategory = response.nextPageToken
         val unifiedItems = mutableListOf<UnifiedItem>()
         items.forEach { item ->
             unifiedItems.add(item.toUnifiedItem())
@@ -245,12 +249,16 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
     }
 
     // HomeFragment 에서 칩(키워드) 하나만 선택 할수 있게 해주는 함수
-    fun setKeywordPosition(position: Int) {
+    fun setKeywo정rdPosition(position: Int) {
         val newList = mKeywordList.value ?: listOf()
         for (idx in newList.indices) {
             newList[idx].isClicked = idx == position
         }
+
+        lastPositionKeyword = 0
+
         _keywordQuery.value = newList[position].name ?: ""
+        _mItemByKeywordList.value = emptyList()
         _mKeywordList.value = newList
     }
 
@@ -260,13 +268,25 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
 
         viewModelScope.launch {
             val unifiedItems = searchVideoByKeyword()
-            _mItemByKeywordList.value = unifiedItems
+            var list = mItemByKeywordList.value?.toMutableList() ?: emptyList()
+            list = list + unifiedItems.toMutableList()
+            _mItemByKeywordList.value = list
         }
     }
 
     private suspend fun searchVideoByKeyword() = withContext(Dispatchers.IO) {
-        val items =
-            RetrofitInstance.api.getSearchingVideos(query = keywordQuery.value.toString()).items
+//        val response =
+//            RetrofitInstance.api.getSearchingVideos(
+//                query = keywordQuery.value.toString(),
+//                nextPageToken = nextPageTokenByKeyword
+//            )
+        val response =
+            RetrofitInstance.api.getTrendingVideos(
+                videoCategoryId = selectedCategoryId,
+                nextPageToken = nextPageTokenByCategory
+            )
+        val items = response.items
+        nextPageTokenByKeyword = response.nextPageToken
         val unifiedItems = mutableListOf<UnifiedItem>()
         items.forEach { item ->
             unifiedItems.add(item.toUnifiedItem())

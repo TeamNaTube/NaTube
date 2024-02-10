@@ -1,12 +1,14 @@
 package com.example.natube.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.natube.ui.settingchips.SettingChipsDialog
 import com.example.natube.databinding.FragmentHomeBinding
 
@@ -30,6 +32,28 @@ class HomeFragment : Fragment() {
         binding.rvFragmentHome.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = homeAdapter
+            isNestedScrollingEnabled = false
+            //추가 검색 실행
+            // 절대적인 위치를 이용 하여 스크롤 처리
+
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    recyclerView.apply {
+                        val totalScrollOffset = computeVerticalScrollOffset()
+                        val totalScrollRange = computeVerticalScrollRange()
+                        val isAtBottom = totalScrollOffset >= totalScrollRange - height
+
+                        // 맨 아래에 위치 했을때, 추가 검색 실행 -> Animation 실행 이후 추가검색
+                        if (isAtBottom && totalScrollRange - height>0) {
+                            homeViewModel.fetchSearchVideoByKeyword()
+                            Log.d("bottom","${totalScrollRange-height}")
+                        }
+
+                    }
+                }
+            }
+            )
         }
         return binding.root
     }
@@ -41,7 +65,7 @@ class HomeFragment : Fragment() {
              */
             isPrefEmpty.observe(viewLifecycleOwner) { isPrefEmpty ->
                 if (isPrefEmpty) {
-                    if(isOpenApp) {
+                    if (isOpenApp) {
                         val dialog = SettingChipsDialog()
                         dialog.show(childFragmentManager, "SettingChipsDialog")
                         isOpenApp = false
@@ -80,7 +104,7 @@ class HomeFragment : Fragment() {
              *  실제 Keyword 검색 하는 부분(할당량 때문에 주석 처리)
              */
             keywordQuery.observe(viewLifecycleOwner) {
-//                fetchSearchVideoByKeyword()
+                fetchSearchVideoByKeyword()
             }
         }
 

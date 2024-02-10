@@ -36,11 +36,6 @@ class SearchFragment : Fragment() {
         dashboardViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
-        textView.setOnClickListener {
-            CoroutineScope(Dispatchers.IO).launch{
-                val item = RetrofitInstance.api.getSearchingVideos(query = "설현").items
-            }
-        }
         return root
     }
 
