@@ -1,4 +1,4 @@
-package com.example.natube.ui.home
+package com.example.natube.ui.settingchips
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,16 +6,17 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.natube.databinding.VideoCategoryBinding
-import com.example.natube.model.Category
+import com.example.natube.model.Chip
+import com.example.natube.ui.home.HomeViewModel
 
-class CategoryAdapter(private val viewModel: HomeViewModel) : ListAdapter<Category, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
+class CategoryAdapter(private val viewModel: HomeViewModel) : ListAdapter<Chip, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
     companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Category>() {
-            override fun areItemsTheSame(oldItem: Category, newItem: Category): Boolean {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Chip>() {
+            override fun areItemsTheSame(oldItem: Chip, newItem: Chip): Boolean {
                 return oldItem == newItem
             }
 
-            override fun areContentsTheSame(oldItem: Category, newItem: Category): Boolean {
+            override fun areContentsTheSame(oldItem: Chip, newItem: Chip): Boolean {
                 return oldItem == newItem
             }
         }
@@ -23,7 +24,7 @@ class CategoryAdapter(private val viewModel: HomeViewModel) : ListAdapter<Catego
 
     inner class CategoryViewHolder(binding: VideoCategoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        val button = binding.btnCategory
+        val chip = binding.chipCategory
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -35,15 +36,12 @@ class CategoryAdapter(private val viewModel: HomeViewModel) : ListAdapter<Catego
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = getItem(position)
         (holder as CategoryViewHolder).apply {
-            button.apply{
+            chip.apply{
                 text = item.name
-                textOn = item.name
-                textOff = item.name
                 isChecked = item.isClicked
 
-                setOnClickListener {
-                    viewModel.setSelectedItemPosition(position)
-                    notifyDataSetChanged()
+                setOnClickListener{
+                    viewModel.isClickedItem(position)
                 }
             }
 

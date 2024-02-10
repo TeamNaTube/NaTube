@@ -7,13 +7,16 @@
     android:padding="5dp">
 
     <com.google.android.material.chip.Chip
-        android:id="@+id/chip_category"
+        android:id="@+id/chip_keyword"
         style="@style/Widget.MaterialComponents.Chip.Choice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Category"
+        android:checkable="false"
+        android:text="Keyword"
         android:textColor="@color/black"
         android:textSize="20sp"
+        app:chipBackgroundColor="@color/green"
+        app:closeIconVisible="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
