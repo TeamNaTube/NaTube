@@ -147,6 +147,7 @@ class HomeAdapter(private val viewModel: HomeViewModel) :
                     val lastVisibleItemPosition =
                         layoutManager?.findLastCompletelyVisibleItemPosition()
                     val totalItemCount = recyclerView.adapter?.itemCount
+                    // 처음 상태 일때는 추가 검색 따로 실행 x
                     if (lastVisibleItemPosition == totalItemCount?.minus(1) && lastVisibleItemPosition != -1) {
                         viewModel.fetchSearchVideoByCategory()
                         viewModel.lastPositionCategory = totalItemCount?.minus(1) ?:0
