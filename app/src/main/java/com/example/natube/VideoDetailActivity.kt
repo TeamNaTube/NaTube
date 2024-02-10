@@ -1,14 +1,10 @@
 package com.example.natube
 
-import android.app.Activity
-import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.natube.databinding.ActivityVideoDetailBinding
 import com.example.natube.model.UnifiedItem
@@ -37,21 +33,58 @@ class VideoDetailActivity : AppCompatActivity() {
     }
 
     private fun initViewModel() {
+        viewModel.item.observe(this) {
+            itemDetail = it!!
+            Log.d("happyVideoDetail", "^^ ${itemDetail.isLike} is it updated from viewmodel?")
+//            getSharedPreferences("MY_PREFS_NAME", MODE_PRIVATE).edit().clear().apply()
 
+            ModelPreferencesManager.put(it, "${it.thumbnailsUrl}")
+        }
     }
 
     private fun initView() {
         getSelectedItem()
-        setBackButton()
+        setUpListeners()
+        ModelPreferencesManager.with(this)
+
     }
+
+    private fun setUpListeners() {
+        setBackButton()
+        setLikeButton()
+        setShareButton()
+    }
+
+    private fun setShareButton() {
+        // TODO
+    }
+
+    private fun setLikeButton() {
+        binding.ibActivityDetailBtnLike.setOnClickListener{
+            if (itemDetail.isLike) {
+                binding.ibActivityDetailBtnLike.setImageResource(R.drawable.ic_empty_heart)
+                viewModel.removeLike(itemDetail)
+            } else {
+                binding.ibActivityDetailBtnLike.setImageResource(R.drawable.ic_filled_heart)
+                viewModel.addLike(itemDetail)
+            }
+        }
+    }
+
 
     private fun setBackButton() {
         binding.btnActivityDetailBack.setOnClickListener{
-            val returnIntent: Intent = intent
-            intent.putExtra("message", true)
-            setResult(Activity.RESULT_OK,returnIntent)
-            finish()
+            intentLike(itemDetail)
+            Log.d("happyVideoDetail", "^^ ${itemDetail.isLike} right before closing activity (intenting)")
+
         }
+    }
+
+    private fun intentLike(item: UnifiedItem?) {
+        val itemIntent = Intent(this, MainActivity::class.java)
+        itemIntent.putExtra("selected item", item)
+        setResult(RESULT_OK, itemIntent)
+        finish()
     }
 
     private fun getSelectedItem() {
@@ -84,6 +117,11 @@ class VideoDetailActivity : AppCompatActivity() {
             tvActivityDetailChannelName.text = itemDetail.channelTitle
             tvActivityDetailDescription.text = itemDetail.description
             tvActivityDetailUploadDate.text = itemDetail.dateTime
+
+            when (itemDetail.isLike) {
+                true -> ibActivityDetailBtnLike.setImageResource(R.drawable.ic_filled_heart)
+                false -> ibActivityDetailBtnLike.setImageResource(R.drawable.ic_empty_heart)
+            }
         }
 
     }

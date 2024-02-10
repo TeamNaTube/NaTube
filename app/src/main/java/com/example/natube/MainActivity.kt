@@ -2,6 +2,7 @@ package com.example.natube
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +11,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.natube.databinding.ActivityMainBinding
+import com.example.natube.model.UnifiedItem
 
 class MainActivity : AppCompatActivity() {
 
@@ -34,8 +36,29 @@ class MainActivity : AppCompatActivity() {
 //        setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        initView()
+    }
 
-//        initViewModel()
+
+    override fun onStart() {
+        super.onStart()
+        Log.d("happyMainOnStart?", "^^ 오예 *")
+        updateLike()
+    }
+
+    private fun initView() {
+
+    }
+
+    private fun updateLike() {
+
+        Log.d("happyMainActivity", "^^ 여기 실행 됨? ${intent.hasExtra("selected item")}")
+
+        if (intent.hasExtra("item to main")) {
+            val itemDetail = intent.getParcelableExtra<UnifiedItem>("item to main")!!
+            Log.d("happyMainActivity", "^^ ${itemDetail.isLike}")
+
+        }
     }
 
 //    private fun initViewModel() {
