@@ -60,16 +60,6 @@ class HomeFragment : Fragment() {
             }
 // getting selected items in either category rv or keyword rv
             selectedItem.observe(viewLifecycleOwner) {
-                /**
-                 * activity result launcher 사용 시도했는데 안 넘어가서 일단은 start Activity로 구현
-                 */
-
-//                val intent = Intent(activity, VideoDetailActivity::class.java).apply {
-//                    putExtra("selected item", it)
-//                }
-//                Log.d("happyHomeFragment", "^^$it")
-//                activity?.setResult(RESULT_OK, intent)
-//                if (activity?.isFinishing == false) activity?.finish()
 
                 val detailIntent = Intent(activity, VideoDetailActivity::class.java)
                 detailIntent.putExtra("selected item", it)

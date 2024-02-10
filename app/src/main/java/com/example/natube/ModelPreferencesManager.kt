@@ -8,8 +8,7 @@ import com.google.gson.GsonBuilder
 
 /**
  * Singleton class for managing preferences for POJO or model class's object.
- * @author Malwinder Singh
- * medium.com/@dev.malwinder
+ *
  */
 object ModelPreferencesManager {
 
@@ -26,7 +25,8 @@ object ModelPreferencesManager {
      */
     fun with(activity: AppCompatActivity) {
         preferences = activity.getSharedPreferences(
-            PREFERENCES_FILE_NAME, Context.MODE_PRIVATE)
+            PREFERENCES_FILE_NAME, Context.MODE_PRIVATE
+        )
     }
 
     /**
@@ -40,6 +40,17 @@ object ModelPreferencesManager {
         val jsonString = GsonBuilder().create().toJson(`object`)
         //Save that String in SharedPreferences
         preferences.edit().putString(key, jsonString).apply()
+    }
+    /**
+     * thumbnail URL을 이용하여 좋아요를 제거해주는 함수
+     *
+     * @param key Shared Preference key with which object was saved.
+     **/
+    fun <T> remove(`object`: T, key: String) {
+        //Convert object to JSON String.
+        val jsonString = GsonBuilder().create().toJson(`object`)
+        //Save that String in SharedPreferences
+        preferences.edit().remove(key).apply()
     }
 
     /**
@@ -56,15 +67,38 @@ object ModelPreferencesManager {
         return GsonBuilder().create().fromJson(value, T::class.java)
     }
 
-    inline fun <reified  T> getAll() : ArrayList<T?> {
+    /**
+     * Used to retrieve all the items from the preferences
+     *
+     * @param key Shared Preference key with which object was saved.
+     **/
+    inline fun <reified T> getAll(): ArrayList<T?> {
         //We read JSON String which was saved
         val keys = preferences.all.keys.toMutableList()
-        val list : ArrayList<T?> = arrayListOf()
-        keys.forEach{
+        val list: ArrayList<T?> = arrayListOf()
+        keys.forEach {
             val value = preferences.getString(it, null)
             list.add(GsonBuilder().create().fromJson(value, T::class.java))
         }
         return list
     }
+
+    /**
+     * thumbnail URL을 이용하여 이미 좋아요 리스트에 이 아이템이 있는지 확인(find) 해주는 함수
+     *
+     * @param key Shared Preference key with which object was saved.
+     **/
+    inline fun <reified T> findItem(id: String): T? {
+        //We read JSON String which was saved
+        val keys = preferences.all.keys.toMutableList()
+
+        val found = keys.find {
+            it == id
+        }
+        val value = preferences.getString(found, null)
+        return GsonBuilder().create().fromJson(value, T::class.java)
+    }
+
+
 
 }

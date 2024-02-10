@@ -38,7 +38,10 @@ class VideoDetailActivity : AppCompatActivity() {
             Log.d("happyVideoDetail", "^^ ${itemDetail.isLike} is it updated from viewmodel?")
 //            getSharedPreferences("MY_PREFS_NAME", MODE_PRIVATE).edit().clear().apply()
 
-            ModelPreferencesManager.put(it, "${it.thumbnailsUrl}")
+            when(it.isLike) {
+                true -> ModelPreferencesManager.put(it, it.thumbnailsUrl)
+                false -> ModelPreferencesManager.remove(it, it.thumbnailsUrl)
+            }
         }
     }
 
@@ -62,12 +65,16 @@ class VideoDetailActivity : AppCompatActivity() {
 
     private fun setLikeButton() {
         binding.ibActivityDetailBtnLike.setOnClickListener{
-            if (itemDetail.isLike) {
-                binding.ibActivityDetailBtnLike.setImageResource(R.drawable.ic_empty_heart)
-                viewModel.removeLike(itemDetail)
-            } else {
-                binding.ibActivityDetailBtnLike.setImageResource(R.drawable.ic_filled_heart)
-                viewModel.addLike(itemDetail)
+            when (ModelPreferencesManager.findItem<UnifiedItem>(itemDetail.thumbnailsUrl)) {
+                null -> {
+                    binding.ibActivityDetailBtnLike.setImageResource(R.drawable.ic_filled_heart)
+                    viewModel.addLike(itemDetail)
+                }
+                else -> {
+                    binding.ibActivityDetailBtnLike.setImageResource(R.drawable.ic_empty_heart)
+                    viewModel.removeLike(itemDetail)
+                }
+
             }
         }
     }
@@ -119,9 +126,9 @@ class VideoDetailActivity : AppCompatActivity() {
             tvActivityDetailDescription.text = itemDetail.description
             tvActivityDetailUploadDate.text = itemDetail.dateTime
 
-            when (itemDetail.isLike) {
-                true -> ibActivityDetailBtnLike.setImageResource(R.drawable.ic_filled_heart)
-                false -> ibActivityDetailBtnLike.setImageResource(R.drawable.ic_empty_heart)
+            when (ModelPreferencesManager.findItem<UnifiedItem>(itemDetail.thumbnailsUrl)) {
+                null -> ibActivityDetailBtnLike.setImageResource(R.drawable.ic_empty_heart)
+                else -> ibActivityDetailBtnLike.setImageResource(R.drawable.ic_filled_heart)
             }
         }
 

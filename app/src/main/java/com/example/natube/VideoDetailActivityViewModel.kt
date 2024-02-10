@@ -1,5 +1,6 @@
 package com.example.natube
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,10 +11,12 @@ class VideoDetailActivityViewModel : ViewModel() {
 
     private var _item = MutableLiveData<UnifiedItem?>()
 
+
     val item : LiveData<UnifiedItem?> = _item
     fun removeLike(itemDetail: UnifiedItem) {
         Log.d("HappyDetailVM", "^^ removeLike ${itemDetail.isLike}")
         itemDetail.isLike = false
+
         Log.d("HappyDetailVM", "^^ removeLike ${itemDetail.isLike} changed?")
 
         _item.value = itemDetail
