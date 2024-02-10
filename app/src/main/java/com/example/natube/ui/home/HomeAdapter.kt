@@ -1,5 +1,6 @@
 package com.example.natube.ui.home
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -17,7 +18,8 @@ import com.example.natube.databinding.FragmentHomeTitleBinding
  *  2. 해당 ViewType 에따른 ViewHolder 생성 및 연결
  *  3. 연결된 ViewHolder 에 저장한 값들 Binding
  */
-class HomeAdapter(private val viewModel: HomeViewModel) : ListAdapter<HomeWidget, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
+class HomeAdapter(private val viewModel: HomeViewModel) :
+    ListAdapter<HomeWidget, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
     companion object {
         /**
          *  현재 한꺼번에 데이터를 업로드하고있다
@@ -30,10 +32,7 @@ class HomeAdapter(private val viewModel: HomeViewModel) : ListAdapter<HomeWidget
             }
 
             override fun areContentsTheSame(oldItem: HomeWidget, newItem: HomeWidget): Boolean {
-                if(oldItem is HomeWidget.ListCategoryVideoItemWidget){
-                    val updateItem = newItem as HomeWidget.ListCategoryVideoItemWidget
-                    return oldItem.mUnifiedItems == updateItem.mUnifiedItems
-                }
+
                 return oldItem == newItem
             }
         }
@@ -58,26 +57,22 @@ class HomeAdapter(private val viewModel: HomeViewModel) : ListAdapter<HomeWidget
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
             TYPE_TITLE -> {
-                val binding =
-                    FragmentHomeTitleBinding.inflate(inflater, parent, false)
+                val binding = FragmentHomeTitleBinding.inflate(inflater, parent, false)
                 return TitleViewHolder(binding)
             }
 
             TYPE_LIST_CHIP -> {
-                val binding =
-                    FragmentHomeRvChipBinding.inflate(inflater, parent, false)
+                val binding = FragmentHomeRvChipBinding.inflate(inflater, parent, false)
                 return ListChipViewHolder(binding)
             }
 
             TYPE_LIST_CATEGORY_ITEM_VIDEO -> {
-                val binding =
-                    FragmentHomeRvItemBinding.inflate(inflater, parent, false)
+                val binding = FragmentHomeRvItemBinding.inflate(inflater, parent, false)
                 return ListCategoryVideoItemViewHolder(binding)
             }
 
             TYPE_LIST_KEYWORD_ITEM_VIDEO -> {
-                val binding =
-                    FragmentHomeRvItemBinding.inflate(inflater, parent, false)
+                val binding = FragmentHomeRvItemBinding.inflate(inflater, parent, false)
                 return ListKeywordVideoItemViewHolder(binding)
             }
 
@@ -146,6 +141,22 @@ class HomeAdapter(private val viewModel: HomeViewModel) : ListAdapter<HomeWidget
             rvListVideoItem.layoutManager =
                 LinearLayoutManager(rvListVideoItem.context, LinearLayoutManager.HORIZONTAL, false)
             rvListVideoItem.adapter = listCategoryVideoAdapter
+
+            //추가 검색 실행
+            rvListVideoItem.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+
+                    val layoutManager = recyclerView.layoutManager as LinearLayoutManager?
+                    val lastVisibleItemPosition =
+                        layoutManager?.findLastCompletelyVisibleItemPosition()
+                    val totalItemCount = recyclerView.adapter?.itemCount
+
+                    if (lastVisibleItemPosition == totalItemCount?.minus(1)) {
+                           viewModel.fetchSearchVideoByCategory()
+                    }
+                }
+            })
         }
     }
 
@@ -155,8 +166,7 @@ class HomeAdapter(private val viewModel: HomeViewModel) : ListAdapter<HomeWidget
         val listKeywordVideoAdapter = ListVideoItemAdapter(viewModel)
 
         init {
-            rvListVideoItem.layoutManager =
-                GridLayoutManager(rvListVideoItem.context, 2)
+            rvListVideoItem.layoutManager = GridLayoutManager(rvListVideoItem.context, 2)
             rvListVideoItem.adapter = listKeywordVideoAdapter
         }
     }

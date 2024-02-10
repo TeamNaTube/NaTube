@@ -53,11 +53,6 @@ class ListVideoItemAdapter(private val viewModel: HomeViewModel) : ListAdapter<U
             tvVideoItemUploadTime.text = item.dateTime
 
 
-            // category 추가 검색 하고 싶을때
-            if(item.categoryId !="-1" && position == this@ListVideoItemAdapter.itemCount-1){
-                viewModel.fetchSearchVideoByCategory()
-            }
-
         }
     }
 }

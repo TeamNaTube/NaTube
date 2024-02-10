@@ -29,7 +29,7 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
     val mItemByCategoryList: LiveData<List<UnifiedItem>> get() = _mItemByCategoryList
 
     //다음 페이지 정보가 들어간 위한 토큰
-    var nextPageToken: String = ""
+    private var nextPageToken: String = ""
 
     // Dialog의  KeywordList
     private var _preKeywordList = MutableLiveData<List<Chip>>(listOf())

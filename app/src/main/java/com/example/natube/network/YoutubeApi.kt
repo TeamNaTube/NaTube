@@ -11,7 +11,7 @@ import retrofit2.http.Query
 
 interface YoutubeAPI {
     companion object{
-        private const val API_MAX_RESULT = 5
+        private const val API_MAX_RESULT = 4
         private const val API_REGION = "KR"
         private const val YOUTUBE_API_KEY = "AIzaSyBsiX_Etl5UmQNpfJxH8COkaOB3sQ9Q5sU"
     }
