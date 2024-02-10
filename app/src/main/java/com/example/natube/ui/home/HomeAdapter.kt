@@ -1,6 +1,5 @@
 package com.example.natube.ui.home
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -95,6 +94,7 @@ class HomeAdapter(private val viewModel: HomeViewModel) :
             is HomeWidget.ListCategoryVideoItemWidget -> {
                 (holder as ListCategoryVideoItemViewHolder).apply {
                     listCategoryVideoAdapter.submitList(item.mUnifiedItems)
+                    rvListVideoItem.smoothScrollToPosition(viewModel.lastPositionCategory)
                 }
             }
 
@@ -130,7 +130,7 @@ class HomeAdapter(private val viewModel: HomeViewModel) :
 
     inner class ListCategoryVideoItemViewHolder(binding: FragmentHomeRvItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        private val rvListVideoItem = binding.rvListVideoItem
+        val rvListVideoItem = binding.rvListVideoItem
         val listCategoryVideoAdapter = ListVideoItemAdapter(viewModel)
 
         init {
@@ -147,9 +147,9 @@ class HomeAdapter(private val viewModel: HomeViewModel) :
                     val lastVisibleItemPosition =
                         layoutManager?.findLastCompletelyVisibleItemPosition()
                     val totalItemCount = recyclerView.adapter?.itemCount
-
-                    if (lastVisibleItemPosition == totalItemCount?.minus(1)) {
-                           viewModel.fetchSearchVideoByCategory()
+                    if (lastVisibleItemPosition == totalItemCount?.minus(1) && lastVisibleItemPosition != -1) {
+                        viewModel.fetchSearchVideoByCategory()
+                        viewModel.lastPositionCategory = totalItemCount?.minus(1) ?:0
                     }
                 }
             })

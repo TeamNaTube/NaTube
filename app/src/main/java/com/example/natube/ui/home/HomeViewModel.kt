@@ -30,7 +30,7 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
 
     //다음 페이지 정보가 들어간 위한 토큰
     private var nextPageToken: String = ""
-
+    var lastPositionCategory = 0
     // Dialog의  KeywordList
     private var _preKeywordList = MutableLiveData<List<Chip>>(listOf())
     val preKeywordList: LiveData<List<Chip>> get() = _preKeywordList
@@ -177,6 +177,7 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
 
 
         //선택 되어 지면 검색 실행(옵저버 에 연결)
+        lastPositionCategory = 0
         if (nextPageToken.isNotBlank()) nextPageToken = ""
         _mItemByCategoryList.value = emptyList()
         _mSelectedCategoryList.value = newList
