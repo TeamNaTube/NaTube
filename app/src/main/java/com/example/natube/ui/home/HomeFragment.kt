@@ -18,7 +18,7 @@ class HomeFragment : Fragment() {
 
     private val homeViewModel: HomeViewModel by activityViewModels()
 
-    var isOpenApp = true
+    private var isOpenApp = true
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

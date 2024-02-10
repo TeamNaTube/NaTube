@@ -23,6 +23,7 @@ interface YoutubeAPI {
         @Query("key") apiKey: String = YOUTUBE_API_KEY,
         @Query("chart") chart : String = "mostPopular",
         @Query("videoCategoryId") videoCategoryId : String,
+        @Query("pageToken") nextPageToken: String,
     ) : VideoModel
 
     @GET("search")

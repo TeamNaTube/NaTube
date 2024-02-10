@@ -136,7 +136,7 @@ class HomeAdapter(private val viewModel: HomeViewModel) : ListAdapter<HomeWidget
     inner class ListCategoryVideoItemViewHolder(binding: FragmentHomeRvItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         private val rvListVideoItem = binding.rvListVideoItem
-        val listCategoryVideoAdapter = ListVideoItemAdapter()
+        val listCategoryVideoAdapter = ListVideoItemAdapter(viewModel)
 
         init {
             rvListVideoItem.layoutManager =
@@ -148,7 +148,7 @@ class HomeAdapter(private val viewModel: HomeViewModel) : ListAdapter<HomeWidget
     inner class ListKeywordVideoItemViewHolder(binding: FragmentHomeRvItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         private val rvListVideoItem = binding.rvListVideoItem
-        val listKeywordVideoAdapter = ListVideoItemAdapter()
+        val listKeywordVideoAdapter = ListVideoItemAdapter(viewModel)
 
         init {
             rvListVideoItem.layoutManager =

@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 import com.example.natube.databinding.VideoItemBinding
 import com.example.natube.model.UnifiedItem
 
-class ListVideoItemAdapter : ListAdapter<UnifiedItem, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
+class ListVideoItemAdapter(private val viewModel: HomeViewModel) : ListAdapter<UnifiedItem, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<UnifiedItem>() {
             override fun areItemsTheSame(oldItem: UnifiedItem, newItem: UnifiedItem): Boolean {
@@ -51,6 +51,13 @@ class ListVideoItemAdapter : ListAdapter<UnifiedItem, RecyclerView.ViewHolder>(D
             tvVideoItemTitle.text = item.videoTitle
             tvVideoItemChannelName.text = item.channelTitle
             tvVideoItemUploadTime.text = item.dateTime
+
+
+            // category 추가 검색 하고 싶을때
+            if(item.categoryId !="-1" && position == this@ListVideoItemAdapter.itemCount-1){
+                viewModel.fetchSearchVideoByCategory()
+            }
+
         }
     }
 }

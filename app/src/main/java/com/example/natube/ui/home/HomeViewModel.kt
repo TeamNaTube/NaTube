@@ -28,6 +28,9 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
     private var _mItemByCategoryList = MutableLiveData<List<UnifiedItem>>(listOf())
     val mItemByCategoryList: LiveData<List<UnifiedItem>> get() = _mItemByCategoryList
 
+    //다음 페이지 정보가 들어간 위한 토큰
+    var nextPageToken: String = ""
+
     // Dialog의  KeywordList
     private var _preKeywordList = MutableLiveData<List<Chip>>(listOf())
     val preKeywordList: LiveData<List<Chip>> get() = _preKeywordList
@@ -57,7 +60,8 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
 
     //Pref 에 저장된 값이 있는지 확인
     private var _isPrefEmpty = MutableLiveData<Boolean>(false)
-    val isPrefEmpty :LiveData<Boolean> get() = _isPrefEmpty
+    val isPrefEmpty: LiveData<Boolean> get() = _isPrefEmpty
+
     /**
      *  뷰모델 생성시 기본값들 정의
      *  - CategoryList 를 저장
@@ -70,8 +74,8 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
         initKeywordList()
     }
 
-    private fun isEmptyChipsList(){
-        _isPrefEmpty.value =homeRepository.isEmptyList()
+    private fun isEmptyChipsList() {
+        _isPrefEmpty.value = homeRepository.isEmptyList()
     }
 
 
@@ -85,18 +89,19 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
         if (!homeRepository.isEmptyList()) {
             val prefList = homeRepository.getCategoryList()
             prefList.forEach { savedChip ->
-                list.find{it.categoryId == savedChip.categoryId}?.isClicked = true
+                list.find { it.categoryId == savedChip.categoryId }?.isClicked = true
             }
         }
 
         _mCategoryList.value = list
 
-        if(!homeRepository.isEmptyList()){
+        if (!homeRepository.isEmptyList()) {
             saveSelectedCategoryList()
         }
     }
-    private fun initKeywordList(){
-        if(homeRepository.isEmptyList()) return
+
+    private fun initKeywordList() {
+        if (homeRepository.isEmptyList()) return
         val list = homeRepository.getKeywordList()
         _preKeywordList.value = list
         saveKeywordList()
@@ -169,7 +174,13 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
             newList[idx].isClicked = idx == position
         }
         selectedCategoryId = newList[position].categoryId
+
+
+        //선택 되어 지면 검색 실행(옵저버 에 연결)
+        if (nextPageToken.isNotBlank()) nextPageToken = ""
         _mSelectedCategoryList.value = newList
+
+
     }
 
     // selectedCategoryId 기반 검색 실행
@@ -179,13 +190,20 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
 
         viewModelScope.launch {
             val unifiedItems = searchVideoByCategory()
-            _mItemByCategoryList.value = unifiedItems
+            var list = mItemByCategoryList.value?.toMutableList() ?: emptyList()
+            list = list + unifiedItems.toMutableList()
+            _mItemByCategoryList.value = list
         }
     }
 
     private suspend fun searchVideoByCategory() = withContext(Dispatchers.IO) {
-        val items =
-            RetrofitInstance.api.getTrendingVideos(videoCategoryId = selectedCategoryId).items
+        val response =
+            RetrofitInstance.api.getTrendingVideos(
+                videoCategoryId = selectedCategoryId,
+                nextPageToken = nextPageToken
+            )
+        val items = response.items
+        nextPageToken = response.nextPageToken
         val unifiedItems = mutableListOf<UnifiedItem>()
         items.forEach { item ->
             unifiedItems.add(item.toUnifiedItem())
@@ -215,7 +233,7 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
     fun saveKeywordList() {
         var list = preKeywordList.value ?: listOf()
         list[0].isClicked = true
-        for(idx in 1..list.lastIndex){
+        for (idx in 1..list.lastIndex) {
             list[idx].isClicked = false
         }
         _keywordQuery.value = list[0].name ?: ""
