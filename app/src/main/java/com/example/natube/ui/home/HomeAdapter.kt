@@ -30,6 +30,10 @@ class HomeAdapter(private val viewModel: HomeViewModel) : ListAdapter<HomeWidget
             }
 
             override fun areContentsTheSame(oldItem: HomeWidget, newItem: HomeWidget): Boolean {
+                if(oldItem is HomeWidget.ListCategoryVideoItemWidget){
+                    val updateItem = newItem as HomeWidget.ListCategoryVideoItemWidget
+                    return oldItem.mUnifiedItems == updateItem.mUnifiedItems
+                }
                 return oldItem == newItem
             }
         }

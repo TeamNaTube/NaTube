@@ -178,6 +178,7 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
 
         //선택 되어 지면 검색 실행(옵저버 에 연결)
         if (nextPageToken.isNotBlank()) nextPageToken = ""
+        _mItemByCategoryList.value = emptyList()
         _mSelectedCategoryList.value = newList
 
 
