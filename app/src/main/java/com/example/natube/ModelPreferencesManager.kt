@@ -3,6 +3,7 @@ package com.example.natube
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
+import com.example.natube.model.UnifiedItem
 import com.google.gson.GsonBuilder
 
 /**
@@ -54,4 +55,16 @@ object ModelPreferencesManager {
         //type Class < T >" is used to cast.
         return GsonBuilder().create().fromJson(value, T::class.java)
     }
+
+    inline fun <reified  T> getAll() : ArrayList<T?> {
+        //We read JSON String which was saved
+        val keys = preferences.all.keys.toMutableList()
+        val list : ArrayList<T?> = arrayListOf()
+        keys.forEach{
+            val value = preferences.getString(it, null)
+            list.add(GsonBuilder().create().fromJson(value, T::class.java))
+        }
+        return list
+    }
+
 }

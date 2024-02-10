@@ -43,9 +43,10 @@ class VideoDetailActivity : AppCompatActivity() {
     }
 
     private fun initView() {
+        ModelPreferencesManager.with(this)
         getSelectedItem()
         setUpListeners()
-        ModelPreferencesManager.with(this)
+
 
     }
 

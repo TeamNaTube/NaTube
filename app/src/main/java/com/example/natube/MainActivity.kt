@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initView() {
-
+        ModelPreferencesManager.with(this)
     }
 
     private fun updateLike() {
