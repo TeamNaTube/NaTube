@@ -12,7 +12,7 @@ import com.bumptech.glide.Glide
 import com.example.natube.databinding.VideoItemBinding
 import com.example.natube.model.UnifiedItem
 
-class MyVideoAdapter : ListAdapter<UnifiedItem, RecyclerView.ViewHolder>(DIFF_CALLBACK){
+class MyVideoAdapter(private val viewModel: MyVideoViewModel) : ListAdapter<UnifiedItem, RecyclerView.ViewHolder>(DIFF_CALLBACK){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding = VideoItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -57,12 +57,13 @@ class MyVideoAdapter : ListAdapter<UnifiedItem, RecyclerView.ViewHolder>(DIFF_CA
             cl_video_item.setOnClickListener(this)
         }
 
+
         // 클릭 이벤트 처리
         override fun onClick(p0: View?) {
             val position = adapterPosition.takeIf { it != RecyclerView.NO_POSITION } ?: return
             val item = getItem(position)
             Log.d("HappyListVideoItemAdapter", "^^onClicked")
-            // TODO ??
+            viewModel.getSelectedItem(item)
         }
     }
     companion object {
