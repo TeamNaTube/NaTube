@@ -1,6 +1,9 @@
 package com.example.natube.model
 
-data class Category(
+/**
+ *  categoryId = -1 : Keyword 으로 간주
+ */
+data class Chip(
     val categoryId: String,
     var name: String? = null,
     var isClicked: Boolean = false,
@@ -23,6 +26,6 @@ data class Category(
     }
 
     init {
-        name = categoryMap[categoryId].toString()
+        if (name == null) name = categoryMap[categoryId].toString()
     }
 }

@@ -12,8 +12,10 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.natube.ui.settingchips.SettingChipsDialog
 import com.example.natube.SharedViewModel
 import com.example.natube.VideoDetailActivity
 import com.example.natube.databinding.FragmentHomeBinding
@@ -31,6 +33,9 @@ class HomeFragment : Fragment() {
 
 
 
+    private val homeViewModel: HomeViewModel by activityViewModels()
+
+    private var isOpenApp = true
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -51,12 +56,44 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         with(homeViewModel) {
-            mCategoryList.observe(viewLifecycleOwner) {
-                homeViewModel.fetchSearchVideoByCategory()
-                viewDummyData()
+            /**
+             *  미설정 일때 마다 다이얼 로그 부르기
+             */
+            isPrefEmpty.observe(viewLifecycleOwner) { isPrefEmpty ->
+                if (isPrefEmpty) {
+                    if(isOpenApp) {
+                        val dialog = SettingChipsDialog()
+                        dialog.show(childFragmentManager, "SettingChipsDialog")
+                        isOpenApp = false
+                    }
+                    binding.rvFragmentHome.visibility = View.GONE
+                    binding.clWaringView.visibility = View.VISIBLE
+                } else {
+                    binding.rvFragmentHome.visibility = View.VISIBLE
+                    binding.clWaringView.visibility = View.GONE
+                }
             }
-            mUnifiedItemList.observe(viewLifecycleOwner) {
-                viewDummyData()
+
+            /**
+             *  Category 부분 관찰
+             */
+            mItemByCategoryList.observe(viewLifecycleOwner) {
+                updateUI()
+            }
+
+            mSelectedCategoryList.observe(viewLifecycleOwner) {
+                fetchSearchVideoByCategory()
+            }
+            /**
+             *  Keyword 부분 관찰
+             */
+
+            mKeywordList.observe(viewLifecycleOwner) {
+                updateUI()
+            }
+
+            mItemByKeywordList.observe(viewLifecycleOwner) {
+                updateUI()
             }
 // getting selected items in either category rv or keyword rv
             selectedItem.observe(viewLifecycleOwner) {
@@ -77,11 +114,32 @@ class HomeFragment : Fragment() {
     }
 
 
-    private fun viewDummyData() {
+            /**
+             *  실제 Keyword 검색 하는 부분(할당량 때문에 주석 처리)
+             */
+            keywordQuery.observe(viewLifecycleOwner) {
+//                fetchSearchVideoByKeyword()
+            }
+        }
 
-        var list = mutableListOf<HomeWidget>()
-        var categoryList = homeViewModel.mCategoryList.value!!
-        var videoList = homeViewModel.mUnifiedItemList.value!!
+        // 다이얼로그 수정 버튼
+        binding.ivSettingChips.setOnClickListener {
+            val dialog = SettingChipsDialog()
+            dialog.show(childFragmentManager, "SettingChipsDialog")
+        }
+        binding.btnWaringSettingChipsBtn.setOnClickListener {
+            val dialog = SettingChipsDialog()
+            dialog.show(childFragmentManager, "SettingChipsDialog")
+        }
+    }
+
+    private fun updateUI() {
+
+        val list = mutableListOf<HomeWidget>()
+        val categoryList = homeViewModel.mSelectedCategoryList.value ?: listOf()
+        val categoryVideoList = homeViewModel.mItemByCategoryList.value ?: listOf()
+        val keywordList = homeViewModel.mKeywordList.value ?: listOf()
+        val keywordVideoList = homeViewModel.mItemByKeywordList.value ?: listOf()
         /**
          *  카테고리 부분
          */
@@ -90,10 +148,10 @@ class HomeFragment : Fragment() {
         list.add(HomeWidget.TitleWidget("카테고리"))
 
         // 버튼 리스트
-        list.add(HomeWidget.CategoryWidget(categoryList))
+        list.add(HomeWidget.ChipWidget(categoryList))
 
         // 비디오 리스트
-        list.add(HomeWidget.ListCategoryVideoItemWidget(videoList))
+        list.add(HomeWidget.ListCategoryVideoItemWidget(categoryVideoList))
 
         /**
          *  키워드 부분
@@ -103,11 +161,10 @@ class HomeFragment : Fragment() {
         list.add(HomeWidget.TitleWidget("키워드"))
 
         // 버튼 리스트
-        list.add(HomeWidget.CategoryWidget(categoryList))
+        list.add(HomeWidget.ChipWidget(keywordList))
 
         // 비디오 리스트
-        list.add(HomeWidget.ListKeywordVideoItemWidget(videoList + videoList))
-
+        list.add(HomeWidget.ListKeywordVideoItemWidget(keywordVideoList))
 
         homeAdapter.submitList(list)
     }

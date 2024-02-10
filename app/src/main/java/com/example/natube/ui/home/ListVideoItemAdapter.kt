@@ -75,6 +75,8 @@ class ListVideoItemAdapter(private val viewModel: HomeViewModel) : ListAdapter<U
             tvVideoItemTitle.text = item.videoTitle
             tvVideoItemChannelName.text = item.channelTitle
             tvVideoItemUploadTime.text = item.dateTime
+
+
         }
     }
 }
