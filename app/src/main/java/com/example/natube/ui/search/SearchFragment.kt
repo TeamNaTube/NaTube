@@ -1,51 +1,48 @@
-package com.example.natube.ui.search
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.hwangtube.network.RetrofitInstance
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.natube.databinding.FragmentSearchBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class SearchFragment : Fragment() {
 
-    private var _binding: FragmentSearchBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentSearchBinding
+    private lateinit var viewModel: SearchViewModel
+    private lateinit var adapter: SearchAdapter
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val dashboardViewModel =
-            ViewModelProvider(this)[SearchViewModel::class.java]
-
-        _binding = FragmentSearchBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-        val textView: TextView = binding.textDashboard
-        dashboardViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
-        textView.setOnClickListener {
-            CoroutineScope(Dispatchers.IO).launch{
-                val item = RetrofitInstance.api.getSearchingVideos(query = "설현").items
-            }
-        }
-        return root
+        // 뷰 바인딩을 사용하여 레이아웃 인플레이트
+        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // RecyclerView 설정
+        adapter = SearchAdapter(emptyList())
+        binding.rvSearchResult.adapter = adapter
+        binding.rvSearchResult.layoutManager = LinearLayoutManager(requireContext())
+
+        // ViewModel 설정
+        viewModel = ViewModelProvider(this).get(SearchViewModel::class.java)
+
+        // LiveData를 관찰하여 RecyclerView 갱신
+        viewModel.searchResults.observe(viewLifecycleOwner, Observer { results ->
+            adapter.updateData(results)
+        })
+
+        // 검색 버튼 클릭 이벤트 설정
+        binding.btnSearch.setOnClickListener {
+            val query = binding.etSearch.text.toString()
+            viewModel.searchVideos(query)
+        }
     }
 }
