@@ -58,6 +58,10 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
     val isValidated: LiveData<Boolean> get() = _isValidated
 
 
+    private var _selectedItem = MutableLiveData<UnifiedItem?>()
+
+    val selectedItem : LiveData<UnifiedItem?> = _selectedItem
+
     // 카테 고리,키워드 리스트 백업
     private var categoryListBackup: List<Chip> = listOf()
     private var keywordListBackup: List<Chip> = listOf()
@@ -76,7 +80,9 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
         isEmptyChipsList()
         initCategoryList()
         initKeywordList()
+
     }
+
 
     private fun isEmptyChipsList() {
         _isPrefEmpty.value = homeRepository.isEmptyList()
@@ -294,4 +300,8 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
         unifiedItems
     }
 
+    fun getSelectedItem(item: UnifiedItem?) {
+        val chosenItem: UnifiedItem? = item?.copy()
+        _selectedItem.value = chosenItem
+    }
 }

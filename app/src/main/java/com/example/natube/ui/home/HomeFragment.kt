@@ -1,7 +1,9 @@
 package com.example.natube.ui.home
 
-import android.os.Bundle
+import android.content.Context
+import android.content.Intent
 import android.util.Log
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,13 +12,22 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.natube.ui.settingchips.SettingChipsDialog
+import com.example.natube.SharedViewModel
+import com.example.natube.VideoDetailActivity
 import com.example.natube.databinding.FragmentHomeBinding
+import com.example.natube.ui.settingchips.SettingChipsDialog
+
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private val homeAdapter: HomeAdapter by lazy { HomeAdapter(homeViewModel) }
+
+    //    private val homeViewModel: HomeViewModel by viewModels()
+    val sharedViewModel by activityViewModels<SharedViewModel>()
+    private lateinit var mContext: Context
+
 
     private val homeViewModel: HomeViewModel by activityViewModels()
 
@@ -55,10 +66,50 @@ class HomeFragment : Fragment() {
             }
             )
         }
+
         return binding.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        initView()
+
+        initViewModel()
+
+
+
+
+    }
+
+    private fun initView() {
+        setViewModelValues()
+        setButtonOnClick()
+    }
+
+    private fun setViewModelValues() {
+        homeViewModel.getSelectedItem(null)
+    }
+
+    private fun setButtonOnClick() {
+        // 다이얼로그 수정 버튼
+        binding.ivSettingChips.setOnClickListener {
+            val dialog = SettingChipsDialog()
+            dialog.show(childFragmentManager, "SettingChipsDialog")
+        }
+        binding.btnWaringSettingChipsBtn.setOnClickListener {
+            val dialog = SettingChipsDialog()
+            dialog.show(childFragmentManager, "SettingChipsDialog")
+        }
+    }
+
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mContext = context
+    }
+
+    private fun initViewModel() {
         with(homeViewModel) {
             /**
              *  미설정 일때 마다 다이얼 로그 부르기
@@ -99,25 +150,29 @@ class HomeFragment : Fragment() {
             mItemByKeywordList.observe(viewLifecycleOwner) {
                 updateUI()
             }
+// getting selected items in either category rv or keyword rv
+            selectedItem.observe(viewLifecycleOwner) {
 
-            /**
-             *  실제 Keyword 검색 하는 부분(할당량 때문에 주석 처리)
-             */
-            keywordQuery.observe(viewLifecycleOwner) {
-                fetchSearchVideoByKeyword()
+                when (it) {
+                    null -> Unit
+                    else -> {
+                        val detailIntent = Intent(activity, VideoDetailActivity::class.java)
+                        detailIntent.putExtra("selected item", it)
+                        startActivity(detailIntent)
+                    }
+                }
+
             }
-        }
 
-        // 다이얼로그 수정 버튼
-        binding.ivSettingChips.setOnClickListener {
-            val dialog = SettingChipsDialog()
-            dialog.show(childFragmentManager, "SettingChipsDialog")
         }
-        binding.btnWaringSettingChipsBtn.setOnClickListener {
-            val dialog = SettingChipsDialog()
-            dialog.show(childFragmentManager, "SettingChipsDialog")
+        /**
+         *  실제 Keyword 검색 하는 부분(할당량 때문에 주석 처리)
+         */
+        homeViewModel.keywordQuery.observe(viewLifecycleOwner) {
+//                fetchSearchVideoByKeyword()
         }
     }
+
 
     private fun updateUI() {
 

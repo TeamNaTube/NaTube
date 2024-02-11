@@ -1,8 +1,7 @@
 package com.example.natube.ui.home
 
-import android.util.Log
+import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
@@ -19,8 +18,9 @@ import com.example.natube.databinding.FragmentHomeTitleBinding
  *  2. 해당 ViewType 에따른 ViewHolder 생성 및 연결
  *  3. 연결된 ViewHolder 에 저장한 값들 Binding
  */
-class HomeAdapter(private val viewModel: HomeViewModel) :
-    ListAdapter<HomeWidget, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
+class HomeAdapter(private val viewModel: HomeViewModel) : ListAdapter<HomeWidget, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
+
+    private lateinit var mContext: Context
     companion object {
 
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<HomeWidget>() {
@@ -139,6 +139,7 @@ class HomeAdapter(private val viewModel: HomeViewModel) :
             rvListVideoItem.layoutManager =
                 LinearLayoutManager(rvListVideoItem.context, LinearLayoutManager.HORIZONTAL, false)
             rvListVideoItem.adapter = listCategoryVideoAdapter
+
             //추가 검색 실행
             rvListVideoItem.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {

@@ -1,4 +1,4 @@
-package com.example.natube.ui.settingchips
+package com.example.natube.ui.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -32,6 +32,7 @@ class CategoryAdapter(private val viewModel: HomeViewModel) : ListAdapter<Chip, 
             VideoCategoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return CategoryViewHolder(binding)
     }
+
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = getItem(position)
