@@ -70,6 +70,11 @@ class MyVideoFragment : Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        val likedItems = ModelPreferencesManager.getAll<UnifiedItem>()
+        myVideoAdapter.submitList(likedItems)
+    }
     private fun initView() {
         setViewModelValues()
         setMyVideoAdapter()
