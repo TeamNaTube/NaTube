@@ -74,6 +74,7 @@ class MyVideoFragment : Fragment() {
         val likedItems = LikedItemPreferencesManager.getAll<UnifiedItem>()
         myVideoAdapter.submitList(likedItems)
     }
+
     private fun initView() {
         setViewModelValues()
         setMyVideoAdapter()
@@ -81,11 +82,15 @@ class MyVideoFragment : Fragment() {
     }
 
     private fun setListeners() {
-        binding.ibtnFragmentMyVideoEdit.setOnClickListener{
+        binding.ibtnFragmentMyVideoEdit.setOnClickListener {
+            val myInfo = MyChannel(
+                binding.tvActivityEditChannelUsername.text.toString(),
+                null,
+                null,
+                binding.tvActivityEditChannelUserDescription.text.toString()
+            )
             val editIntent = Intent(activity, EditChannelActivity::class.java)
-            editIntent.putExtra("profile image", binding.ivActivityEditChannelProfileImage.id)
-            editIntent.putExtra("name", binding.tvActivityEditChannelUsername.text.toString())
-            editIntent.putExtra("description", binding.tvActivityEditChannelUserDescription.text.toString())
+            editIntent.putExtra("my Channel Info", myInfo)
             startActivity(editIntent)
         }
     }
@@ -93,6 +98,7 @@ class MyVideoFragment : Fragment() {
     private fun setViewModelValues() {
         myVideoViewModel.getSelectedItem(null)
     }
+
     private fun setMyVideoAdapter() {
 
         binding.rvFragmentMyVideoFavourites.adapter = myVideoAdapter
@@ -101,7 +107,6 @@ class MyVideoFragment : Fragment() {
         myVideoAdapter.submitList(likedItems)
 
     }
-
 
 
     override fun onDestroyView() {
