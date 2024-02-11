@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EditChannel">
+    tools:context=".EditChannelActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/tb_activity_detail_toolbar"

@@ -16,7 +16,7 @@
         android:theme="@style/Theme.NaTube"
         tools:targetApi="31">
         <activity
-            android:name=".EditChannel"
+            android:name=".EditChannelActivity"
             android:exported="false" />
         <activity
             android:name=".VideoDetailActivity"
