@@ -3,14 +3,13 @@ package com.example.natube
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
-import com.example.natube.model.UnifiedItem
 import com.google.gson.GsonBuilder
 
 /**
  * Singleton class for managing preferences for POJO or model class's object.
  *
  */
-object ModelPreferencesManager {
+object LikedItemPreferencesManager {
 
 
 

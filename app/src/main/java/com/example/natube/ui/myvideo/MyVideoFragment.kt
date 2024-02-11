@@ -6,15 +6,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
-import com.example.natube.ModelPreferencesManager
+import com.example.natube.LikedItemPreferencesManager
 import com.example.natube.VideoDetailActivity
 import com.example.natube.databinding.FragmentMyVideosBinding
 import com.example.natube.model.UnifiedItem
-import com.example.natube.ui.home.HomeAdapter
 
 class MyVideoFragment : Fragment() {
 
@@ -26,7 +24,7 @@ class MyVideoFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private val likedItems = ModelPreferencesManager.getAll<UnifiedItem>()
+    private val likedItems = LikedItemPreferencesManager.getAll<UnifiedItem>()
 
 
     override fun onCreateView(
@@ -72,7 +70,7 @@ class MyVideoFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        val likedItems = ModelPreferencesManager.getAll<UnifiedItem>()
+        val likedItems = LikedItemPreferencesManager.getAll<UnifiedItem>()
         myVideoAdapter.submitList(likedItems)
     }
     private fun initView() {

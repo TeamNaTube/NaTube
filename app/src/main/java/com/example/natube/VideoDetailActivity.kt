@@ -39,14 +39,14 @@ class VideoDetailActivity : AppCompatActivity() {
 //            getSharedPreferences("MY_PREFS_NAME", MODE_PRIVATE).edit().clear().apply()
 
             when(it.isLike) {
-                true -> ModelPreferencesManager.put(it, it.thumbnailsUrl)
-                false -> ModelPreferencesManager.remove(it, it.thumbnailsUrl)
+                true -> LikedItemPreferencesManager.put(it, it.thumbnailsUrl)
+                false -> LikedItemPreferencesManager.remove(it, it.thumbnailsUrl)
             }
         }
     }
 
     private fun initView() {
-        ModelPreferencesManager.with(this)
+        LikedItemPreferencesManager.with(this)
         getSelectedItem()
         setUpListeners()
 
@@ -65,7 +65,7 @@ class VideoDetailActivity : AppCompatActivity() {
 
     private fun setLikeButton() {
         binding.ibActivityDetailBtnLike.setOnClickListener{
-            when (ModelPreferencesManager.findItem<UnifiedItem>(itemDetail.thumbnailsUrl)) {
+            when (LikedItemPreferencesManager.findItem<UnifiedItem>(itemDetail.thumbnailsUrl)) {
                 null -> {
                     binding.ibActivityDetailBtnLike.setImageResource(R.drawable.ic_filled_heart)
                     viewModel.addLike(itemDetail)
@@ -126,7 +126,7 @@ class VideoDetailActivity : AppCompatActivity() {
             tvActivityDetailDescription.text = itemDetail.description
             tvActivityDetailUploadDate.text = itemDetail.dateTime
 
-            when (ModelPreferencesManager.findItem<UnifiedItem>(itemDetail.thumbnailsUrl)) {
+            when (LikedItemPreferencesManager.findItem<UnifiedItem>(itemDetail.thumbnailsUrl)) {
                 null -> ibActivityDetailBtnLike.setImageResource(R.drawable.ic_empty_heart)
                 else -> ibActivityDetailBtnLike.setImageResource(R.drawable.ic_filled_heart)
             }
