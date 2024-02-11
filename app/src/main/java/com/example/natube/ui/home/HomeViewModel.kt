@@ -76,7 +76,9 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
         isEmptyChipsList()
         initCategoryList()
         initKeywordList()
+
     }
+
 
     private fun isEmptyChipsList() {
         _isPrefEmpty.value = homeRepository.isEmptyList()

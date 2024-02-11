@@ -58,18 +58,26 @@ class MyVideoFragment : Fragment() {
         with(myVideoViewModel) {
             selectedItem.observe(viewLifecycleOwner) {
 
-                val detailIntent = Intent(activity, VideoDetailActivity::class.java)
-                detailIntent.putExtra("selected item", it)
-                startActivity(detailIntent)
+                when (it) {
+                    null -> Unit
+                    else -> {
+                        val detailIntent = Intent(activity, VideoDetailActivity::class.java)
+                        detailIntent.putExtra("selected item", it)
+                        startActivity(detailIntent)
+                    }
+                }
             }
         }
     }
 
     private fun initView() {
+        setViewModelValues()
         setMyVideoAdapter()
         setLikedVideos()
     }
-
+    private fun setViewModelValues() {
+        myVideoViewModel.getSelectedItem(null)
+    }
     private fun setMyVideoAdapter() {
 
         binding.rvFragmentMyVideoFavourites.adapter = myVideoAdapter
