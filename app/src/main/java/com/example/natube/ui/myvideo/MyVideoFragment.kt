@@ -76,8 +76,15 @@ class MyVideoFragment : Fragment() {
     private fun initView() {
         setViewModelValues()
         setMyVideoAdapter()
-        setLikedVideos()
+        setListeners()
     }
+
+    private fun setListeners() {
+        binding.ibtnFragmentMyVideoEdit.setOnClickListener{
+
+        }
+    }
+
     private fun setViewModelValues() {
         myVideoViewModel.getSelectedItem(null)
     }
@@ -90,9 +97,7 @@ class MyVideoFragment : Fragment() {
 
     }
 
-    private fun setLikedVideos() {
 
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()
