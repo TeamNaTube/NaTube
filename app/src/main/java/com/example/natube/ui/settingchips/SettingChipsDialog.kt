@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.natube.R
 import com.example.natube.databinding.DialogSettingChipsBinding
+import com.example.natube.ui.home.CategoryAdapter
 import com.example.natube.ui.home.HomeViewModel
 import com.google.android.material.snackbar.Snackbar
 

@@ -27,10 +27,9 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
     private val homeAdapter: HomeAdapter by lazy { HomeAdapter(homeViewModel) }
 
-    private val homeViewModel: HomeViewModel by viewModels()
+    //    private val homeViewModel: HomeViewModel by viewModels()
     val sharedViewModel by activityViewModels<SharedViewModel>()
     private lateinit var mContext: Context
-
 
 
     private val homeViewModel: HomeViewModel by activityViewModels()
@@ -61,7 +60,7 @@ class HomeFragment : Fragment() {
              */
             isPrefEmpty.observe(viewLifecycleOwner) { isPrefEmpty ->
                 if (isPrefEmpty) {
-                    if(isOpenApp) {
+                    if (isOpenApp) {
                         val dialog = SettingChipsDialog()
                         dialog.show(childFragmentManager, "SettingChipsDialog")
                         isOpenApp = false
@@ -105,22 +104,13 @@ class HomeFragment : Fragment() {
             }
 
         }
-    }
-
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        mContext = context
-    }
-
-
-            /**
-             *  실제 Keyword 검색 하는 부분(할당량 때문에 주석 처리)
-             */
-            keywordQuery.observe(viewLifecycleOwner) {
+        /**
+         *  실제 Keyword 검색 하는 부분(할당량 때문에 주석 처리)
+         */
+        homeViewModel.keywordQuery.observe(viewLifecycleOwner) {
 //                fetchSearchVideoByKeyword()
-            }
         }
+
 
         // 다이얼로그 수정 버튼
         binding.ivSettingChips.setOnClickListener {
@@ -132,6 +122,13 @@ class HomeFragment : Fragment() {
             dialog.show(childFragmentManager, "SettingChipsDialog")
         }
     }
+
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mContext = context
+    }
+
 
     private fun updateUI() {
 

@@ -1,21 +1,17 @@
 package com.example.natube
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.viewModels
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.natube.databinding.ActivityMainBinding
+import com.example.natube.model.UnifiedItem
 import com.example.natube.ui.home.AppData
 import com.example.natube.ui.home.HomeRepository
 import com.example.natube.ui.home.HomeViewModel
-import com.example.natube.model.UnifiedItem
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 

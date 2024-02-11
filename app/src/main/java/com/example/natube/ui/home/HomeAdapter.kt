@@ -1,5 +1,6 @@
 package com.example.natube.ui.home
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -7,8 +8,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.natube.databinding.FragmentHomeRvCategoryBtnBinding
-import com.example.natube.databinding.FragmentHomeRvCategoryItemBinding
+import com.example.natube.databinding.FragmentHomeRvChipBinding
+import com.example.natube.databinding.FragmentHomeRvItemBinding
 import com.example.natube.databinding.FragmentHomeTitleBinding
 
 /**
