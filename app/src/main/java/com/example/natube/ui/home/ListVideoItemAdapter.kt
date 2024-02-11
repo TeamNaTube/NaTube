@@ -1,7 +1,11 @@
 package com.example.natube.ui.home
 
+import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -23,7 +27,11 @@ class ListVideoItemAdapter(private val viewModel: HomeViewModel) : ListAdapter<U
     }
 
     inner class ListVideoItemViewHolder(binding: VideoItemBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+        RecyclerView.ViewHolder(binding.root), View.OnClickListener {
+
+        // 아이템
+        var cl_video_item: ConstraintLayout = binding.clVideoItem
+
         // 이미지
         val ivVideoItemThumbnail = binding.ivVideoItemThumbnail
 
@@ -31,7 +39,23 @@ class ListVideoItemAdapter(private val viewModel: HomeViewModel) : ListAdapter<U
         val tvVideoItemTitle = binding.tvVideoItemTitle
         val tvVideoItemChannelName = binding.tvVideoItemChannelName
         val tvVideoItemUploadTime = binding.tvVideoItemUploadDate
+
+        init {
+            cl_video_item.setOnClickListener(this)
+        }
+
+        // 클릭 이벤트 처리
+        override fun onClick(p0: View?) {
+            val position = adapterPosition.takeIf { it != RecyclerView.NO_POSITION } ?: return
+            val item = getItem(position)
+            Log.d("HappyListVideoItemAdapter", "^^onClicked")
+            viewModel.getSelectedItem(item)
+        }
     }
+
+
+
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding =
