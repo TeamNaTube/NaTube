@@ -201,8 +201,7 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
 
         viewModelScope.launch {
             val unifiedItems = searchVideoByCategory()
-            var list = mItemByCategoryList.value?.toMutableList() ?: emptyList()
-            list = list + unifiedItems.toMutableList()
+            var list = unifiedItems.toMutableList()
             _mItemByCategoryList.value = list
         }
     }
@@ -220,6 +219,18 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
             unifiedItems.add(item.toUnifiedItem())
         }
         unifiedItems
+    }
+
+    fun addSearchVideoByCategory(){
+        // Id 가 default값(-1)이면 검색 x
+        if (selectedCategoryId == "-1") return
+
+        viewModelScope.launch {
+            val unifiedItems = searchVideoByCategory()
+            var list = mItemByCategoryList.value?.toMutableList() ?: emptyList()
+            list = list + unifiedItems.toMutableList()
+            _mItemByCategoryList.value = list
+        }
     }
 
     /**
@@ -272,8 +283,7 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
 
         viewModelScope.launch {
             val unifiedItems = searchVideoByKeyword()
-            var list = mItemByKeywordList.value?.toMutableList() ?: emptyList()
-            list = list + unifiedItems.toMutableList()
+            var list = unifiedItems.toMutableList()
             _mItemByKeywordList.value = list
         }
     }
@@ -296,6 +306,18 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
             unifiedItems.add(item.toUnifiedItem())
         }
         unifiedItems
+    }
+
+    fun addSearchVideoByKeyword(){
+        // keywordQuery 에 값이 들어가있지 않으면 검색 x
+        if (keywordQuery.value == null) return
+
+        viewModelScope.launch {
+            val unifiedItems = searchVideoByKeyword()
+            var list = mItemByKeywordList.value?.toMutableList() ?: emptyList()
+            list = list + unifiedItems.toMutableList()
+            _mItemByKeywordList.value = list
+        }
     }
 
     fun getSelectedItem(item: UnifiedItem?) {

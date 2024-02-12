@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cl_video_item"
     android:layout_width="205dp"
-    android:layout_height="400dp"
+    android:layout_height="wrap_content"
     android:padding="10dp">
 
     <ImageView
@@ -20,6 +20,8 @@
         android:id="@+id/tv_video_item_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="2"
         android:text="@string/title"
         android:textSize="22sp"
         app:layout_constraintStart_toStartOf="parent"

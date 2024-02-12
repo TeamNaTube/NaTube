@@ -28,7 +28,6 @@ class HomeFragment : Fragment() {
     val sharedViewModel by activityViewModels<SharedViewModel>()
     private lateinit var mContext: Context
 
-    private var count = 0
 
     private val homeViewModel: HomeViewModel by activityViewModels()
     private var isOpenApp = true
@@ -54,7 +53,7 @@ class HomeFragment : Fragment() {
                         val isAtBottom = totalScrollOffset >= totalScrollRange - height
                         // 맨 아래에 위치 했을때, 추가 검색 실행
                         if (isAtBottom && totalScrollRange - height > 0) {
-                            homeViewModel.fetchSearchVideoByKeyword()
+                            homeViewModel.addSearchVideoByKeyword()
                         }
                     }
                 }
@@ -137,12 +136,11 @@ class HomeFragment : Fragment() {
              */
 
             mKeywordList.observe(viewLifecycleOwner) {
-//               updateUI()
+               updateUI()
             }
 
             mItemByKeywordList.observe(viewLifecycleOwner) {
                 updateUI()
-                //위치에 따른 ui update 필요
 
             }
             // getting selected items in either category rv or keyword rv
@@ -204,7 +202,6 @@ class HomeFragment : Fragment() {
 
 
         homeAdapter.submitList(list)
-        Log.d("countUpdateUI",count++.toString())
     }
 
     override fun onDestroyView() {
