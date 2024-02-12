@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initView() {
+        MyChannelPreferencesManager.with(this)
         LikedItemPreferencesManager.with(this)
     }
 

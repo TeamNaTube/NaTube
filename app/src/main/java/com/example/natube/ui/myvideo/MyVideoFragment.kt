@@ -1,5 +1,7 @@
 package com.example.natube.ui.myvideo
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +13,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.example.natube.EditChannelActivity
 import com.example.natube.LikedItemPreferencesManager
+import com.example.natube.MyChannelPreferencesManager
+import com.example.natube.R
 import com.example.natube.VideoDetailActivity
 import com.example.natube.databinding.FragmentMyVideosBinding
 import com.example.natube.model.UnifiedItem
@@ -26,6 +30,7 @@ class MyVideoFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val likedItems = LikedItemPreferencesManager.getAll<UnifiedItem>()
+    private val myInfo = MyChannelPreferencesManager.getAll<MyChannel>()
 
 
     override fun onCreateView(
@@ -76,9 +81,46 @@ class MyVideoFragment : Fragment() {
     }
 
     private fun initView() {
+
+        setView()
         setViewModelValues()
         setMyVideoAdapter()
         setListeners()
+    }
+
+    private fun setView() {
+        when (myInfo.size) {
+            0 -> setMyProfileDialog()
+            else -> setMyProfile()
+        }
+    }
+
+    private fun setMyProfile() {
+        with(binding) {
+            tvActivityEditChannelUsername.text = myInfo[0]?.myChannelName
+            tvActivityEditChannelUserDescription.text = myInfo[0]?.myChannelDescription
+        }
+    }
+
+    private fun setMyProfileDialog() {
+        var builder = AlertDialog.Builder(activity)
+        builder.setTitle("내 채널 설정")
+        builder.setMessage("내가 좋아요한 영상들 리스트를 보려면 내 채널 추가를 해야합니다.")
+        builder.setIcon(R.mipmap.ic_launcher)
+
+        // 버튼 클릭시에 무슨 작업을 할 것인가!
+        val listener = DialogInterface.OnClickListener { p0, p1 ->
+            when (p1) {
+                DialogInterface.BUTTON_POSITIVE -> {
+                    val addIntent = Intent(activity, EditChannelActivity::class.java)
+                    startActivity(addIntent)
+                }
+            }
+        }
+
+        builder.setPositiveButton("내 채널 추가", listener)
+
+        builder.show()
     }
 
     private fun setListeners() {

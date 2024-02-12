@@ -29,6 +29,7 @@ class EditChannelActivity : AppCompatActivity() {
     }
 
     private fun initView() {
+        LikedItemPreferencesManager.with(this)
         getMyChannelInfo()
 
     }
