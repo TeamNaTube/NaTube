@@ -52,7 +52,6 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
     //다음 페이지 정보가 들어간 위한 토큰
     private var nextPageTokenByKeyword: String = ""
     var lastPositionKeyword = 0
-
     // 유효성 검사
     private var _isValidated = MutableLiveData<Boolean>(false)
     val isValidated: LiveData<Boolean> get() = _isValidated
@@ -255,14 +254,13 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
     }
 
     // HomeFragment 에서 칩(키워드) 하나만 선택 할수 있게 해주는 함수
-    fun setKeywo정rdPosition(position: Int) {
+    fun setKeywordPosition(position: Int) {
         val newList = mKeywordList.value ?: listOf()
         for (idx in newList.indices) {
             newList[idx].isClicked = idx == position
         }
 
-        lastPositionKeyword = 0
-
+        if (nextPageTokenByKeyword.isNotBlank()) nextPageTokenByKeyword = ""
         _keywordQuery.value = newList[position].name ?: ""
         _mItemByKeywordList.value = emptyList()
         _mKeywordList.value = newList
@@ -289,7 +287,7 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
         val response =
             RetrofitInstance.api.getTrendingVideos(
                 videoCategoryId = selectedCategoryId,
-                nextPageToken = nextPageTokenByCategory
+                nextPageToken = nextPageTokenByKeyword,
             )
         val items = response.items
         nextPageTokenByKeyword = response.nextPageToken

@@ -2,8 +2,8 @@ package com.example.natube.ui.home
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,11 +11,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.hwangtube.network.RetrofitInstance
 import com.example.natube.ui.settingchips.SettingChipsDialog
 import com.example.natube.SharedViewModel
 import com.example.natube.VideoDetailActivity
 import com.example.natube.databinding.FragmentHomeBinding
-import com.example.natube.ui.settingchips.SettingChipsDialog
 
 
 class HomeFragment : Fragment() {
@@ -28,9 +28,9 @@ class HomeFragment : Fragment() {
     val sharedViewModel by activityViewModels<SharedViewModel>()
     private lateinit var mContext: Context
 
+    private var count = 0
 
     private val homeViewModel: HomeViewModel by activityViewModels()
-
     private var isOpenApp = true
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,10 +43,8 @@ class HomeFragment : Fragment() {
         binding.rvFragmentHome.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = homeAdapter
-            isNestedScrollingEnabled = false
             //추가 검색 실행
             // 절대적인 위치를 이용 하여 스크롤 처리
-
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
@@ -54,13 +52,10 @@ class HomeFragment : Fragment() {
                         val totalScrollOffset = computeVerticalScrollOffset()
                         val totalScrollRange = computeVerticalScrollRange()
                         val isAtBottom = totalScrollOffset >= totalScrollRange - height
-
-                        // 맨 아래에 위치 했을때, 추가 검색 실행 -> Animation 실행 이후 추가검색
-                        if (isAtBottom && totalScrollRange - height>0) {
+                        // 맨 아래에 위치 했을때, 추가 검색 실행
+                        if (isAtBottom && totalScrollRange - height > 0) {
                             homeViewModel.fetchSearchVideoByKeyword()
-                            Log.d("bottom","${totalScrollRange-height}")
                         }
-
                     }
                 }
             }
@@ -76,8 +71,6 @@ class HomeFragment : Fragment() {
         initView()
 
         initViewModel()
-
-
 
 
     }
@@ -144,13 +137,15 @@ class HomeFragment : Fragment() {
              */
 
             mKeywordList.observe(viewLifecycleOwner) {
-                updateUI()
+//               updateUI()
             }
 
             mItemByKeywordList.observe(viewLifecycleOwner) {
                 updateUI()
+                //위치에 따른 ui update 필요
+
             }
-// getting selected items in either category rv or keyword rv
+            // getting selected items in either category rv or keyword rv
             selectedItem.observe(viewLifecycleOwner) {
 
                 when (it) {
@@ -169,7 +164,7 @@ class HomeFragment : Fragment() {
          *  실제 Keyword 검색 하는 부분(할당량 때문에 주석 처리)
          */
         homeViewModel.keywordQuery.observe(viewLifecycleOwner) {
-//                fetchSearchVideoByKeyword()
+            homeViewModel.fetchSearchVideoByKeyword()
         }
     }
 
@@ -207,7 +202,9 @@ class HomeFragment : Fragment() {
         // 비디오 리스트
         list.add(HomeWidget.ListKeywordVideoItemWidget(keywordVideoList))
 
+
         homeAdapter.submitList(list)
+        Log.d("countUpdateUI",count++.toString())
     }
 
     override fun onDestroyView() {

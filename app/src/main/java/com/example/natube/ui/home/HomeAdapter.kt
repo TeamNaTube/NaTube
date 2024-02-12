@@ -25,12 +25,21 @@ class HomeAdapter(private val viewModel: HomeViewModel) : ListAdapter<HomeWidget
 
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<HomeWidget>() {
             override fun areItemsTheSame(oldItem: HomeWidget, newItem: HomeWidget): Boolean {
-                return oldItem == newItem
+                return oldItem::class == newItem::class
             }
 
             override fun areContentsTheSame(oldItem: HomeWidget, newItem: HomeWidget): Boolean {
-
-                return oldItem == newItem
+                val isSame: Boolean =
+                    if (oldItem is HomeWidget.TitleWidget && newItem is HomeWidget.TitleWidget) {
+                        oldItem.title == newItem.title
+                    } else if (oldItem is HomeWidget.ChipWidget && newItem is HomeWidget.ChipWidget) {
+                        oldItem.mCategories == newItem.mCategories
+                    } else if (oldItem is HomeWidget.ListCategoryVideoItemWidget && newItem is HomeWidget.ListCategoryVideoItemWidget) {
+                        oldItem.mUnifiedItems == newItem.mUnifiedItems
+                    } else if (oldItem is HomeWidget.ListKeywordVideoItemWidget && newItem is HomeWidget.ListKeywordVideoItemWidget) {
+                        oldItem.mUnifiedItems == newItem.mUnifiedItems
+                    } else false
+                return isSame
             }
         }
 
@@ -161,7 +170,7 @@ class HomeAdapter(private val viewModel: HomeViewModel) : ListAdapter<HomeWidget
 
     inner class ListKeywordVideoItemViewHolder(binding: FragmentHomeRvItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        private val rvListVideoItem = binding.rvListVideoItem
+        val rvListVideoItem = binding.rvListVideoItem
         val listKeywordVideoAdapter = ListVideoItemAdapter(viewModel)
 
         init {
