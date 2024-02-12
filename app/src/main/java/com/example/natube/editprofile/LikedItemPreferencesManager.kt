@@ -1,4 +1,4 @@
-package com.example.natube
+package com.example.natube.editprofile
 
 import android.content.Context
 import android.content.SharedPreferences
