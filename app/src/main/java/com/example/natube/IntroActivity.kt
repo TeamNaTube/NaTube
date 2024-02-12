@@ -44,7 +44,7 @@ class IntroActivity : AppCompatActivity() {
                 override fun onAnimationEnd(animation: Animator) {
                     laTitle.apply{
                         visibility = View.VISIBLE
-                        setMinAndMaxProgress(0.0f, 1.0f)
+                        setMinAndMaxProgress(0.0f, 0.5f)
                         laTitle.playAnimation()
                     }
                 }
