@@ -1,5 +1,6 @@
 package com.example.natube.ui.search
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,7 +9,7 @@ import com.example.natube.databinding.VideoItemBinding
 import com.example.natube.model.UnifiedItem
 import com.bumptech.glide.Glide
 
-class SearchAdapter : RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
+class SearchAdapter(private val viewModel: SearchViewModel) : RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
     var searchResults: List<UnifiedItem> = listOf()
         set(value) {
             field = value
@@ -35,6 +36,11 @@ class SearchAdapter : RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
 
         override fun onClick(v: View?) {
             // 아이템 클릭 시 동작 정의
+            val position = adapterPosition.takeIf { it != RecyclerView.NO_POSITION } ?: return
+            val item = searchResults[position]
+//            val item = getItem(position)
+            Log.d("HappyListVideoItemAdapter", "^^onClicked")
+            viewModel.getSelectedItem(item)
         }
     }
 
