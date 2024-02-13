@@ -23,7 +23,7 @@
         android:ellipsize="end"
         android:maxLines="2"
         android:text="@string/title"
-        android:textSize="22sp"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/iv_video_item_thumbnail" />
 
