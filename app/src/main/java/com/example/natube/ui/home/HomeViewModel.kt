@@ -289,16 +289,16 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
     }
 
     private suspend fun searchVideoByKeyword() = withContext(Dispatchers.IO) {
-//        val response =
-//            RetrofitInstance.api.getSearchingVideos(
-//                query = keywordQuery.value.toString(),
-//                nextPageToken = nextPageTokenByKeyword
-//            )
         val response =
-            RetrofitInstance.api.getTrendingVideos(
-                videoCategoryId = selectedCategoryId,
-                nextPageToken = nextPageTokenByKeyword,
+            RetrofitInstance.api.getSearchingVideos(
+                query = keywordQuery.value.toString(),
+                nextPageToken = nextPageTokenByKeyword
             )
+//        val response =
+//            RetrofitInstance.api.getTrendingVideos(
+//                videoCategoryId = selectedCategoryId,
+//                nextPageToken = nextPageTokenByKeyword,
+//            )
         val items = response.items
         nextPageTokenByKeyword = response.nextPageToken
         val unifiedItems = mutableListOf<UnifiedItem>()
