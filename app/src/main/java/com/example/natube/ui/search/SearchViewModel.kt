@@ -65,4 +65,8 @@ class SearchViewModel : ViewModel() {
         val chosenItem: UnifiedItem? = item?.copy()
         _selectedItem.value = chosenItem
     }
+
+    fun initializeSelectedItem() {
+        _selectedItem.value = null
+    }
 }

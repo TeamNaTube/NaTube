@@ -39,15 +39,12 @@ class MyVideoFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         Log.d("HappyMyVideo", "^^ from sharedpref $likedItems")
-        val myVideoViewModel =
-            ViewModelProvider(this)[MyVideoViewModel::class.java]
 
         _binding = FragmentMyVideosBinding.inflate(inflater, container, false)
-        val root: View = binding.root
 
 
 
-        return root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -76,7 +73,7 @@ class MyVideoFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        likedItems = LikedItemPreferencesManager.getAll<UnifiedItem>()
+        likedItems = LikedItemPreferencesManager.getAll()
         myVideoAdapter.submitList(likedItems)
         myInfo = MyChannelPreferencesManager.getAll()
         onResumeView()
