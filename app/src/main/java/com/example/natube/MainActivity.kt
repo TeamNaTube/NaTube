@@ -48,6 +48,13 @@ class MainActivity : AppCompatActivity() {
         LikedItemPreferencesManager.with(this)
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        MyChannelPreferencesManager.with(this)
+        LikedItemPreferencesManager.with(this)
+    }
+
     private fun updateLike() {
 
         Log.d("happyMainActivity", "^^ 여기 실행 됨? ${intent.hasExtra("selected item")}")

@@ -2,6 +2,7 @@ package com.example.natube.editprofile
 
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
@@ -31,7 +32,9 @@ class EditChannelActivity : AppCompatActivity() {
     // 내 채널 정보 변수들
     private lateinit var myInfo: MyChannel
     private lateinit var name: String
-    private lateinit var description: String
+    private var description: String? = null
+    private var profileUri: Uri? = null
+    private var backgroundUri: Uri? = null
 
     // 이미지 업로드 관련 변수
     private var profileResId: Int? = null
@@ -58,15 +61,27 @@ class EditChannelActivity : AppCompatActivity() {
     private fun setCompleteButton() {
         binding.btnActivityEditChannelComplete.isEnabled = true
         binding.btnActivityEditChannelComplete.setOnClickListener {
-            myInfo = MyChannel(name,null,null,description)
-            MyChannelPreferencesManager.put(myInfo,myInfo.myChannelName!!)
+            myInfo = MyChannel(name,profileUri,backgroundUri,description)
+            when (allInfo.size) {
+                0 -> {
+                    MyChannelPreferencesManager.put(myInfo,myInfo.myChannelName!!)
+                    Log.d("happyedit","^^ ADD: my profile details are added")
+                    Log.d("happyeditsharedpref", "^^ SP ${MyChannelPreferencesManager.myChannelPreferences.all}")
+
+                }
+                else -> {
+                    MyChannelPreferencesManager.remove(allInfo[0], allInfo[0]?.myChannelName!!)
+                    MyChannelPreferencesManager.put(myInfo, myInfo.myChannelName!!)
+                    Log.d("happyedit","^^ UPDATE: my profile details are updated")
+                }
+            }
+
             finish()
         }
     }
 
     private fun initView() {
         binding.btnActivityEditChannelComplete.isEnabled = false
-        LikedItemPreferencesManager.with(this)
         MyChannelPreferencesManager.with(this)
         getMyChannelInfo()
         setListener()
@@ -88,12 +103,11 @@ class EditChannelActivity : AppCompatActivity() {
                 description = it.toString()
             }
 
-            // button listeners
+            // image button listeners
             ivActivityEditChannelProfileImage.setOnClickListener {
                 Log.d("happyEdit", "^^ Profile clicked")
                 buttonType = "profile"
                 val permission = android.Manifest.permission.READ_EXTERNAL_STORAGE
-                // TODO: 한번 권한 거부하면 다시 요청이 불가능한 문제. 버튼이 무반응이 된다.
                 if (ContextCompat.checkSelfPermission(this@EditChannelActivity, permission)
                     != PackageManager.PERMISSION_GRANTED
                 ) requestPermissionLauncher.launch(permission)
@@ -103,12 +117,13 @@ class EditChannelActivity : AppCompatActivity() {
                 Log.d("happyEdit", "^^ Background Clicked")
                 buttonType = "background"
                 val permission = android.Manifest.permission.READ_EXTERNAL_STORAGE
-                // TODO: 한번 권한 거부하면 다시 요청이 불가능한 문제. 버튼이 무반응이 된다.
                 if (ContextCompat.checkSelfPermission(this@EditChannelActivity, permission)
                     != PackageManager.PERMISSION_GRANTED
                 ) requestPermissionLauncher.launch(permission)
                 else openGallery()
             }
+
+
 
         }
     }
@@ -125,8 +140,14 @@ class EditChannelActivity : AppCompatActivity() {
                 profileResId = null
                 profilePath = RealPathUtil.getRealPathFromURI_API19(this, it)
                 when (buttonType) {
-                    "profile" -> binding.ivActivityEditChannelProfileImage.setImageURI(it)
-                    "background" -> binding.ivActivityEditChannelImgBackground.setImageURI(it)
+                    "profile" -> {
+                        profileUri = it
+                        binding.ivActivityEditChannelProfileImage.setImageURI(it)
+                    }
+                    "background" -> {
+                        backgroundUri = it
+                        binding.ivActivityEditChannelImgBackground.setImageURI(it)
+                    }
                 }
 
             } else {

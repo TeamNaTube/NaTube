@@ -11,7 +11,6 @@ class VideoDetailActivityViewModel : ViewModel() {
 
     private var _item = MutableLiveData<UnifiedItem?>()
 
-
     val item : LiveData<UnifiedItem?> = _item
     fun removeLike(itemDetail: UnifiedItem) {
         Log.d("HappyDetailVM", "^^ removeLike ${itemDetail.isLike}")
@@ -28,8 +27,4 @@ class VideoDetailActivityViewModel : ViewModel() {
         Log.d("HappyDetailVM", "^^ addLike ${itemDetail.isLike} changed?")
         _item.value = itemDetail
     }
-
-
-
-
 }

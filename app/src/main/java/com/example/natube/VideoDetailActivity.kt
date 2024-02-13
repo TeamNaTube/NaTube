@@ -29,9 +29,6 @@ class VideoDetailActivity : AppCompatActivity() {
     // 뷰 모델
     private val viewModel: VideoDetailActivityViewModel by viewModels()
 
-    // 선택된 아이템 받아오기
-    lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
-
     // 선택된 아이템 지연초기화
     private lateinit var itemDetail: UnifiedItem
 

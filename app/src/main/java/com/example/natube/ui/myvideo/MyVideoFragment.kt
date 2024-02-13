@@ -30,7 +30,7 @@ class MyVideoFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val likedItems = LikedItemPreferencesManager.getAll<UnifiedItem>()
-    private val myInfo = MyChannelPreferencesManager.getAll<MyChannel>()
+    private var myInfo = MyChannelPreferencesManager.getAll<MyChannel>()
 
 
     override fun onCreateView(
@@ -78,9 +78,18 @@ class MyVideoFragment : Fragment() {
         super.onResume()
         val likedItems = LikedItemPreferencesManager.getAll<UnifiedItem>()
         myVideoAdapter.submitList(likedItems)
+        myInfo = MyChannelPreferencesManager.getAll()
+        initView()
+        initViewModel()
+    }
+
+    private fun onResumeView() {
+        setView()
+
     }
 
     private fun initView() {
+
 
         setView()
         setViewModelValues()
@@ -99,6 +108,8 @@ class MyVideoFragment : Fragment() {
         with(binding) {
             tvActivityEditChannelUsername.text = myInfo[0]?.myChannelName
             tvActivityEditChannelUserDescription.text = myInfo[0]?.myChannelDescription
+            ivActivityEditChannelProfileImage.setImageURI(myInfo[0]?.myProfilePicture)
+            ivActivityEditChannelImgBackground.setImageURI(myInfo[0]?.myBackgroundPicture)
         }
     }
 
@@ -145,7 +156,7 @@ class MyVideoFragment : Fragment() {
 
         binding.rvFragmentMyVideoFavourites.adapter = myVideoAdapter
 
-        Log.d("happyMyVideoFragment_TagRV", "^^get SHaredPref ? ${likedItems.size}")
+        Log.d("happyMyVideoFragment TagRV", "^^get SHaredPref ? ${likedItems.size}")
         myVideoAdapter.submitList(likedItems)
 
     }
