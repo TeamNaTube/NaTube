@@ -4,11 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.natube.R
 import com.example.natube.databinding.FragmentSearchBinding
 import kotlinx.coroutines.launch
 
@@ -26,7 +30,10 @@ class SearchFragment : Fragment() {
         val root = binding.root
 
         val recyclerView: RecyclerView = binding.rvSearchResult
-        recyclerView.layoutManager = LinearLayoutManager(context)
+
+        val layoutManager = GridLayoutManager(context, 2)
+        recyclerView.layoutManager = layoutManager
+
         searchAdapter = SearchAdapter()
         recyclerView.adapter = searchAdapter
 
@@ -39,6 +46,7 @@ class SearchFragment : Fragment() {
 
             lifecycleScope.launch {
                 searchViewModel.searchVideos(query, apiKey)
+                animateButton()
             }
         }
 
@@ -48,5 +56,23 @@ class SearchFragment : Fragment() {
 
         return binding.root
     }
+
+    private fun animateButton() {
+        val anim = createAlphaAnimation(1.0f, 0.7f)
+        binding.btnSearch.startAnimation(anim)
+
+        // 버튼 색 변경
+        binding.btnSearch.setBackgroundResource(R.drawable.button_background)
+    }
+
+    private fun createAlphaAnimation(fromAlpha: Float, toAlpha: Float): Animation {
+        val alphaAnimation = AlphaAnimation(fromAlpha, toAlpha)
+        alphaAnimation.duration = 100
+        alphaAnimation.repeatCount = 1
+        alphaAnimation.repeatMode = AlphaAnimation.REVERSE
+        return alphaAnimation
+    }
+
+
 
 }
