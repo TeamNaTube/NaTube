@@ -12,6 +12,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hwangtube.network.RetrofitInstance
+import com.example.natube.RotateView
 import com.example.natube.ui.settingchips.SettingChipsDialog
 import com.example.natube.SharedViewModel
 import com.example.natube.VideoDetailActivity
@@ -69,6 +70,7 @@ class HomeFragment : Fragment() {
     private fun setButtonOnClick() {
         // 다이얼로그 수정 버튼
         binding.ivSettingChips.setOnClickListener {
+            RotateView.clickView(it)
             val dialog = SettingChipsDialog()
             dialog.show(childFragmentManager, "SettingChipsDialog")
         }
