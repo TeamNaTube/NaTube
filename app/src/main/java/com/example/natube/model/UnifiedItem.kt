@@ -2,6 +2,7 @@ package com.example.natube.model
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -23,10 +24,14 @@ data class UnifiedItem(
 
     //데이트 형식 파싱
     private fun dateTimeParsing(){
-        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.KOREA)
-        val outputFormat = SimpleDateFormat("yyyy/MM/dd'\n'HH:mm:ss", Locale.KOREA)
+        try {
+            val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.KOREA)
+            val outputFormat = SimpleDateFormat("yyyy/MM/dd'\n'HH:mm:ss", Locale.KOREA)
 
-        val inputDate = inputFormat.parse(dateTime)
-        dateTime = outputFormat.format(inputDate)
+            val inputDate = inputFormat.parse(dateTime)
+            dateTime = outputFormat.format(inputDate)
+        }catch(e: ParseException){
+
+        }
     }
 }

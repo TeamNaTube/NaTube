@@ -105,7 +105,6 @@ class HomeAdapter(private val viewModel: HomeViewModel) : ListAdapter<HomeWidget
             is HomeWidget.ListCategoryVideoItemWidget -> {
                 (holder as ListCategoryVideoItemViewHolder).apply {
                     listCategoryVideoAdapter.submitList(item.mUnifiedItems)
-                    rvListVideoItem.smoothScrollToPosition(viewModel.lastPositionCategory)
                 }
             }
 
@@ -141,7 +140,7 @@ class HomeAdapter(private val viewModel: HomeViewModel) : ListAdapter<HomeWidget
 
     inner class ListCategoryVideoItemViewHolder(binding: FragmentHomeRvItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        val rvListVideoItem = binding.rvListVideoItem
+        private val rvListVideoItem = binding.rvListVideoItem
         val listCategoryVideoAdapter = ListVideoItemAdapter(viewModel)
 
         init {
@@ -149,29 +148,13 @@ class HomeAdapter(private val viewModel: HomeViewModel) : ListAdapter<HomeWidget
                 LinearLayoutManager(rvListVideoItem.context, LinearLayoutManager.HORIZONTAL, false)
             rvListVideoItem.adapter = listCategoryVideoAdapter
 
-            //추가 검색 실행
-            rvListVideoItem.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    super.onScrolled(recyclerView, dx, dy)
 
-                    val layoutManager = recyclerView.layoutManager as LinearLayoutManager?
-                    val lastVisibleItemPosition =
-                        layoutManager?.findLastCompletelyVisibleItemPosition()
-                    val totalItemCount = recyclerView.adapter?.itemCount
-                    // 처음 상태 일때는 추가 검색 따로 실행 x
-                    if (lastVisibleItemPosition == totalItemCount?.minus(1) && lastVisibleItemPosition != -1) {
-
-                        viewModel.addSearchVideoByCategory()
-                        viewModel.lastPositionCategory = totalItemCount?.minus(1) ?: 0
-                    }
-                }
-            })
         }
     }
 
     inner class ListKeywordVideoItemViewHolder(binding: FragmentHomeRvItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        val rvListVideoItem = binding.rvListVideoItem
+        private val rvListVideoItem = binding.rvListVideoItem
         val listKeywordVideoAdapter = ListVideoItemAdapter(viewModel)
 
         init {

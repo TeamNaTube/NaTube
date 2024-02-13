@@ -42,23 +42,6 @@ class HomeFragment : Fragment() {
         binding.rvFragmentHome.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = homeAdapter
-            //추가 검색 실행
-            // 절대적인 위치를 이용 하여 스크롤 처리
-            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    super.onScrolled(recyclerView, dx, dy)
-                    recyclerView.apply {
-                        val totalScrollOffset = computeVerticalScrollOffset()
-                        val totalScrollRange = computeVerticalScrollRange()
-                        val isAtBottom = totalScrollOffset >= totalScrollRange - height
-                        // 맨 아래에 위치 했을때, 추가 검색 실행
-                        if (isAtBottom && totalScrollRange - height > 0) {
-                            homeViewModel.addSearchVideoByKeyword()
-                        }
-                    }
-                }
-            }
-            )
         }
 
         return binding.root
@@ -136,7 +119,7 @@ class HomeFragment : Fragment() {
              */
 
             mKeywordList.observe(viewLifecycleOwner) {
-               updateUI()
+                updateUI()
             }
 
             mItemByKeywordList.observe(viewLifecycleOwner) {
@@ -162,7 +145,7 @@ class HomeFragment : Fragment() {
          *  실제 Keyword 검색 하는 부분(할당량 때문에 주석 처리)
          */
         homeViewModel.keywordQuery.observe(viewLifecycleOwner) {
-//            homeViewModel.fetchSearchVideoByKeyword()
+            homeViewModel.fetchSearchVideoByKeyword()
         }
     }
 

@@ -59,6 +59,8 @@
         android:id="@+id/rv_fragment_home"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:scrollbarSize="8dp"
+        android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
