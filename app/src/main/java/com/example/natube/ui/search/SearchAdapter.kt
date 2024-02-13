@@ -1,43 +1,60 @@
+package com.example.natube.ui.search
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.natube.R
 import com.example.natube.databinding.VideoItemBinding
-import com.example.natube.model.searchmodel.Item
-import com.example.natube.model.videomodel.VideoModel
+import com.example.natube.model.UnifiedItem
+import com.bumptech.glide.Glide
 
-class SearchAdapter(private var dataSet: List<VideoModel>) :
-    RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
+class SearchAdapter : RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
+    var searchResults: List<UnifiedItem> = listOf()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
-    // ViewHolder 클래스
-    class ViewHolder(private val binding: VideoItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class SearchViewHolder(private val binding: VideoItemBinding) :
+        RecyclerView.ViewHolder(binding.root), View.OnClickListener {
 
-        fun bind(video: VideoModel) {
-            binding.ivVideoItemThumbnail.text =
-            binding.tvVideoItemTitle.text =
-            binding.tvVideoItemChannelName.text =
-            binding.tvVideoItemUploadDate.text =
+        // 아이템
+        var cl_video_item = binding.clVideoItem
+
+        // 이미지
+        val ivVideoItemThumbnail = binding.ivVideoItemThumbnail
+
+        // 텍스트
+        val tvVideoItemTitle = binding.tvVideoItemTitle
+        val tvVideoItemChannelName = binding.tvVideoItemChannelName
+        val tvVideoItemUploadTime = binding.tvVideoItemUploadDate
+
+        init {
+            cl_video_item.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            // 아이템 클릭 시 동작 정의
         }
     }
 
-    // onCreateViewHolder
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = VideoItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(binding)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = VideoItemBinding.inflate(inflater, parent, false)
+        return SearchViewHolder(binding)
     }
 
-    // onBindViewHolder
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(dataSet[position])
+    override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
+        val item = searchResults[position]
+
+        // 데이터를 뷰에 바인딩
+        Glide.with(holder.itemView.context).load(item.thumbnailsUrl).into(holder.ivVideoItemThumbnail)
+        holder.tvVideoItemTitle.text = item.videoTitle
+        holder.tvVideoItemChannelName.text = item.channelTitle
+        holder.tvVideoItemUploadTime.text = item.dateTime
     }
 
-    // getItemCount
-    override fun getItemCount(): Int = dataSet.size
-
-    // updateData 함수
-    fun updateData(newData: List<VideoModel>) {
-        dataSet = newData
-        notifyDataSetChanged()
+    override fun getItemCount(): Int {
+        return searchResults.size
     }
 }

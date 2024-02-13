@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.example.natube.databinding.ActivityMainBinding
 import com.example.natube.model.UnifiedItem
@@ -30,15 +31,12 @@ class MainActivity : AppCompatActivity() {
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
 
-<<<<<<< HEAD
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_home, R.id.navigation_search, R.id.navigation_my_video
             )
         )
 
-=======
->>>>>>> a9ed583189d09e5977897c3aae8fc969d3330812
         navView.setupWithNavController(navController)
 
         initView()

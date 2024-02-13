@@ -1,34 +1,57 @@
+package com.example.natube.ui.search
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.natube.model.videomodel.VideoModel
+import com.example.hwangtube.network.RetrofitInstance
+import com.example.natube.model.UnifiedItem
+import com.example.natube.model.searchmodel.SearchModel
 import com.example.natube.network.YoutubeAPI
-import com.example.yourapp.models.VideoModel
-import com.example.yourapp.network.YoutubeApi
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import retrofit2.HttpException
 
 class SearchViewModel : ViewModel() {
+    private val searchResults = MutableLiveData<List<UnifiedItem>>()
+    private val youtubeAPI: YoutubeAPI = RetrofitInstance.api
 
-    private val _searchResults = MutableLiveData<List<VideoModel>>()
-    val searchResults: LiveData<List<VideoModel>> get() = _searchResults
+    fun getSearchResults(): LiveData<List<UnifiedItem>> {
+        return searchResults
+    }
 
-    fun searchVideos(query: String) {
-
-        // Retrofit을 사용하여 YouTube API로부터 동영상 검색
-        YoutubeAPI.search(query).enqueue(object : Callback<List<VideoModel>> {
-            override fun onResponse(call: Call<List<VideoModel>>, response: Response<List<VideoModel>>) {
-                if (response.isSuccessful) {
-                    _searchResults.value = response.body()
-                } else {
-                    // API 요청 실패 시 처리
-                }
+    suspend fun searchVideos(query: String, apiKey: String) {
+        try {
+            val searchModel: SearchModel = withContext(Dispatchers.IO) {
+                youtubeAPI.getSearchingVideos("snippet", 10, "KR", apiKey, query)
             }
 
-            override fun onFailure(call: Call<List<VideoModel>>, t: Throwable) {
-                // 네트워크 오류 또는 기타 오류 발생 시 처리
+            if (searchModel.items != null) {
+                val items = extractItemsFromSearchResponse(searchModel)
+                searchResults.postValue(items)
+            } else {
+
             }
-        })
+        } catch (e: HttpException) {
+            //  실패 시 처리
+
+        } catch (e: Exception) {
+            // 기타 예외 처리
+        }
+    }
+
+    private fun extractItemsFromSearchResponse(response: SearchModel?): List<UnifiedItem> {
+        val items = mutableListOf<UnifiedItem>()
+        response?.items?.forEach { searchItem ->
+            val item = UnifiedItem(
+                searchItem.snippet.title,
+                searchItem.snippet.channelTitle,
+                searchItem.snippet.description,
+                searchItem.snippet.publishedAt,
+                searchItem.snippet.thumbnails.default.url,
+                searchItem.snippet.publishTime
+            )
+            items.add(item)
+        }
+        return items
     }
 }
