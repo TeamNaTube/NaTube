@@ -1,14 +1,24 @@
 package com.example.natube
 
 import android.content.Intent
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
+import android.provider.MediaStore.Audio.Media
 import android.util.Log
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.natube.databinding.ActivityVideoDetailBinding
 import com.example.natube.editprofile.LikedItemPreferencesManager
 import com.example.natube.model.UnifiedItem
+import java.io.File
+import java.net.URI
 
 class VideoDetailActivity : AppCompatActivity() {
 
@@ -20,7 +30,7 @@ class VideoDetailActivity : AppCompatActivity() {
     private val viewModel: VideoDetailActivityViewModel by viewModels()
 
     // 선택된 아이템 받아오기
-//    lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
+    lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
 
     // 선택된 아이템 지연초기화
     private lateinit var itemDetail: UnifiedItem
@@ -39,7 +49,7 @@ class VideoDetailActivity : AppCompatActivity() {
             Log.d("happyVideoDetail", "^^ ${itemDetail.isLike} is it updated from viewmodel?")
 //            getSharedPreferences("MY_PREFS_NAME", MODE_PRIVATE).edit().clear().apply()
 
-            when(it.isLike) {
+            when (it.isLike) {
                 true -> LikedItemPreferencesManager.put(it, it.thumbnailsUrl)
                 false -> LikedItemPreferencesManager.remove(it, it.thumbnailsUrl)
             }
@@ -65,12 +75,13 @@ class VideoDetailActivity : AppCompatActivity() {
     }
 
     private fun setLikeButton() {
-        binding.ibActivityDetailBtnLike.setOnClickListener{
+        binding.ibActivityDetailBtnLike.setOnClickListener {
             when (LikedItemPreferencesManager.findItem<UnifiedItem>(itemDetail.thumbnailsUrl)) {
                 null -> {
                     binding.ibActivityDetailBtnLike.setImageResource(R.drawable.ic_filled_heart)
                     viewModel.addLike(itemDetail)
                 }
+
                 else -> {
                     binding.ibActivityDetailBtnLike.setImageResource(R.drawable.ic_empty_heart)
                     viewModel.removeLike(itemDetail)
@@ -82,9 +93,12 @@ class VideoDetailActivity : AppCompatActivity() {
 
 
     private fun setBackButton() {
-        binding.btnActivityDetailBack.setOnClickListener{
+        binding.btnActivityDetailBack.setOnClickListener {
             intentLike(itemDetail)
-            Log.d("happyVideoDetail", "^^ ${itemDetail.isLike} right before closing activity (intenting)")
+            Log.d(
+                "happyVideoDetail",
+                "^^ ${itemDetail.isLike} right before closing activity (intenting)"
+            )
 
         }
     }
@@ -134,4 +148,8 @@ class VideoDetailActivity : AppCompatActivity() {
         }
 
     }
+
+
+
+
 }
