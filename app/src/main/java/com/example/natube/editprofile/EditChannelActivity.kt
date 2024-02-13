@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -36,6 +37,7 @@ class EditChannelActivity : AppCompatActivity() {
     private var profileResId: Int? = null
     private var profilePath: String? = null
     private lateinit var groupText: String
+    private lateinit var buttonType: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEditChannelBinding.inflate(layoutInflater)
@@ -89,6 +91,17 @@ class EditChannelActivity : AppCompatActivity() {
             // button listeners
             ivActivityEditChannelProfileImage.setOnClickListener {
                 Log.d("happyEdit", "^^ Profile clicked")
+                buttonType = "profile"
+                val permission = android.Manifest.permission.READ_EXTERNAL_STORAGE
+                // TODO: 한번 권한 거부하면 다시 요청이 불가능한 문제. 버튼이 무반응이 된다.
+                if (ContextCompat.checkSelfPermission(this@EditChannelActivity, permission)
+                    != PackageManager.PERMISSION_GRANTED
+                ) requestPermissionLauncher.launch(permission)
+                else openGallery()
+            }
+            ivActivityEditChannelImgBackground.setOnClickListener {
+                Log.d("happyEdit", "^^ Background Clicked")
+                buttonType = "background"
                 val permission = android.Manifest.permission.READ_EXTERNAL_STORAGE
                 // TODO: 한번 권한 거부하면 다시 요청이 불가능한 문제. 버튼이 무반응이 된다.
                 if (ContextCompat.checkSelfPermission(this@EditChannelActivity, permission)
@@ -111,8 +124,15 @@ class EditChannelActivity : AppCompatActivity() {
             if (result.resultCode == RESULT_OK) result.data?.data?.let {
                 profileResId = null
                 profilePath = RealPathUtil.getRealPathFromURI_API19(this, it)
-                binding.ivActivityEditChannelProfileImage.setImageURI(it)
-            } else Log.e("myLogTag", "result.resultCode != RESULT_OK")
+                when (buttonType) {
+                    "profile" -> binding.ivActivityEditChannelProfileImage.setImageURI(it)
+                    "background" -> binding.ivActivityEditChannelImgBackground.setImageURI(it)
+                }
+
+            } else {
+                Log.e("myLogTag", "result.resultCode != RESULT_OK")
+                Toast.makeText(this, "설정 -> 앱 에서 이미지 설정 권한을 추가해 주세요.", Toast.LENGTH_SHORT).show()
+            }
         }
 
 
@@ -156,6 +176,7 @@ class EditChannelActivity : AppCompatActivity() {
         ACTION_OPEN_DOCUMENT으로 해야 가능. 맘에 안드네..
          */
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+        intent.putExtra("Button Type", buttonType)
         pickImageLauncher.launch(intent)
     }
 }
