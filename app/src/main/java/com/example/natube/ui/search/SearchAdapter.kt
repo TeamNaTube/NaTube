@@ -38,7 +38,6 @@ class SearchAdapter(private val viewModel: SearchViewModel) : RecyclerView.Adapt
             // 아이템 클릭 시 동작 정의
             val position = adapterPosition.takeIf { it != RecyclerView.NO_POSITION } ?: return
             val item = searchResults[position]
-//            val item = getItem(position)
             Log.d("HappyListVideoItemAdapter", "^^onClicked")
             viewModel.getSelectedItem(item)
         }

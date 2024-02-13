@@ -37,21 +37,7 @@ object MyChannelPreferencesManager {
         //Save that String in SharedPreferences
         myChannelPreferences.edit().putString(key, jsonString).apply()
     }
-    /**
-     * thumbnail URL을 이용하여 이미 좋아요 리스트에 이 아이템이 있는지 확인(find) 해주는 함수
-     *
-     * @param key Shared Preference key with which object was saved.
-     **/
-    inline fun <reified T> findItem(id: String): T? {
-        //We read JSON String which was saved
-        val keys = myChannelPreferences.all.keys.toMutableList()
 
-        val found = keys.find {
-            it == id
-        }
-        val value = myChannelPreferences.getString(found, null)
-        return GsonBuilder().create().fromJson(value, T::class.java)
-    }
 
     /**
      * thumbnail URL을 이용하여 좋아요를 제거해주는 함수

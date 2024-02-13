@@ -31,12 +31,6 @@ class MainActivity : AppCompatActivity() {
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
 
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.navigation_home, R.id.navigation_search, R.id.navigation_my_video
-            )
-        )
-
         navView.setupWithNavController(navController)
 
         initView()
@@ -72,19 +66,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-//    private fun initViewModel() {
-//        // getting selected items in either category rv or keyword rv
-//        selectedItem.observe(viewLifecycleOwner){
-//
-//            val intent = Intent(activity, VideoDetailActivity::class.java).apply {
-//                putExtra("selected item", it)
-//            }
-//            activity?.setResult(RESULT_OK, intent)
-//            if (activity?.isFinishing == false) activity?.finish()
-//
-//
-//        }
-//    }
 
     private fun initViewModel(){
         val factory = ViewModelFactory(HomeRepository(appData))

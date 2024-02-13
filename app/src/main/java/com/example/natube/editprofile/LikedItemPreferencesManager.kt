@@ -11,8 +11,6 @@ import com.google.gson.GsonBuilder
  */
 object LikedItemPreferencesManager {
 
-
-
     //Shared Preference field used to save and retrieve JSON string
     lateinit var preferences: SharedPreferences
 
