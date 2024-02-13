@@ -4,9 +4,9 @@ package com.example.natube.network
 
 import com.example.natube.model.searchmodel.SearchModel
 import com.example.natube.model.videomodel.VideoModel
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
-
 
 
 interface YoutubeAPI {
@@ -32,6 +32,6 @@ interface YoutubeAPI {
         @Query("maxResults") maxResults: Int = API_MAX_RESULT,
         @Query("regionCode") regionCode: String = API_REGION,
         @Query("key") apiKey: String = YOUTUBE_API_KEY,
-        @Query("q") query : String
+        @Query("q") query : String,
     ) : SearchModel
 }
