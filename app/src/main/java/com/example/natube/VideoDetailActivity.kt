@@ -101,9 +101,10 @@ class VideoDetailActivity : AppCompatActivity() {
     }
 
     private fun intentLike(item: UnifiedItem?) {
-        val itemIntent = Intent(this, MainActivity::class.java)
-        itemIntent.putExtra("selected item", item)
-        setResult(RESULT_OK, itemIntent)
+//        val itemIntent = Intent(this, MainActivity::class.java)
+//        itemIntent.putExtra("selected item", item)
+//        setResult(RESULT_OK, itemIntent)
+        Log.d("happyvideoDetail","흠 좀 이상")
         finish()
     }
 

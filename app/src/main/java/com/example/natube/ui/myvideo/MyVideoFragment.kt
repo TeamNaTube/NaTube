@@ -29,7 +29,7 @@ class MyVideoFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private val likedItems = LikedItemPreferencesManager.getAll<UnifiedItem>()
+    private var likedItems = LikedItemPreferencesManager.getAll<UnifiedItem>()
     private var myInfo = MyChannelPreferencesManager.getAll<MyChannel>()
 
 
@@ -76,11 +76,11 @@ class MyVideoFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        val likedItems = LikedItemPreferencesManager.getAll<UnifiedItem>()
+        likedItems = LikedItemPreferencesManager.getAll<UnifiedItem>()
         myVideoAdapter.submitList(likedItems)
         myInfo = MyChannelPreferencesManager.getAll()
-        initView()
-        initViewModel()
+        onResumeView()
+
     }
 
     private fun onResumeView() {
