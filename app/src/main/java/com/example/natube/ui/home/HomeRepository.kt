@@ -1,6 +1,7 @@
 package com.example.natube.ui.home
 
 import android.content.SharedPreferences
+import com.example.natube.AppData
 import com.example.natube.model.Chip
 import com.google.gson.Gson
 
