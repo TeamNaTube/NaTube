@@ -8,7 +8,6 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 
-
 interface YoutubeAPI {
     companion object{
         private const val API_MAX_RESULT = 16
