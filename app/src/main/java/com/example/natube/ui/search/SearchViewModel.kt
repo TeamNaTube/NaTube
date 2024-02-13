@@ -22,7 +22,7 @@ class SearchViewModel : ViewModel() {
     suspend fun searchVideos(query: String, apiKey: String) {
         try {
             val searchModel: SearchModel = withContext(Dispatchers.IO) {
-                youtubeAPI.getSearchingVideos("snippet", 10, "KR", apiKey, query)
+                youtubeAPI.getSearchingVideos("snippet", 10, "KR", apiKey, query,"")
             }
 
             if (searchModel.items != null) {

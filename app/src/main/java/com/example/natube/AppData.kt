@@ -1,8 +1,9 @@
-package com.example.natube.ui.home
+package com.example.natube
 
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import com.example.natube.ui.home.HomeRepository
 
 data class AppData(val application: Application){
     val prefCategory : SharedPreferences =

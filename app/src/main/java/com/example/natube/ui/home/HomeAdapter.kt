@@ -25,12 +25,21 @@ class HomeAdapter(private val viewModel: HomeViewModel) : ListAdapter<HomeWidget
 
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<HomeWidget>() {
             override fun areItemsTheSame(oldItem: HomeWidget, newItem: HomeWidget): Boolean {
-                return oldItem == newItem
+                return oldItem::class == newItem::class
             }
 
             override fun areContentsTheSame(oldItem: HomeWidget, newItem: HomeWidget): Boolean {
-
-                return oldItem == newItem
+                val isSame: Boolean =
+                    if (oldItem is HomeWidget.TitleWidget && newItem is HomeWidget.TitleWidget) {
+                        oldItem.title == newItem.title
+                    } else if (oldItem is HomeWidget.ChipWidget && newItem is HomeWidget.ChipWidget) {
+                        oldItem.mCategories == newItem.mCategories
+                    } else if (oldItem is HomeWidget.ListCategoryVideoItemWidget && newItem is HomeWidget.ListCategoryVideoItemWidget) {
+                        oldItem.mUnifiedItems == newItem.mUnifiedItems
+                    } else if (oldItem is HomeWidget.ListKeywordVideoItemWidget && newItem is HomeWidget.ListKeywordVideoItemWidget) {
+                        oldItem.mUnifiedItems == newItem.mUnifiedItems
+                    } else false
+                return isSame
             }
         }
 
@@ -96,7 +105,6 @@ class HomeAdapter(private val viewModel: HomeViewModel) : ListAdapter<HomeWidget
             is HomeWidget.ListCategoryVideoItemWidget -> {
                 (holder as ListCategoryVideoItemViewHolder).apply {
                     listCategoryVideoAdapter.submitList(item.mUnifiedItems)
-                    rvListVideoItem.smoothScrollToPosition(viewModel.lastPositionCategory)
                 }
             }
 
@@ -132,7 +140,7 @@ class HomeAdapter(private val viewModel: HomeViewModel) : ListAdapter<HomeWidget
 
     inner class ListCategoryVideoItemViewHolder(binding: FragmentHomeRvItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        val rvListVideoItem = binding.rvListVideoItem
+        private val rvListVideoItem = binding.rvListVideoItem
         val listCategoryVideoAdapter = ListVideoItemAdapter(viewModel)
 
         init {
@@ -140,22 +148,7 @@ class HomeAdapter(private val viewModel: HomeViewModel) : ListAdapter<HomeWidget
                 LinearLayoutManager(rvListVideoItem.context, LinearLayoutManager.HORIZONTAL, false)
             rvListVideoItem.adapter = listCategoryVideoAdapter
 
-            //추가 검색 실행
-            rvListVideoItem.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    super.onScrolled(recyclerView, dx, dy)
 
-                    val layoutManager = recyclerView.layoutManager as LinearLayoutManager?
-                    val lastVisibleItemPosition =
-                        layoutManager?.findLastCompletelyVisibleItemPosition()
-                    val totalItemCount = recyclerView.adapter?.itemCount
-                    // 처음 상태 일때는 추가 검색 따로 실행 x
-                    if (lastVisibleItemPosition == totalItemCount?.minus(1) && lastVisibleItemPosition != -1) {
-                        viewModel.fetchSearchVideoByCategory()
-                        viewModel.lastPositionCategory = totalItemCount?.minus(1) ?:0
-                    }
-                }
-            })
         }
     }
 

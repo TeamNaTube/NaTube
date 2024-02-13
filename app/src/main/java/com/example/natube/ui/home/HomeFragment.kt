@@ -3,16 +3,20 @@ package com.example.natube.ui.home
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.hwangtube.network.RetrofitInstance
+import com.example.natube.RotateView
+import com.example.natube.ui.settingchips.SettingChipsDialog
 import com.example.natube.SharedViewModel
 import com.example.natube.VideoDetailActivity
 import com.example.natube.databinding.FragmentHomeBinding
-import com.example.natube.ui.settingchips.SettingChipsDialog
 
 
 class HomeFragment : Fragment() {
@@ -27,14 +31,12 @@ class HomeFragment : Fragment() {
 
 
     private val homeViewModel: HomeViewModel by activityViewModels()
-
     private var isOpenApp = true
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-//        homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
@@ -54,8 +56,6 @@ class HomeFragment : Fragment() {
         initViewModel()
 
 
-
-
     }
 
     private fun initView() {
@@ -70,6 +70,7 @@ class HomeFragment : Fragment() {
     private fun setButtonOnClick() {
         // 다이얼로그 수정 버튼
         binding.ivSettingChips.setOnClickListener {
+            RotateView.clickView(it)
             val dialog = SettingChipsDialog()
             dialog.show(childFragmentManager, "SettingChipsDialog")
         }
@@ -125,8 +126,9 @@ class HomeFragment : Fragment() {
 
             mItemByKeywordList.observe(viewLifecycleOwner) {
                 updateUI()
+
             }
-// getting selected items in either category rv or keyword rv
+            // getting selected items in either category rv or keyword rv
             selectedItem.observe(viewLifecycleOwner) {
 
                 when (it) {
@@ -145,7 +147,7 @@ class HomeFragment : Fragment() {
          *  실제 Keyword 검색 하는 부분(할당량 때문에 주석 처리)
          */
         homeViewModel.keywordQuery.observe(viewLifecycleOwner) {
-//                fetchSearchVideoByKeyword()
+//            homeViewModel.fetchSearchVideoByKeyword()
         }
     }
 
@@ -183,6 +185,7 @@ class HomeFragment : Fragment() {
         // 비디오 리스트
         list.add(HomeWidget.ListKeywordVideoItemWidget(keywordVideoList))
 
+
         homeAdapter.submitList(list)
     }
 
@@ -190,5 +193,4 @@ class HomeFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
 }

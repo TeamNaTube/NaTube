@@ -29,8 +29,8 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
     val mItemByCategoryList: LiveData<List<UnifiedItem>> get() = _mItemByCategoryList
 
     //다음 페이지 정보가 들어간 위한 토큰
-    private var nextPageToken: String = ""
-    var lastPositionCategory = 0
+    private var nextPageTokenByCategory: String = ""
+
     // Dialog의  KeywordList
     private var _preKeywordList = MutableLiveData<List<Chip>>(listOf())
     val preKeywordList: LiveData<List<Chip>> get() = _preKeywordList
@@ -48,7 +48,8 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
     private var _mItemByKeywordList = MutableLiveData<List<UnifiedItem>>(listOf())
     val mItemByKeywordList: LiveData<List<UnifiedItem>> get() = _mItemByKeywordList
 
-
+    //다음 페이지 정보가 들어간 위한 토큰
+    private var nextPageTokenByKeyword: String = ""
     // 유효성 검사
     private var _isValidated = MutableLiveData<Boolean>(false)
     val isValidated: LiveData<Boolean> get() = _isValidated
@@ -183,8 +184,7 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
 
 
         //선택 되어 지면 검색 실행(옵저버 에 연결)
-        lastPositionCategory = 0
-        if (nextPageToken.isNotBlank()) nextPageToken = ""
+        if (nextPageTokenByCategory.isNotBlank()) nextPageTokenByCategory = ""
         _mItemByCategoryList.value = emptyList()
         _mSelectedCategoryList.value = newList
 
@@ -195,11 +195,9 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
     fun fetchSearchVideoByCategory() {
         // Id 가 default값(-1)이면 검색 x
         if (selectedCategoryId == "-1") return
-
         viewModelScope.launch {
             val unifiedItems = searchVideoByCategory()
-            var list = mItemByCategoryList.value?.toMutableList() ?: emptyList()
-            list = list + unifiedItems.toMutableList()
+            var list = unifiedItems.toMutableList()
             _mItemByCategoryList.value = list
         }
     }
@@ -208,16 +206,17 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
         val response =
             RetrofitInstance.api.getTrendingVideos(
                 videoCategoryId = selectedCategoryId,
-                nextPageToken = nextPageToken
+                nextPageToken = nextPageTokenByCategory
             )
         val items = response.items
-        nextPageToken = response.nextPageToken
         val unifiedItems = mutableListOf<UnifiedItem>()
         items.forEach { item ->
             unifiedItems.add(item.toUnifiedItem())
         }
         unifiedItems
     }
+
+
 
     /**
      *  Keyword 부분
@@ -256,7 +255,9 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
         for (idx in newList.indices) {
             newList[idx].isClicked = idx == position
         }
+
         _keywordQuery.value = newList[position].name ?: ""
+        _mItemByKeywordList.value = emptyList()
         _mKeywordList.value = newList
     }
 
@@ -264,21 +265,38 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
         // keywordQuery 에 값이 들어가있지 않으면 검색 x
         if (keywordQuery.value == null) return
 
+
         viewModelScope.launch {
             val unifiedItems = searchVideoByKeyword()
-            _mItemByKeywordList.value = unifiedItems
+            var list = unifiedItems.toMutableList()
+            _mItemByKeywordList.value = list
+
+
+
         }
     }
 
     private suspend fun searchVideoByKeyword() = withContext(Dispatchers.IO) {
-        val items =
-            RetrofitInstance.api.getSearchingVideos(query = keywordQuery.value.toString()).items
+        val response =
+            RetrofitInstance.api.getSearchingVideos(
+                query = keywordQuery.value.toString(),
+                nextPageToken = nextPageTokenByKeyword
+            )
+//        val response =
+//            RetrofitInstance.api.getTrendingVideos(
+//                videoCategoryId = selectedCategoryId,
+//                nextPageToken = nextPageTokenByKeyword,
+//            )
+        val items = response.items
+
         val unifiedItems = mutableListOf<UnifiedItem>()
         items.forEach { item ->
             unifiedItems.add(item.toUnifiedItem())
         }
         unifiedItems
     }
+
+
 
     fun getSelectedItem(item: UnifiedItem?) {
         val chosenItem: UnifiedItem? = item?.copy()
