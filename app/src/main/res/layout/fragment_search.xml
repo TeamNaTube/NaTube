@@ -45,6 +45,8 @@
 
     </androidx.appcompat.widget.Toolbar>
 
+
+
     <RelativeLayout
         android:id="@+id/rl_search"
         android:layout_width="match_parent"
@@ -55,6 +57,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/activity_detail_toolbar">
+
 
     <EditText
         android:id="@+id/et_search"
@@ -91,7 +94,10 @@
             android:textSize="16sp"
             android:textStyle="bold">
         </Button>
+
     </RelativeLayout>
+
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_searchResult"

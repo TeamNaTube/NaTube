@@ -1,5 +1,6 @@
 package com.example.natube.ui.search
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.natube.databinding.VideoItemBinding
 import com.example.natube.model.UnifiedItem
 import com.bumptech.glide.Glide
+import com.example.natube.VideoDetailActivity
 
 class SearchAdapter : RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
     var searchResults: List<UnifiedItem> = listOf()
@@ -34,7 +36,17 @@ class SearchAdapter : RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
         }
 
         override fun onClick(v: View?) {
+
             // 아이템 클릭 시 동작 정의
+            val position = adapterPosition
+            if (position != RecyclerView.NO_POSITION) {
+                val item = searchResults[position]
+
+                // VideoDetailActivity로 이동
+                val intent = Intent(v?.context, VideoDetailActivity::class.java)
+                intent.putExtra("selected item", item)
+                v?.context?.startActivity(intent)
+            }
         }
     }
 
