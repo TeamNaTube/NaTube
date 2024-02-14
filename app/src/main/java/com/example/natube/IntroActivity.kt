@@ -14,6 +14,7 @@ class IntroActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+
         val laLogo = binding.laLogo
         val laTitle = binding.laTitle
 
