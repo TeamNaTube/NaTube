@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/grey</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:fontFamily">@font/en_nuly</item>
     </style>
 
     <style name="Theme.NaTube" parent="Base.Theme.NaTube" />
