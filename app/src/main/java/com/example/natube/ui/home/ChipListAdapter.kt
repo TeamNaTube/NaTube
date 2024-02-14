@@ -1,6 +1,7 @@
 package com.example.natube.ui.home
 
 import android.graphics.Color
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -45,10 +46,12 @@ class ChipListAdapter(private val viewModel: HomeViewModel) :
                 if (isChecked) {
                     setChipBackgroundColorResource(R.color.green)
                     setTextColor(Color.WHITE)
+                    setTypeface(null, Typeface.BOLD)
                 }
                 else {
                     setChipBackgroundColorResource(R.color.grey)
                     setTextColor(Color.BLACK)
+                    setTypeface(null, Typeface.NORMAL)
                 }
                 when (item.categoryId) {
                     // Keyword 의 경우

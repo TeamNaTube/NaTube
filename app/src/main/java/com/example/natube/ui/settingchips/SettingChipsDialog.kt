@@ -3,6 +3,7 @@ package com.example.natube.ui.settingchips
 import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -43,9 +44,11 @@ class SettingChipsDialog : DialogFragment() {
                         if (isChecked) {
                             setChipBackgroundColorResource(R.color.green)
                             setTextColor(Color.WHITE)
+                            setTypeface(null, Typeface.BOLD)
                         } else {
                             setChipBackgroundColorResource(R.color.grey)
                             setTextColor(Color.BLACK)
+                            setTypeface(null, Typeface.NORMAL)
                         }
 
                         setOnClickListener {
@@ -55,9 +58,11 @@ class SettingChipsDialog : DialogFragment() {
                             if (isChecked) {
                                 setChipBackgroundColorResource(R.color.green)
                                 setTextColor(Color.WHITE)
+                                setTypeface(null, Typeface.BOLD)
                             } else {
                                 setChipBackgroundColorResource(R.color.grey)
                                 setTextColor(Color.BLACK)
+                                setTypeface(null, Typeface.NORMAL)
                             }
                         }
                     }
