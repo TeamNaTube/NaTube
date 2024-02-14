@@ -39,8 +39,15 @@ class SettingChipsDialog : DialogFragment() {
                     chipBinding.chipCategory.apply {
                         isChecked = chip.isClicked
                         text = chip.name
+
+                        if (isChecked) setChipBackgroundColorResource(R.color.green)
+                        else setChipBackgroundColorResource(R.color.grey)
+
                         setOnClickListener {
                             homeViewModel.isClickedItem(index)
+
+                            if (isChecked) setChipBackgroundColorResource(R.color.green)
+                            else setChipBackgroundColorResource(R.color.grey)
                         }
                     }
                     // 생성된 Chip 인스턴스를 ChipGroup에 추가
