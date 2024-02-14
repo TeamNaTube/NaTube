@@ -1,30 +1,18 @@
 package com.example.natube
 
-import android.content.Intent
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
-import android.provider.MediaStore.Audio.Media
 import android.util.Log
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.example.natube.databinding.ActivityVideoDetailBinding
 import com.example.natube.editprofile.LikedItemPreferencesManager
 import com.example.natube.model.UnifiedItem
-import java.io.File
-import java.net.URI
 
 class VideoDetailActivity : AppCompatActivity() {
 
     // 뷰 바인딩 및 변수 초기화
     private lateinit var binding: ActivityVideoDetailBinding
-//    private lateinit var mContext: Context
 
     // 뷰 모델
     private val viewModel: VideoDetailActivityViewModel by viewModels()
@@ -44,7 +32,6 @@ class VideoDetailActivity : AppCompatActivity() {
         viewModel.item.observe(this) {
             itemDetail = it!!
             Log.d("happyVideoDetail", "^^ ${itemDetail.isLike} is it updated from viewmodel?")
-//            getSharedPreferences("MY_PREFS_NAME", MODE_PRIVATE).edit().clear().apply()
 
             when (it.isLike) {
                 true -> LikedItemPreferencesManager.put(it, it.thumbnailsUrl)
@@ -57,7 +44,6 @@ class VideoDetailActivity : AppCompatActivity() {
         LikedItemPreferencesManager.with(this)
         getSelectedItem()
         setUpListeners()
-
 
     }
 
@@ -91,7 +77,7 @@ class VideoDetailActivity : AppCompatActivity() {
 
     private fun setBackButton() {
         binding.btnActivityDetailBack.setOnClickListener {
-            intentLike(itemDetail)
+            finish()
             Log.d(
                 "happyVideoDetail",
                 "^^ ${itemDetail.isLike} right before closing activity (intenting)"
@@ -100,13 +86,6 @@ class VideoDetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun intentLike(item: UnifiedItem?) {
-//        val itemIntent = Intent(this, MainActivity::class.java)
-//        itemIntent.putExtra("selected item", item)
-//        setResult(RESULT_OK, itemIntent)
-        Log.d("happyvideoDetail","흠 좀 이상")
-        finish()
-    }
 
     private fun getSelectedItem() {
         if (intent.hasExtra("selected item")) {
@@ -114,17 +93,6 @@ class VideoDetailActivity : AppCompatActivity() {
             setView()
         }
 
-
-//        activityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult ()) {
-//            if (it.resultCode == RESULT_OK) {
-//                val address = it.data?.getParcelableExtra<UnifiedItem>("selected item")
-//                Log.d("happyvideoDetailactivity", "^^ $address")
-//                setView(address)
-//            }
-//        }
-//
-////        val intent = Intent(this, MainActivity::class.java)
-////        activityResultLauncher.launch(intent)
     }
 
     private fun setView() {
@@ -146,8 +114,4 @@ class VideoDetailActivity : AppCompatActivity() {
         }
 
     }
-
-
-
-
 }

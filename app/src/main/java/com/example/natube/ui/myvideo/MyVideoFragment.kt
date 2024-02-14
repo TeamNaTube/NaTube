@@ -3,6 +3,7 @@ package com.example.natube.ui.myvideo
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,8 +18,10 @@ import com.example.natube.R
 import com.example.natube.VideoDetailActivity
 import com.example.natube.databinding.FragmentMyVideosBinding
 import com.example.natube.model.UnifiedItem
+import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
 
-class MyVideoFragment : Fragment() {
+class MyVideoFragment : Fragment(), UriJsonAdapter {
 
     private var _binding: FragmentMyVideosBinding? = null
     private val myVideoViewModel: MyVideoViewModel by viewModels()
@@ -28,8 +31,13 @@ class MyVideoFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
+    private val gsonBuilder = GsonBuilder()
+
     private var likedItems = LikedItemPreferencesManager.getAll<UnifiedItem>()
     private var myInfo = MyChannelPreferencesManager.getAll<MyChannel>()
+
+
+
 
 
     override fun onCreateView(
@@ -40,6 +48,7 @@ class MyVideoFragment : Fragment() {
         Log.d("HappyMyVideo", "^^ from sharedpref $likedItems")
 
         _binding = FragmentMyVideosBinding.inflate(inflater, container, false)
+
 
 
 
@@ -111,10 +120,13 @@ class MyVideoFragment : Fragment() {
     }
 
     private fun setMyProfile() {
+
+        gsonBuilder.registerTypeAdapter(Uri::class.java, UriJsonAdapter())
+        val type = object : TypeToken<Uri>() {}.type
         with(binding) {
             tvActivityEditChannelUsername.text = myInfo[0]?.myChannelName
             tvActivityEditChannelUserDescription.text = myInfo[0]?.myChannelDescription
-            ivActivityEditChannelProfileImage.setImageURI(myInfo[0]?.myProfilePicture)
+            ivActivityEditChannelProfileImage.setImageURI(gsonBuilder.create().fromJson(myInfo[0]?.myProfilePicture, type))
             ivActivityEditChannelImgBackground.setImageURI(myInfo[0]?.myBackgroundPicture)
         }
     }
@@ -150,7 +162,6 @@ class MyVideoFragment : Fragment() {
                 binding.tvActivityEditChannelUserDescription.text.toString()
             )
             val editIntent = Intent(activity, EditChannelActivity::class.java)
-            editIntent.putExtra("my Channel Info", myInfo)
             startActivity(editIntent)
         }
     }

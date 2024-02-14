@@ -43,7 +43,7 @@ class MyVideoAdapter(private val viewModel: MyVideoViewModel) : ListAdapter<Unif
         RecyclerView.ViewHolder(binding.root), View.OnClickListener {
 
         // 아이템
-        var cl_video_item: ConstraintLayout = binding.clVideoItem
+        private var clVideoItem: ConstraintLayout = binding.clVideoItem
 
         // 이미지
         val ivVideoItemThumbnail = binding.ivVideoItemThumbnail
@@ -54,7 +54,7 @@ class MyVideoAdapter(private val viewModel: MyVideoViewModel) : ListAdapter<Unif
         val tvVideoItemUploadTime = binding.tvVideoItemUploadDate
 
         init {
-            cl_video_item.setOnClickListener(this)
+            clVideoItem.setOnClickListener(this)
         }
 
 
@@ -69,12 +69,12 @@ class MyVideoAdapter(private val viewModel: MyVideoViewModel) : ListAdapter<Unif
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<UnifiedItem>() {
             override fun areItemsTheSame(oldItem: UnifiedItem, newItem: UnifiedItem): Boolean {
-                Log.d("Happy_TagRv","^^ItemstheSame?")
+                Log.d("Happy_TagRv","^^Items theSame?")
                 return oldItem == newItem
             }
 
             override fun areContentsTheSame(oldItem: UnifiedItem, newItem: UnifiedItem): Boolean {
-                Log.d("Happy_TagRv","^^ContentstheSame?")
+                Log.d("Happy_TagRv","^^ContentmentSame?")
                 return oldItem == newItem
             }
         }

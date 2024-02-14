@@ -15,16 +15,12 @@ class VideoDetailActivityViewModel : ViewModel() {
     fun removeLike(itemDetail: UnifiedItem) {
         Log.d("HappyDetailVM", "^^ removeLike ${itemDetail.isLike}")
         itemDetail.isLike = false
-
-        Log.d("HappyDetailVM", "^^ removeLike ${itemDetail.isLike} changed?")
-
         _item.value = itemDetail
     }
 
     fun addLike(itemDetail: UnifiedItem) {
         Log.d("HappyDetailVM", "^^ addLike ${itemDetail.isLike}")
         itemDetail.isLike = true
-        Log.d("HappyDetailVM", "^^ addLike ${itemDetail.isLike} changed?")
         _item.value = itemDetail
     }
 }
