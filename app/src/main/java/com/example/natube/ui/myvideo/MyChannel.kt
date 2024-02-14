@@ -2,13 +2,12 @@ package com.example.natube.ui.myvideo
 
 import android.net.Uri
 import android.os.Parcelable
-import com.google.gson.GsonBuilder
 import kotlinx.android.parcel.Parcelize
 
-
+@Parcelize
 data class MyChannel(
     val myChannelName: String?,
-    val myProfilePicture: GsonBuilder?,
-    val myBackgroundPicture: GsonBuilder?,
+    val myProfilePicture: String?,
+    val myBackgroundPicture: String?,
     var myChannelDescription: String?
-)
+) : Parcelable

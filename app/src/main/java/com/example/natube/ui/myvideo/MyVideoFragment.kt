@@ -21,7 +21,7 @@ import com.example.natube.model.UnifiedItem
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 
-class MyVideoFragment : Fragment(), UriJsonAdapter {
+class MyVideoFragment : Fragment() {
 
     private var _binding: FragmentMyVideosBinding? = null
     private val myVideoViewModel: MyVideoViewModel by viewModels()
@@ -107,6 +107,7 @@ class MyVideoFragment : Fragment(), UriJsonAdapter {
 
     private fun setView() {
         myInfo = MyChannelPreferencesManager.getAll()
+        Log.d("myInfo","$myInfo")
         when (myInfo.size) {
             0 -> {
                 setMyProfileDialog()
@@ -121,13 +122,15 @@ class MyVideoFragment : Fragment(), UriJsonAdapter {
 
     private fun setMyProfile() {
 
-        gsonBuilder.registerTypeAdapter(Uri::class.java, UriJsonAdapter())
-        val type = object : TypeToken<Uri>() {}.type
+
         with(binding) {
             tvActivityEditChannelUsername.text = myInfo[0]?.myChannelName
             tvActivityEditChannelUserDescription.text = myInfo[0]?.myChannelDescription
-            ivActivityEditChannelProfileImage.setImageURI(gsonBuilder.create().fromJson(myInfo[0]?.myProfilePicture, type))
-            ivActivityEditChannelImgBackground.setImageURI(myInfo[0]?.myBackgroundPicture)
+            if (myInfo[0]?.myProfilePicture == null) ivFragmentMyVideoProfileImage.setImageURI(Uri.parse(myInfo[0]?.myProfilePicture)) else ivFragmentMyVideoProfileImage.setImageResource(R.drawable.img_empty_profile_picture)
+
+            if (myInfo[0]?.myBackgroundPicture == null) ivFragmentMyVideoImgBackground.setImageURI(Uri.parse(myInfo[0]?.myBackgroundPicture)) else ivFragmentMyVideoImgBackground.setImageResource(R.drawable.img_thumbnail)
+
+
         }
     }
 

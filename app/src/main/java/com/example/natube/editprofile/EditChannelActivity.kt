@@ -61,10 +61,10 @@ class EditChannelActivity : AppCompatActivity() {
     private fun setCompleteButton() {
         binding.btnActivityEditChannelComplete.isEnabled = true
         binding.btnActivityEditChannelComplete.setOnClickListener {
-            myInfo = MyChannel(name,profileUri,backgroundUri,description)
+            myInfo = MyChannel(name,profileUri.toString(),backgroundUri.toString(),description)
             when (allInfo.size) {
                 0 -> {
-                    MyChannelPreferencesManager.put(myInfo,myInfo.myChannelName!!)
+                    MyChannelPreferencesManager.put(myInfo, myInfo.myChannelName!!)
                     Log.d("happyedit","^^ ADD: my profile details are added")
                     Log.d("happyeditsharedpref", "^^ SP ${MyChannelPreferencesManager.myChannelPreferences.all}")
 
@@ -180,16 +180,7 @@ class EditChannelActivity : AppCompatActivity() {
         }
     }
 
-//        private fun onClickProfileImage() {
-//        binding.ivAddContactPerson.setOnClickListener {
-//            val permission = android.Manifest.permission.READ_EXTERNAL_STORAGE
-//            // TODO: 한번 권한 거부하면 다시 요청이 불가능한 문제. 버튼이 무반응이 된다.
-//            if (ContextCompat.checkSelfPermission(this, permission)
-//                != PackageManager.PERMISSION_GRANTED
-//            ) requestPermissionLauncher.launch(permission)
-//            else openGallery()
-//        }
-//    }
+
 
     private fun openGallery() {
         /*

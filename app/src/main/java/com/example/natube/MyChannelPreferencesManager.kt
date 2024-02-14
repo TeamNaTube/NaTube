@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
-import com.example.natube.ui.myvideo.UriJsonAdapter
 import com.google.gson.GsonBuilder
 
 object MyChannelPreferencesManager {
@@ -48,7 +47,6 @@ object MyChannelPreferencesManager {
         //We read JSON String which was saved
         val keys = myChannelPreferences.all.keys.toMutableList()
 
-        val smth = GsonBuilder().registerTypeAdapter(Uri::class.java, UriJsonAdapter())
         val found = keys.find {
             it == id
         }
