@@ -73,7 +73,11 @@ class SettingChipsDialog : DialogFragment() {
                         )
                     } else {
                         AnimationView.shakeView(this)
-                        Snackbar.make(view, "최소 1개 최대 5개만 선택/추가 이(가) 가능 합니다!", Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(
+                            view,
+                            "각 최소 1개 최대 5개 선택/추가 이(가) 가능 합니다!",
+                            Snackbar.LENGTH_SHORT
+                        ).show()
                         setColorFilter(Color.GRAY)
                     }
 
