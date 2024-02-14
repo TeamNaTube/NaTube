@@ -13,10 +13,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
+import com.example.natube.MainActivity
 import com.example.natube.MyChannelPreferencesManager
 import com.example.natube.R
 import com.example.natube.databinding.ActivityEditChannelBinding
 import com.example.natube.ui.myvideo.MyChannel
+import com.example.natube.ui.myvideo.MyVideoFragment
 
 class EditChannelActivity : AppCompatActivity() {
 
@@ -75,6 +77,10 @@ class EditChannelActivity : AppCompatActivity() {
                     Log.d("happyedit","^^ UPDATE: my profile details are updated")
                 }
             }
+            val intent = Intent(this, MyVideoFragment::class.java)
+            intent.putExtra("profile uri",profileUri)
+            intent.putExtra("background uri", backgroundUri)
+            setResult(RESULT_OK, intent)
 
             finish()
         }

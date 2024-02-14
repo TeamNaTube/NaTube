@@ -9,17 +9,17 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.example.natube.editprofile.EditChannelActivity
-import com.example.natube.editprofile.LikedItemPreferencesManager
 import com.example.natube.MyChannelPreferencesManager
 import com.example.natube.R
 import com.example.natube.VideoDetailActivity
 import com.example.natube.databinding.FragmentMyVideosBinding
+import com.example.natube.editprofile.EditChannelActivity
+import com.example.natube.editprofile.LikedItemPreferencesManager
 import com.example.natube.model.UnifiedItem
 import com.google.gson.GsonBuilder
-import com.google.gson.reflect.TypeToken
 
 class MyVideoFragment : Fragment() {
 
@@ -37,7 +37,7 @@ class MyVideoFragment : Fragment() {
     private var myInfo = MyChannelPreferencesManager.getAll<MyChannel>()
 
 
-
+    lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
 
 
     override fun onCreateView(
@@ -107,12 +107,13 @@ class MyVideoFragment : Fragment() {
 
     private fun setView() {
         myInfo = MyChannelPreferencesManager.getAll()
-        Log.d("myInfo","$myInfo")
+        Log.d("myInfo", "$myInfo")
         when (myInfo.size) {
             0 -> {
                 setMyProfileDialog()
                 Log.d("happymyVid", "** 다이얼로그 창 열리기 전 or 후?")
             }
+
             else -> {
 
                 setMyProfile()
@@ -121,6 +122,8 @@ class MyVideoFragment : Fragment() {
     }
 
     private fun setMyProfile() {
+
+
 
 
         with(binding) {
