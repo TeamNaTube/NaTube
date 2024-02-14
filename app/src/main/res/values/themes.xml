@@ -9,6 +9,8 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:fontFamily">@font/en_nuly</item>
+        <item name="android:navigationBarColor">@color/teal</item>
+        <item name="actionOverflowButtonStyle">@style/OverflowButtonStyle</item>
     </style>
 
     <style name="Theme.NaTube" parent="Base.Theme.NaTube" />

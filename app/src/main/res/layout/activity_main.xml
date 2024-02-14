@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar_home_fragment2"
+        android:id="@+id/toolbar_main_activty"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:background="@drawable/background_rounded_bottom"
@@ -46,19 +47,16 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
+    <me.ibrahimsn.lib.SmoothBottomBar
         android:id="@+id/nav_view"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/background_rounded_upper"
-        android:pointerIcon="wait"
-        app:backgroundTint="@color/teal"
-        app:itemActiveIndicatorStyle="@style/Base.Theme.NaTube"
-        app:itemIconSize="30dp"
-        app:itemIconTint="@color/white"
-        app:itemRippleColor="@color/teal"
-        app:itemTextColor="#FFFFFF"
-        app:labelVisibilityMode="selected"
+        android:layout_height="60dp"
+        app:cornerRadius="40dp"
+        app:backgroundColor="@color/teal"
+        app:indicatorRadius="40dp"
+        app:textSize="15sp"
+        app:itemFontFamily ="@font/en_nuly"
+        app:iconSize="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

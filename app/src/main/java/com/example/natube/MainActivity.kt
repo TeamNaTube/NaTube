@@ -2,23 +2,24 @@ package com.example.natube
 
 import android.os.Bundle
 import android.util.Log
-import android.window.OnBackInvokedDispatcher
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import android.view.Menu
+
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupWithNavController
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.natube.databinding.ActivityMainBinding
 import com.example.natube.model.UnifiedItem
 import com.example.natube.ui.home.HomeRepository
 import com.example.natube.ui.home.HomeViewModel
-
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private val appData by lazy{ AppData(application) }
     private lateinit var homeViewModel: HomeViewModel
+
+    private lateinit var navController: NavController
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -27,17 +28,17 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val navView: BottomNavigationView = binding.navView
+        setSupportActionBar(binding.toolbarMainActivty)
 
-        val navController = findNavController(R.id.nav_host_fragment_activity_main)
-
-
-        navView.setupWithNavController(navController)
+        navController = findNavController(R.id.nav_host_fragment_activity_main)
 
         initView()
     }
-
-
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.bottom_nav_menu,menu)
+        binding.navView.setupWithNavController(menu!!,navController)
+        return true
+    }
     override fun onStart() {
         super.onStart()
         Log.d("happyMainOnStart?", "^^ 오예 *")
@@ -46,6 +47,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initView() {
         LikedItemPreferencesManager.with(this)
+
     }
 
     private fun updateLike() {

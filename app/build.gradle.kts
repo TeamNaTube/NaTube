@@ -80,4 +80,8 @@ dependencies {
     //lottie 애니메이션 추가
     implementation("com.airbnb.android:lottie:4.1.0")
 
+    // smoothBottomBar
+    implementation("com.github.ibrahimsn98:SmoothBottomBar:1.7.9")
+
+
 }
