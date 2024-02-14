@@ -44,13 +44,13 @@ class SearchFragment : Fragment() {
         binding.btnSearch.setOnClickListener {
             val query = binding.etSearch.text.toString()
 
-            val apiKey = "AIzaSyBsiX_Etl5UmQNpfJxH8COkaOB3sQ9Q5sU"
 
             lifecycleScope.launch {
-                searchViewModel.searchVideos(query, apiKey)
+                searchViewModel.searchVideos(query)
                 animateButton()
             }
             hideKeyboard()
+            binding.etSearch.clearFocus()
         }
 
         searchViewModel.getSearchResults().observe(viewLifecycleOwner, { results ->
