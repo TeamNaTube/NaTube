@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import com.example.natube.editprofile.EditChannelActivity
 import com.example.natube.editprofile.LikedItemPreferencesManager
 import com.example.natube.MyChannelPreferencesManager

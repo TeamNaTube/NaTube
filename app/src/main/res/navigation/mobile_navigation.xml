@@ -3,22 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/home_fragment">
 
     <fragment
-        android:id="@+id/navigation_home"
+        android:id="@+id/home_fragment"
         android:name="com.example.natube.ui.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_search"
+        android:id="@+id/search_fragment"
         android:name="com.example.natube.ui.search.SearchFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_search" />
 
     <fragment
-        android:id="@+id/navigation_my_video"
+        android:id="@+id/my_video_fragment"
         android:name="com.example.natube.ui.myvideo.MyVideoFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_my_videos" />
