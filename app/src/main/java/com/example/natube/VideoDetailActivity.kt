@@ -1,7 +1,11 @@
 package com.example.natube
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
@@ -13,6 +17,7 @@ class VideoDetailActivity : AppCompatActivity() {
 
     // 뷰 바인딩 및 변수 초기화
     private lateinit var binding: ActivityVideoDetailBinding
+//    private lateinit var mContext: Context
 
     // 뷰 모델
     private val viewModel: VideoDetailActivityViewModel by viewModels()
@@ -32,6 +37,7 @@ class VideoDetailActivity : AppCompatActivity() {
         viewModel.item.observe(this) {
             itemDetail = it!!
             Log.d("happyVideoDetail", "^^ ${itemDetail.isLike} is it updated from viewmodel?")
+//            getSharedPreferences("MY_PREFS_NAME", MODE_PRIVATE).edit().clear().apply()
 
             when (it.isLike) {
                 true -> LikedItemPreferencesManager.put(it, it.thumbnailsUrl)
@@ -45,6 +51,7 @@ class VideoDetailActivity : AppCompatActivity() {
         getSelectedItem()
         setUpListeners()
 
+
     }
 
     private fun setUpListeners() {
@@ -54,7 +61,16 @@ class VideoDetailActivity : AppCompatActivity() {
     }
 
     private fun setShareButton() {
-        // TODO
+        binding.ibActivityDetailBtnShare.setOnClickListener {
+            Toast.makeText(this@VideoDetailActivity, "링크가 클립보드에 저장되었습니다.", Toast.LENGTH_SHORT).show()
+            // 시스템 클립보드 가져오기
+            val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            // 새로운 ClipData 객체로 데이터 복사하기
+            val clip: ClipData = ClipData.newPlainText("url", "${itemDetail.thumbnailsUrl}")
+            // Set the clipboard's primary clip.
+            clipboard.setPrimaryClip(clip)
+
+        }
     }
 
     private fun setLikeButton() {
@@ -77,7 +93,7 @@ class VideoDetailActivity : AppCompatActivity() {
 
     private fun setBackButton() {
         binding.btnActivityDetailBack.setOnClickListener {
-            finish()
+            intentLike(itemDetail)
             Log.d(
                 "happyVideoDetail",
                 "^^ ${itemDetail.isLike} right before closing activity (intenting)"
@@ -86,6 +102,13 @@ class VideoDetailActivity : AppCompatActivity() {
         }
     }
 
+    private fun intentLike(item: UnifiedItem?) {
+//        val itemIntent = Intent(this, MainActivity::class.java)
+//        itemIntent.putExtra("selected item", item)
+//        setResult(RESULT_OK, itemIntent)
+        Log.d("happyvideoDetail","흠 좀 이상")
+        finish()
+    }
 
     private fun getSelectedItem() {
         if (intent.hasExtra("selected item")) {
@@ -93,6 +116,17 @@ class VideoDetailActivity : AppCompatActivity() {
             setView()
         }
 
+
+//        activityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult ()) {
+//            if (it.resultCode == RESULT_OK) {
+//                val address = it.data?.getParcelableExtra<UnifiedItem>("selected item")
+//                Log.d("happyvideoDetailactivity", "^^ $address")
+//                setView(address)
+//            }
+//        }
+//
+////        val intent = Intent(this, MainActivity::class.java)
+////        activityResultLauncher.launch(intent)
     }
 
     private fun setView() {
@@ -114,4 +148,8 @@ class VideoDetailActivity : AppCompatActivity() {
         }
 
     }
+
+
+
+
 }
