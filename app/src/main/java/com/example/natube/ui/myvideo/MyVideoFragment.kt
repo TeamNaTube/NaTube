@@ -11,7 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.example.natube.EditChannelActivity
 import com.example.natube.LikedItemPreferencesManager
-import com.example.natube.RotateView
+import com.example.natube.AnimationView
 import com.example.natube.VideoDetailActivity
 import com.example.natube.databinding.FragmentMyVideosBinding
 import com.example.natube.model.UnifiedItem
@@ -83,7 +83,7 @@ class MyVideoFragment : Fragment() {
 
     private fun setListeners() {
         binding.ibtnFragmentMyVideoEdit.setOnClickListener{
-            RotateView.clickView(it)
+            AnimationView.shakeView(it)
             val editIntent = Intent(activity, EditChannelActivity::class.java)
             editIntent.putExtra("profile image", binding.ivActivityEditChannelProfileImage.id)
             editIntent.putExtra("name", binding.tvActivityEditChannelUsername.text.toString())

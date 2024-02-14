@@ -3,8 +3,8 @@ package com.example.natube
 import android.animation.ValueAnimator
 import android.view.View
 
-object RotateView {
-    fun clickView(view : View){
+object AnimationView {
+    fun shakeView(view : View){
 
 
         val animator = ValueAnimator.ofFloat(-15f, 15f, 0f)

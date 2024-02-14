@@ -13,6 +13,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.natube.R
+import com.example.natube.AnimationView
 import com.example.natube.databinding.DialogSettingChipsBinding
 import com.example.natube.databinding.VideoCategoryBinding
 import com.example.natube.ui.home.HomeViewModel
@@ -71,6 +72,8 @@ class SettingChipsDialog : DialogFragment() {
                             ContextCompat.getColor(context, R.color.green)
                         )
                     } else {
+                        AnimationView.shakeView(this)
+                        Snackbar.make(view, "최소 1개 최대 5개만 선택/추가 이(가) 가능 합니다!", Snackbar.LENGTH_SHORT).show()
                         setColorFilter(Color.GRAY)
                     }
 
