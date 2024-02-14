@@ -14,6 +14,9 @@ import com.example.natube.ui.home.HomeRepository
 import com.example.natube.ui.home.HomeViewModel
 import com.example.natube.ui.myvideo.MyVideoFragment
 import com.example.natube.ui.search.SearchFragment
+import com.google.android.material.bottomnavigation.BottomNavigationItemView
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
@@ -35,6 +38,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setFragment(TAG_HOME, HomeFragment())
+
 
         binding.navView.setOnItemSelectedListener { item ->
             Log.d("happymain", "item Clicked왜 실행이 안되는 거지...")

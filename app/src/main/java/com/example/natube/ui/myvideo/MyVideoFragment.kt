@@ -50,6 +50,7 @@ class MyVideoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initView()
+        Log.d("happymyvid", " 온 크 리 에 이 트 뷰")
         initViewModel()
 
     }
@@ -80,6 +81,7 @@ class MyVideoFragment : Fragment() {
     }
 
     private fun onResumeView() {
+        Log.d("happymyvid", " 온 리 쥼 뷰")
         setView()
 
     }
@@ -87,16 +89,24 @@ class MyVideoFragment : Fragment() {
     private fun initView() {
 
 
-        setView()
         setViewModelValues()
         setMyVideoAdapter()
         setListeners()
+
+
     }
 
     private fun setView() {
+        myInfo = MyChannelPreferencesManager.getAll()
         when (myInfo.size) {
-            0 -> setMyProfileDialog()
-            else -> setMyProfile()
+            0 -> {
+                setMyProfileDialog()
+                Log.d("happymyVid", "** 다이얼로그 창 열리기 전 or 후?")
+            }
+            else -> {
+
+                setMyProfile()
+            }
         }
     }
 
@@ -114,6 +124,7 @@ class MyVideoFragment : Fragment() {
         builder.setTitle("내 채널 설정")
         builder.setMessage("내가 좋아요한 영상들 리스트를 보려면 내 채널 추가를 해야합니다.")
         builder.setIcon(R.mipmap.ic_launcher)
+        builder.setCancelable(false)
 
         // 버튼 클릭시에 무슨 작업을 할 것인가!
         val listener = DialogInterface.OnClickListener { p0, p1 ->
