@@ -8,7 +8,7 @@ object AnimationView {
 
 
         val animator = ValueAnimator.ofFloat(-15f, 15f, 0f)
-        animator.duration = 500
+        animator.duration = 300
         animator.addUpdateListener { animation ->
             val value = animation.animatedValue as Float
             view.rotation = value

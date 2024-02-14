@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.natube.AnimationView
 import com.example.natube.R
 import com.example.natube.databinding.VideoCategoryBinding
 import com.example.natube.model.Chip
@@ -46,6 +47,7 @@ class ChipListAdapter(private val viewModel: HomeViewModel) :
                     // Keyword 의 경우
                     "-1" -> {
                         setOnClickListener {
+                            AnimationView.shakeView(it)
                             viewModel.setKeywordPosition(position)
                             notifyDataSetChanged()
                         }
@@ -53,6 +55,7 @@ class ChipListAdapter(private val viewModel: HomeViewModel) :
                     // 아이디 값이 "-1"이 아닐 경우 Category
                     else -> {
                         setOnClickListener {
+                            AnimationView.shakeView(it)
                             viewModel.setSelectedCategoryPosition(position)
                             notifyDataSetChanged()
                         }

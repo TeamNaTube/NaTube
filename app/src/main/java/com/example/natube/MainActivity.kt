@@ -2,6 +2,7 @@ package com.example.natube
 
 import android.os.Bundle
 import android.util.Log
+import android.window.OnBackInvokedDispatcher
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -80,5 +81,9 @@ class MainActivity : AppCompatActivity() {
     private fun initViewModel(){
         val factory = ViewModelFactory(HomeRepository(appData))
         homeViewModel = ViewModelProvider(this,factory)[HomeViewModel::class.java]
+    }
+
+    override fun onBackPressed() {
+
     }
 }

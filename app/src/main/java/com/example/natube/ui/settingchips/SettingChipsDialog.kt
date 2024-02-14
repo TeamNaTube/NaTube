@@ -44,6 +44,7 @@ class SettingChipsDialog : DialogFragment() {
                         else setChipBackgroundColorResource(R.color.grey)
 
                         setOnClickListener {
+                            AnimationView.shakeView(it)
                             homeViewModel.isClickedItem(index)
 
                             if (isChecked) setChipBackgroundColorResource(R.color.green)
