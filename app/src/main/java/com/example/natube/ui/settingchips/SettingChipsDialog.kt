@@ -40,15 +40,25 @@ class SettingChipsDialog : DialogFragment() {
                         isChecked = chip.isClicked
                         text = chip.name
 
-                        if (isChecked) setChipBackgroundColorResource(R.color.green)
-                        else setChipBackgroundColorResource(R.color.grey)
+                        if (isChecked) {
+                            setChipBackgroundColorResource(R.color.green)
+                            setTextColor(Color.WHITE)
+                        } else {
+                            setChipBackgroundColorResource(R.color.grey)
+                            setTextColor(Color.BLACK)
+                        }
 
                         setOnClickListener {
                             AnimationView.shakeView(it)
                             homeViewModel.isClickedItem(index)
 
-                            if (isChecked) setChipBackgroundColorResource(R.color.green)
-                            else setChipBackgroundColorResource(R.color.grey)
+                            if (isChecked) {
+                                setChipBackgroundColorResource(R.color.green)
+                                setTextColor(Color.WHITE)
+                            } else {
+                                setChipBackgroundColorResource(R.color.grey)
+                                setTextColor(Color.BLACK)
+                            }
                         }
                     }
                     // 생성된 Chip 인스턴스를 ChipGroup에 추가

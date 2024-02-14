@@ -1,5 +1,6 @@
 package com.example.natube.ui.home
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -41,8 +42,14 @@ class ChipListAdapter(private val viewModel: HomeViewModel) :
             chip.apply {
                 text = item.name
                 isChecked = item.isClicked
-                if (isChecked) setChipBackgroundColorResource(R.color.green)
-                else setChipBackgroundColorResource(R.color.grey)
+                if (isChecked) {
+                    setChipBackgroundColorResource(R.color.green)
+                    setTextColor(Color.WHITE)
+                }
+                else {
+                    setChipBackgroundColorResource(R.color.grey)
+                    setTextColor(Color.BLACK)
+                }
                 when (item.categoryId) {
                     // Keyword 의 경우
                     "-1" -> {
