@@ -31,11 +31,6 @@ class MainActivity : AppCompatActivity() {
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
 
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.navigation_home, R.id.navigation_search, R.id.navigation_my_video
-            )
-        )
 
         navView.setupWithNavController(navController)
 
@@ -83,7 +78,4 @@ class MainActivity : AppCompatActivity() {
         homeViewModel = ViewModelProvider(this,factory)[HomeViewModel::class.java]
     }
 
-    override fun onBackPressed() {
-
-    }
 }
