@@ -9,7 +9,7 @@
         android:id="@+id/toolbar_home_fragment2"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="@color/teal"
+        android:background="@drawable/background_rounded_bottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -50,7 +50,7 @@
         android:id="@+id/nav_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/teal"
+        android:background="@drawable/background_rounded_upper"
         android:pointerIcon="wait"
         app:backgroundTint="@color/teal"
         app:itemActiveIndicatorStyle="@style/Base.Theme.NaTube"

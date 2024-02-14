@@ -11,7 +11,7 @@
         android:id="@+id/activity_detail_toolbar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="@color/teal"
+        android:background="@drawable/background_rounded_bottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -27,10 +27,10 @@
                 android:backgroundTint="@color/teal"
                 android:scaleType="fitCenter"
                 android:src="@drawable/ic_natube"
-                app:tint="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/white" />
 
             <TextView
                 android:id="@+id/fragment_my_video_natube"
