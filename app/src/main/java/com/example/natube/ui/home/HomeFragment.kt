@@ -141,7 +141,7 @@ class HomeFragment : Fragment() {
          *  실제 Keyword 검색 하는 부분(할당량 때문에 주석 처리)
          */
         homeViewModel.keywordQuery.observe(viewLifecycleOwner) {
-            homeViewModel.fetchSearchVideoByKeyword()
+//            homeViewModel.fetchSearchVideoByKeyword()
         }
     }
 
