@@ -10,12 +10,13 @@
     <ImageView
         android:id="@+id/iv_video_item_thumbnail_big"
         android:layout_width="0dp"
-        android:layout_height="200dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/img_thumbnail"
-        android:elevation="10dp"
+        android:layout_height="0dp"
         android:background="@drawable/background_rounded"
         android:clipToOutline="true"
+        android:elevation="10dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/img_thumbnail"
+        app:layout_constraintDimensionRatio="16:9"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -27,7 +28,7 @@
         android:ellipsize="end"
         android:maxLines="2"
         android:text="@string/title"
-        android:textSize="18sp"
+        android:textSize="17sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/iv_video_item_thumbnail_big" />
 
@@ -36,7 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/channel_name"
-        android:textSize="15sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         android:ellipsize="end"
         android:maxLines="1"
@@ -48,7 +49,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/upload_date"
-        android:textSize="14sp"
+        android:textSize="13sp"
         app:layout_constraintStart_toStartOf="@+id/tv_video_item_channel_name_big"
         app:layout_constraintTop_toBottomOf="@+id/tv_video_item_channel_name_big" />
 

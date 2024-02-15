@@ -12,7 +12,7 @@ interface YoutubeAPI {
     companion object{
         private const val API_MAX_RESULT = 16
         private const val API_REGION = "KR"
-        private const val YOUTUBE_API_KEY = "AIzaSyBsiX_Etl5UmQNpfJxH8COkaOB3sQ9Q5sU"
+        private const val YOUTUBE_API_KEY = "AIzaSyAXm5vhewIEwB2gKJcGsQIeivHIp6KCF2k"
     }
     @GET("videos")
     suspend fun getTrendingVideos(

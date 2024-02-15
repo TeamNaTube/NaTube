@@ -14,7 +14,7 @@
         android:checkable="false"
         android:text="@string/keyword"
         android:textColor="@color/white"
-        android:textSize="20sp"
+        android:textSize="17sp"
         app:chipBackgroundColor="@color/green"
         app:closeIconTint="@color/white"
         app:closeIconVisible="true"
