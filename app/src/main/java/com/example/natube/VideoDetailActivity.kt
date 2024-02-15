@@ -151,7 +151,7 @@ class VideoDetailActivity : AppCompatActivity() {
 
         val originalTitle = itemDetail.videoTitle
         val decodedTitle = originalTitle.replace("&#39;", "'")
-        binding.tvActivityDetailTitle.text = decodedTitle
+        binding.tvActivityDetailVideoTitle.text = decodedTitle
 
     }
 
