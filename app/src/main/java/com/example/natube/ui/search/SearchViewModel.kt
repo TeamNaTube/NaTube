@@ -26,7 +26,6 @@ class SearchViewModel : ViewModel() {
 
 
 
-    suspend fun searchVideos(query: String, apiKey: String) {
     suspend fun searchVideos(query: String) {
         try {
             val searchModel: SearchModel = withContext(Dispatchers.IO) {

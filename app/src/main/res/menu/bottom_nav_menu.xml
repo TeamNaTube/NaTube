@@ -17,7 +17,7 @@
         />
 
     <item
-        android:id="@+id/navigation_my_video"
+        android:id="@+id/my_video_fragment"
         android:icon="@drawable/ic_my_video"
         android:title="@string/title_my_video"
         app:showAsAction="never"

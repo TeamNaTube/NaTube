@@ -10,13 +10,15 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.natube.databinding.ActivityMainBinding
+import com.example.natube.editprofile.LikedItemPreferencesManager
 import com.example.natube.model.UnifiedItem
 import com.example.natube.ui.home.HomeRepository
 import com.example.natube.ui.home.HomeViewModel
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private val appData by lazy{ AppData(application) }
+    private val appData by lazy { AppData(application) }
     private lateinit var homeViewModel: HomeViewModel
 
     private lateinit var navController: NavController
@@ -30,15 +32,17 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.toolbarMainActivty)
 
-        navController = findNavController(R.id.nav_host_fragment_activity_main)
+        navController = findNavController(R.id.main_frame_layout)
 
         initView()
     }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.bottom_nav_menu,menu)
-        binding.navView.setupWithNavController(menu!!,navController)
+        menuInflater.inflate(R.menu.bottom_nav_menu, menu)
+        binding.navView.setupWithNavController(menu!!, navController)
         return true
     }
+
     override fun onStart() {
         super.onStart()
         Log.d("happyMainOnStart?", "^^ 오예 *")
@@ -46,6 +50,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initView() {
+        MyChannelPreferencesManager.with(this)
         LikedItemPreferencesManager.with(this)
 
     }
@@ -61,7 +66,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-//    private fun initViewModel() {
+    //    private fun initViewModel() {
 //        // getting selected items in either category rv or keyword rv
 //        selectedItem.observe(viewLifecycleOwner){
 //
@@ -74,10 +79,16 @@ class MainActivity : AppCompatActivity() {
 //
 //        }
 //    }
+    override fun onResume() {
+        super.onResume()
 
-    private fun initViewModel(){
+        MyChannelPreferencesManager.with(this)
+        LikedItemPreferencesManager.with(this)
+    }
+
+    private fun initViewModel() {
         val factory = ViewModelFactory(HomeRepository(appData))
-        homeViewModel = ViewModelProvider(this,factory)[HomeViewModel::class.java]
+        homeViewModel = ViewModelProvider(this, factory)[HomeViewModel::class.java]
     }
 
 }
