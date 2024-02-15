@@ -19,11 +19,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.natube.R
 import com.example.natube.VideoDetailActivity
 import com.example.natube.databinding.FragmentSearchBinding
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
 class SearchFragment : Fragment() {
 
-    private val searchViewModel : SearchViewModel by viewModels()
+    private val searchViewModel: SearchViewModel by viewModels()
     private lateinit var searchAdapter: SearchAdapter
     private lateinit var binding: FragmentSearchBinding
 
@@ -46,14 +47,19 @@ class SearchFragment : Fragment() {
 
         binding.btnSearch.setOnClickListener {
             val query = binding.etSearch.text.toString()
-
-
-            lifecycleScope.launch {
-                searchViewModel.searchVideos(query)
-                animateButton()
+            val isValidated =
+                searchViewModel.checkedQueryValidate(query)
+            if(isValidated) {
+                lifecycleScope.launch {
+                    searchViewModel.searchVideos(query)
+                    animateButton()
+                }
+                hideKeyboard()
+                binding.etSearch.clearFocus()
             }
-            hideKeyboard()
-            binding.etSearch.clearFocus()
+            else{
+                Snackbar.make(requireView(),"검색어를 입력 해주세요!",Snackbar.LENGTH_SHORT).show()
+            }
         }
 
         searchViewModel.getSearchResults().observe(viewLifecycleOwner) { results ->

@@ -69,4 +69,8 @@ class SearchViewModel : ViewModel() {
     fun initializeSelectedItem() {
         _selectedItem.value = null
     }
+    fun checkedQueryValidate(query: String): Boolean {
+        //1.빈 문자열 이면 안됨
+        return query.trim().isNotEmpty()
+    }
 }
