@@ -48,6 +48,8 @@
 
     </androidx.appcompat.widget.Toolbar>
 
+
+
     <RelativeLayout
         android:id="@+id/rl_search"
         android:layout_width="match_parent"
@@ -60,6 +62,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/activity_detail_toolbar">
+
 
         <EditText
             android:id="@+id/et_search"
@@ -92,10 +95,14 @@
             android:paddingBottom="5dp"
             android:text="검색"
             android:textColor="@color/white"
+
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold">
+        </Button>
 
     </RelativeLayout>
+
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_empty_search"
@@ -131,6 +138,7 @@
             app:layout_constraintStart_toStartOf="@+id/lav_empty_search"
             app:layout_constraintTop_toBottomOf="@+id/lav_empty_search" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_searchResult"

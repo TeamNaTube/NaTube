@@ -15,6 +15,7 @@ import com.example.natube.model.UnifiedItem
 
 class VideoDetailActivity : AppCompatActivity() {
 
+
     // 뷰 바인딩 및 변수 초기화
     private lateinit var binding: ActivityVideoDetailBinding
 //    private lateinit var mContext: Context
@@ -24,6 +25,7 @@ class VideoDetailActivity : AppCompatActivity() {
 
     // 선택된 아이템 지연초기화
     private lateinit var itemDetail: UnifiedItem
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -146,6 +148,10 @@ class VideoDetailActivity : AppCompatActivity() {
                 else -> ibActivityDetailBtnLike.setImageResource(R.drawable.ic_filled_heart)
             }
         }
+
+        val originalTitle = itemDetail.videoTitle
+        val decodedTitle = originalTitle.replace("&#39;", "'")
+        binding.tvActivityDetailTitle.text = decodedTitle
 
     }
 
