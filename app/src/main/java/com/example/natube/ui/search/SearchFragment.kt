@@ -98,6 +98,7 @@ class SearchFragment : Fragment() {
         val isValidated = searchViewModel.checkedQueryValidate(query)
         if (isValidated) {
             binding.clEmptySearch.visibility = View.GONE
+            emptyAnimation.playAnimation()
         } else
             binding.clEmptySearch.visibility = View.VISIBLE
     }

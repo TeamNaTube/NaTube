@@ -24,13 +24,14 @@
                 android:id="@+id/btn_activity_detail_back"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/ic_back"
                 android:backgroundTint="@color/teal"
+                android:contentDescription="@string/go_back"
                 android:scaleType="fitCenter"
+                android:src="@drawable/ic_back"
+                app:tint="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:contentDescription="@string/go_back" />
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

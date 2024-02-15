@@ -129,5 +129,40 @@
         tools:listitem="@layout/video_item"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_empty_favorite_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:elevation="2dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_fragment_my_video_favorites">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lav_empty_favorite_list"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/animation_empty_like_list" />
+
+        <TextView
+            android:id="@+id/tv_empty_favorite_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="좋아하시는 비디오가 없습니다"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="@+id/lav_empty_favorite_list"
+            app:layout_constraintStart_toStartOf="@+id/lav_empty_favorite_list"
+            app:layout_constraintTop_toBottomOf="@+id/lav_empty_favorite_list" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
