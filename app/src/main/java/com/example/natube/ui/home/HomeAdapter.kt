@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.natube.databinding.FragmentHomeRvChipBinding
+import com.example.natube.databinding.FragmentHomeRvItemBigBinding
 import com.example.natube.databinding.FragmentHomeRvItemBinding
 import com.example.natube.databinding.FragmentHomeTitleBinding
 
@@ -73,7 +74,7 @@ class HomeAdapter(private val viewModel: HomeViewModel) : ListAdapter<HomeWidget
             }
 
             TYPE_LIST_CATEGORY_ITEM_VIDEO -> {
-                val binding = FragmentHomeRvItemBinding.inflate(inflater, parent, false)
+                val binding = FragmentHomeRvItemBigBinding.inflate(inflater, parent, false)
                 return ListCategoryVideoItemViewHolder(binding)
             }
 
@@ -104,7 +105,7 @@ class HomeAdapter(private val viewModel: HomeViewModel) : ListAdapter<HomeWidget
 
             is HomeWidget.ListCategoryVideoItemWidget -> {
                 (holder as ListCategoryVideoItemViewHolder).apply {
-                    listCategoryVideoAdapter.submitList(item.mUnifiedItems)
+                    listCategoryVideoAdapterBig.submitList(item.mUnifiedItems)
                 }
             }
 
@@ -138,15 +139,15 @@ class HomeAdapter(private val viewModel: HomeViewModel) : ListAdapter<HomeWidget
         }
     }
 
-    inner class ListCategoryVideoItemViewHolder(binding: FragmentHomeRvItemBinding) :
+    inner class ListCategoryVideoItemViewHolder(binding: FragmentHomeRvItemBigBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        private val rvListVideoItem = binding.rvListVideoItem
-        val listCategoryVideoAdapter = ListVideoItemAdapter(viewModel)
+        private val rvListVideoItem = binding.rvListVideoItemBig
+        val listCategoryVideoAdapterBig = ListVideoItemAdapterBig(viewModel)
 
         init {
             rvListVideoItem.layoutManager =
                 LinearLayoutManager(rvListVideoItem.context, LinearLayoutManager.HORIZONTAL, false)
-            rvListVideoItem.adapter = listCategoryVideoAdapter
+            rvListVideoItem.adapter = listCategoryVideoAdapterBig
 
 
         }

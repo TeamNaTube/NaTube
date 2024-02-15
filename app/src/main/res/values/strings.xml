@@ -6,7 +6,7 @@
     <string name="title_notifications">Notifications</string>
     <string name="title">Title</string>
     <string name="description">Description</string>
-    <string name="favourite_videos">Favourite Videos</string>
+    <string name="favourite_videos">좋아요 누른 비디오</string>
     <string name="go_back">Go Back</string>
     <string name="share">share</string>
     <string name="like">like</string>

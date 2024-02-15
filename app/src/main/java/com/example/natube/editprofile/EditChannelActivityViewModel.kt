@@ -7,17 +7,26 @@ import com.example.natube.editprofile.EditProfileValidExtension.includeEnglishKo
 
 class EditChannelActivityViewModel: ViewModel() {
     private var _nameErrorMessage: MutableLiveData<EditProfileErrorMessage> = MutableLiveData()
-    val nameErrorMessage: LiveData<EditProfileErrorMessage> = _nameErrorMessage
-    fun validateName(name: String) {
+    val nameErrorMessage: LiveData<EditProfileErrorMessage> = _nameErrorMessage 
+    
+    private var _name: MutableLiveData<String> = MutableLiveData()
+    var nameVM: LiveData<String> = _name
+    
+    private var _description: MutableLiveData<String> = MutableLiveData()
+    val descriptionVM: LiveData<String> = _description
+    fun validateName(name1: String) {
+        _name.value = name1
         _nameErrorMessage.value = when {
-            name.isBlank() -> EditProfileErrorMessage.EMPTY_NAME
-            name.includeEnglishKoreanNumber() -> EditProfileErrorMessage.NULL
+            name1.isBlank() -> EditProfileErrorMessage.EMPTY_NAME
+            name1.includeEnglishKoreanNumber() -> EditProfileErrorMessage.NULL
             else -> EditProfileErrorMessage.INVALID_NAME
         }
     }
 
+    fun setDescription(description1: String) {
+        _description.value = description1
 
-
+    }
 
 
 }
