@@ -54,7 +54,7 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
     private var _isValidated = MutableLiveData<Boolean>(false)
     val isValidated: LiveData<Boolean> get() = _isValidated
 
-
+    // 클릭된 아이템 전달
     private var _selectedItem = MutableLiveData<UnifiedItem?>()
 
     val selectedItem : LiveData<UnifiedItem?> = _selectedItem

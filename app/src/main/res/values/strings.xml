@@ -25,4 +25,10 @@
     <string name="homefragment_setting_btn">설정하기</string>
     <string name="category">Category</string>
     <string name="keyword">Keyword</string>
+    <string name="user_description">채널 설명</string>
+    <string name="complete">확인</string>
+    <string name="empty_name_message">채널 이름이 비어있습니다.</string>
+    <string name="verified" />
+    <string name="invalid_name_message">채널 이름은 영어/한국어/숫자 만 입력 가능합니다.</string>
+    <string name="empty_description_message">내 프로필 설명을 추가해 주세요</string>
 </resources>

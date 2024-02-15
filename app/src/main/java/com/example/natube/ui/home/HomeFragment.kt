@@ -11,7 +11,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.natube.AnimationView
 import com.example.natube.ui.settingchips.SettingChipsDialog
-import com.example.natube.SharedViewModel
 import com.example.natube.VideoDetailActivity
 import com.example.natube.databinding.FragmentHomeBinding
 
@@ -22,8 +21,6 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
     private val homeAdapter: HomeAdapter by lazy { HomeAdapter(homeViewModel) }
 
-    //    private val homeViewModel: HomeViewModel by viewModels()
-    val sharedViewModel by activityViewModels<SharedViewModel>()
     private lateinit var mContext: Context
 
 
