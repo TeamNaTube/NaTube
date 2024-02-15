@@ -9,7 +9,12 @@ import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.view.inputmethod.InputMethodManager
+
+import android.widget.Button
+import android.widget.EditText
+
 import androidx.core.content.res.ResourcesCompat
+
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LifecycleObserver
@@ -24,14 +29,20 @@ import com.airbnb.lottie.model.KeyPath
 import com.example.natube.R
 import com.example.natube.VideoDetailActivity
 import com.example.natube.databinding.FragmentSearchBinding
+
+import com.google.android.material.bottomnavigation.BottomNavigationView
+
 import com.google.android.material.snackbar.Snackbar
+
 import kotlinx.coroutines.launch
+import me.ibrahimsn.lib.SmoothBottomBar
 
 class SearchFragment : Fragment() {
 
     private val searchViewModel: SearchViewModel by viewModels()
     private lateinit var searchAdapter: SearchAdapter
     private lateinit var binding: FragmentSearchBinding
+    private lateinit var bottomNavigationView: SmoothBottomBar
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -82,7 +93,32 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         emptyAnimation()
 
+        // BottomNavigationView 초기화
+        bottomNavigationView = activity?.findViewById(R.id.nav_view) ?: return
+
+        // 포커스 이벤트 감지
+        val editTextSearch = view.findViewById<EditText>(R.id.et_search)
+        editTextSearch.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                // 검색창에 포커스가 있을 때 BottomNavigationView 감춤
+                hideBottomNavigationView()
+            } else {
+                // 포커스가 없을 때 BottomNavigationView 표시
+                showBottomNavigationView()
+            }
+        }
+
     }
+    private fun showBottomNavigationView() {
+        bottomNavigationView.visibility = View.VISIBLE
+    }
+
+
+    private fun hideBottomNavigationView() {
+        bottomNavigationView.visibility = View.GONE
+    }
+
+
 
     //애니메이션 추가
     private fun emptyAnimation() {
@@ -102,6 +138,7 @@ class SearchFragment : Fragment() {
         } else
             binding.clEmptySearch.visibility = View.VISIBLE
     }
+
 
     override fun onResume() {
         super.onResume()
