@@ -1,4 +1,4 @@
-package com.example.natube
+package com.example.natube.editprofile
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -10,8 +10,6 @@ import com.google.gson.GsonBuilder
  *
  */
 object LikedItemPreferencesManager {
-
-
 
     //Shared Preference field used to save and retrieve JSON string
     lateinit var preferences: SharedPreferences

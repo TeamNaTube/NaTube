@@ -10,8 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.natube"
-        minSdk = 26
-        targetSdk = 34
+        minSdk = 28
         versionCode = 1
         versionName = "1.0"
 
@@ -79,5 +78,8 @@ dependencies {
 
     //lottie 애니메이션 추가
     implementation("com.airbnb.android:lottie:4.1.0")
+
+    // add to clipboard
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.0")
 
 }

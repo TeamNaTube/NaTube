@@ -1,12 +1,16 @@
 package com.example.natube
 
-import android.content.Intent
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.natube.databinding.ActivityVideoDetailBinding
+import com.example.natube.editprofile.LikedItemPreferencesManager
 import com.example.natube.model.UnifiedItem
 
 class VideoDetailActivity : AppCompatActivity() {
@@ -17,9 +21,6 @@ class VideoDetailActivity : AppCompatActivity() {
 
     // 뷰 모델
     private val viewModel: VideoDetailActivityViewModel by viewModels()
-
-    // 선택된 아이템 받아오기
-//    lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
 
     // 선택된 아이템 지연초기화
     private lateinit var itemDetail: UnifiedItem
@@ -38,7 +39,7 @@ class VideoDetailActivity : AppCompatActivity() {
             Log.d("happyVideoDetail", "^^ ${itemDetail.isLike} is it updated from viewmodel?")
 //            getSharedPreferences("MY_PREFS_NAME", MODE_PRIVATE).edit().clear().apply()
 
-            when(it.isLike) {
+            when (it.isLike) {
                 true -> LikedItemPreferencesManager.put(it, it.thumbnailsUrl)
                 false -> LikedItemPreferencesManager.remove(it, it.thumbnailsUrl)
             }
@@ -60,16 +61,26 @@ class VideoDetailActivity : AppCompatActivity() {
     }
 
     private fun setShareButton() {
-        // TODO
+        binding.ibActivityDetailBtnShare.setOnClickListener {
+            Toast.makeText(this@VideoDetailActivity, "링크가 클립보드에 저장되었습니다.", Toast.LENGTH_SHORT).show()
+            // 시스템 클립보드 가져오기
+            val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            // 새로운 ClipData 객체로 데이터 복사하기
+            val clip: ClipData = ClipData.newPlainText("url", "${itemDetail.thumbnailsUrl}")
+            // Set the clipboard's primary clip.
+            clipboard.setPrimaryClip(clip)
+
+        }
     }
 
     private fun setLikeButton() {
-        binding.ibActivityDetailBtnLike.setOnClickListener{
+        binding.ibActivityDetailBtnLike.setOnClickListener {
             when (LikedItemPreferencesManager.findItem<UnifiedItem>(itemDetail.thumbnailsUrl)) {
                 null -> {
                     binding.ibActivityDetailBtnLike.setImageResource(R.drawable.ic_filled_heart)
                     viewModel.addLike(itemDetail)
                 }
+
                 else -> {
                     binding.ibActivityDetailBtnLike.setImageResource(R.drawable.ic_empty_heart)
                     viewModel.removeLike(itemDetail)
@@ -81,17 +92,21 @@ class VideoDetailActivity : AppCompatActivity() {
 
 
     private fun setBackButton() {
-        binding.btnActivityDetailBack.setOnClickListener{
+        binding.btnActivityDetailBack.setOnClickListener {
             intentLike(itemDetail)
-            Log.d("happyVideoDetail", "^^ ${itemDetail.isLike} right before closing activity (intenting)")
+            Log.d(
+                "happyVideoDetail",
+                "^^ ${itemDetail.isLike} right before closing activity (intenting)"
+            )
 
         }
     }
 
     private fun intentLike(item: UnifiedItem?) {
-        val itemIntent = Intent(this, MainActivity::class.java)
-        itemIntent.putExtra("selected item", item)
-        setResult(RESULT_OK, itemIntent)
+//        val itemIntent = Intent(this, MainActivity::class.java)
+//        itemIntent.putExtra("selected item", item)
+//        setResult(RESULT_OK, itemIntent)
+        Log.d("happyvideoDetail","흠 좀 이상")
         finish()
     }
 
@@ -133,4 +148,8 @@ class VideoDetailActivity : AppCompatActivity() {
         }
 
     }
+
+
+
+
 }

@@ -3,18 +3,14 @@ package com.example.natube.ui.home
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.hwangtube.network.RetrofitInstance
 import com.example.natube.RotateView
 import com.example.natube.ui.settingchips.SettingChipsDialog
-import com.example.natube.SharedViewModel
 import com.example.natube.VideoDetailActivity
 import com.example.natube.databinding.FragmentHomeBinding
 
@@ -25,8 +21,6 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
     private val homeAdapter: HomeAdapter by lazy { HomeAdapter(homeViewModel) }
 
-    //    private val homeViewModel: HomeViewModel by viewModels()
-    val sharedViewModel by activityViewModels<SharedViewModel>()
     private lateinit var mContext: Context
 
 
