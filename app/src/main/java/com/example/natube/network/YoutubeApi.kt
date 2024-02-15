@@ -22,7 +22,7 @@ interface YoutubeAPI {
         @Query("key") apiKey: String = YOUTUBE_API_KEY,
         @Query("chart") chart : String = "mostPopular",
         @Query("videoCategoryId") videoCategoryId : String,
-        @Query("pageToken") nextPageToken: String,
+        @Query("pageToken") nextPageToken: String="",
     ) : VideoModel
 
     @GET("search")
@@ -32,6 +32,6 @@ interface YoutubeAPI {
         @Query("regionCode") regionCode: String = API_REGION,
         @Query("key") apiKey: String = YOUTUBE_API_KEY,
         @Query("q") query : String,
-        @Query("pageToken") nextPageToken: String,
+        @Query("pageToken") nextPageToken: String ="",
     ) : SearchModel
 }

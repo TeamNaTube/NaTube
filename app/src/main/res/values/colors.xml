@@ -5,4 +5,5 @@
     <color name="teal">#80BCBD</color>
     <color name="green">#AAD9BB</color>
     <color name="grey">#D4D4D4</color>
+    <color name="grey_alpha30">#4DD4D4D4</color>
 </resources>

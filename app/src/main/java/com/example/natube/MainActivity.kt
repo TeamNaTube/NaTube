@@ -2,33 +2,26 @@ package com.example.natube
 
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.natube.databinding.ActivityMainBinding
 import com.example.natube.editprofile.LikedItemPreferencesManager
 import com.example.natube.model.UnifiedItem
-import com.example.natube.ui.home.HomeFragment
 import com.example.natube.ui.home.HomeRepository
 import com.example.natube.ui.home.HomeViewModel
-import com.example.natube.ui.myvideo.MyVideoFragment
-import com.example.natube.ui.search.SearchFragment
-import com.google.android.material.bottomnavigation.BottomNavigationItemView
-import com.google.android.material.bottomnavigation.BottomNavigationMenuView
-import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private val appData by lazy{ AppData(application) }
+    private val appData by lazy { AppData(application) }
     private lateinit var homeViewModel: HomeViewModel
 
-    // fragments
-    private val TAG_SEARCH = "search_fragment"
-    private val TAG_HOME = "home_fragment"
-    private val TAG_MY_VIDEO = "my_video_fragment"
-
+    private lateinit var navController: NavController
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -37,48 +30,18 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setFragment(TAG_HOME, HomeFragment())
+        setSupportActionBar(binding.toolbarMainActivty)
 
+        navController = findNavController(R.id.main_frame_layout)
 
-        binding.navView.setOnItemSelectedListener { item ->
-            Log.d("happymain", "item Clicked왜 실행이 안되는 거지...")
-            when(item.itemId) {
-                R.id.home_fragment -> {
-                    setFragment(TAG_HOME, HomeFragment())
-                    Log.d("happymain", "home 왜 실행이 안되는 거지...")
-                }
-                R.id.search_fragment -> {
-                    setFragment(TAG_SEARCH, SearchFragment())
-                    Log.d("happymain", "search왜 실행이 안되는 거지...")
-                }
-                else -> {
-                    setFragment(TAG_MY_VIDEO, MyVideoFragment())
-                    Log.d("happymain", "my video왜 실행이 안되는 거지...")
-                }
-            }
-            true
-        }
-
-//        val navView: BottomNavigationView = binding.navView
-//
-//        val navController = findNavController(R.id.nav_host_fragment_activity_main)
-//
-//        val appBarConfiguration = AppBarConfiguration(
-//            setOf(
-//                R.id.navigation_home, R.id.navigation_search, R.id.navigation_my_video
-//            )
-//        )
-//
-//        navView.setupWithNavController(navController)
-//
-//        val host = NavHostFragment.create(R.navigation.mobile_navigation)
-//        supportFragmentManager.beginTransaction()
-//            .replace(R.id.nav_host_fragment_activity_main, host)
-//            .setPrimaryNavigationFragment(host)
-//            .commit()
         initView()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.bottom_nav_menu, menu)
+        binding.navView.setupWithNavController(menu!!, navController)
+        return true
+    }
 
     override fun onStart() {
         super.onStart()
@@ -89,13 +52,7 @@ class MainActivity : AppCompatActivity() {
     private fun initView() {
         MyChannelPreferencesManager.with(this)
         LikedItemPreferencesManager.with(this)
-    }
 
-    override fun onResume() {
-        super.onResume()
-
-        MyChannelPreferencesManager.with(this)
-        LikedItemPreferencesManager.with(this)
     }
 
     private fun updateLike() {
@@ -109,7 +66,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-//    private fun initViewModel() {
+    //    private fun initViewModel() {
 //        // getting selected items in either category rv or keyword rv
 //        selectedItem.observe(viewLifecycleOwner){
 //
@@ -122,53 +79,16 @@ class MainActivity : AppCompatActivity() {
 //
 //        }
 //    }
+    override fun onResume() {
+        super.onResume()
 
-    private fun initViewModel(){
+        MyChannelPreferencesManager.with(this)
+        LikedItemPreferencesManager.with(this)
+    }
+
+    private fun initViewModel() {
         val factory = ViewModelFactory(HomeRepository(appData))
-        homeViewModel = ViewModelProvider(this,factory)[HomeViewModel::class.java]
+        homeViewModel = ViewModelProvider(this, factory)[HomeViewModel::class.java]
     }
 
-    private fun setFragment(tag: String, fragment: Fragment) {
-        val manager: FragmentManager = supportFragmentManager
-        val fragTransaction = manager.beginTransaction()
-
-        if (manager.findFragmentByTag(tag) == null){
-            fragTransaction.add(R.id.main_frame_layout, fragment, tag)
-        }
-
-        val search = manager.findFragmentByTag(TAG_SEARCH)
-        val home = manager.findFragmentByTag(TAG_HOME)
-        val myVideo = manager.findFragmentByTag(TAG_MY_VIDEO)
-
-        if (search != null){
-            fragTransaction.hide(search)
-        }
-
-        if (home != null){
-            fragTransaction.hide(home)
-        }
-
-        if (myVideo != null) {
-            fragTransaction.hide(myVideo)
-        }
-
-        if (tag == TAG_SEARCH) {
-            if (search!=null){
-                fragTransaction.show(search)
-            }
-        }
-        else if (tag == TAG_HOME) {
-            if (home != null) {
-                fragTransaction.show(home)
-            }
-        }
-
-        else if (tag == TAG_MY_VIDEO){
-            if (myVideo != null){
-                fragTransaction.show(myVideo)
-            }
-        }
-
-        fragTransaction.commitAllowingStateLoss()
-    }
 }

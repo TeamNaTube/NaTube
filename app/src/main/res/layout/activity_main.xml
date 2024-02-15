@@ -1,29 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_main_activty"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@drawable/background_rounded_bottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/fragment_home_natube_icon"
+                android:layout_width="45dp"
+                android:layout_height="50dp"
+                android:backgroundTint="@color/teal"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_natube"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/white" />
+
+            <TextView
+                android:id="@+id/fragment_home_natube"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="@string/natube"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/fragment_home_natube_icon"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <me.ibrahimsn.lib.SmoothBottomBar
         android:id="@+id/nav_view"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@color/teal"
-        android:pointerIcon="wait"
-        app:backgroundTint="@color/teal"
-        app:itemActiveIndicatorStyle="@style/Base.Theme.NaTube"
-        app:itemIconSize="30dp"
-        app:itemIconTint="@color/white"
-        app:itemRippleColor="@color/teal"
-        app:itemTextColor="#FFFFFF"
-        app:labelVisibilityMode="selected"
+        android:layout_height="60dp"
+        app:cornerRadius="40dp"
+        app:backgroundColor="@color/teal"
+        app:indicatorRadius="40dp"
+        app:textSize="15sp"
+        app:itemFontFamily ="@font/en_nuly"
+        app:iconSize="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:menu="@menu/bottom_nav_menu" />
 
-    <FrameLayout
+    <fragment
         android:id="@+id/main_frame_layout"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"

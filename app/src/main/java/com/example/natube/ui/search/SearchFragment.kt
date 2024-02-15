@@ -1,5 +1,6 @@
 package com.example.natube.ui.search
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -45,12 +47,13 @@ class SearchFragment : Fragment() {
         binding.btnSearch.setOnClickListener {
             val query = binding.etSearch.text.toString()
 
-            val apiKey = "AIzaSyBsiX_Etl5UmQNpfJxH8COkaOB3sQ9Q5sU"
 
             lifecycleScope.launch {
-                searchViewModel.searchVideos(query, apiKey)
+                searchViewModel.searchVideos(query)
                 animateButton()
             }
+            hideKeyboard()
+            binding.etSearch.clearFocus()
         }
 
         searchViewModel.getSearchResults().observe(viewLifecycleOwner) { results ->
@@ -101,6 +104,11 @@ class SearchFragment : Fragment() {
         return alphaAnimation
     }
 
-
+    // 키보드 내리기
+    private fun hideKeyboard() {
+        val imm =
+            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(binding.root.windowToken, 0)
+    }
 
 }

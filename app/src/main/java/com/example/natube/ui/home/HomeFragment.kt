@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.natube.RotateView
+import com.example.natube.AnimationView
 import com.example.natube.ui.settingchips.SettingChipsDialog
 import com.example.natube.VideoDetailActivity
 import com.example.natube.databinding.FragmentHomeBinding
@@ -64,7 +64,7 @@ class HomeFragment : Fragment() {
     private fun setButtonOnClick() {
         // 다이얼로그 수정 버튼
         binding.ivSettingChips.setOnClickListener {
-            RotateView.clickView(it)
+            AnimationView.shakeView(it)
             val dialog = SettingChipsDialog()
             dialog.show(childFragmentManager, "SettingChipsDialog")
         }

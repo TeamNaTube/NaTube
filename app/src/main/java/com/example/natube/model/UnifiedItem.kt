@@ -27,7 +27,7 @@ data class UnifiedItem(
     private fun dateTimeParsing(){
         try {
             val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.KOREA)
-            val outputFormat = SimpleDateFormat("yyyy/MM/dd'\n'HH:mm:ss", Locale.KOREA)
+            val outputFormat = SimpleDateFormat("yyyy/MM/dd' 'HH:mm:ss", Locale.KOREA)
 
             val inputDate = inputFormat.parse(dateTime)
             dateTime = outputFormat.format(inputDate)

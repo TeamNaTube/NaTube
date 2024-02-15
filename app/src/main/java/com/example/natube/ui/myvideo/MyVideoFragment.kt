@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.example.natube.AnimationView
 import com.example.natube.MyChannelPreferencesManager
 import com.example.natube.R
 import com.example.natube.VideoDetailActivity
@@ -124,14 +125,18 @@ class MyVideoFragment : Fragment() {
     private fun setMyProfile() {
 
 
-
-
         with(binding) {
             tvActivityEditChannelUsername.text = myInfo[0]?.myChannelName
             tvActivityEditChannelUserDescription.text = myInfo[0]?.myChannelDescription
-            if (myInfo[0]?.myProfilePicture == null) ivFragmentMyVideoProfileImage.setImageURI(Uri.parse(myInfo[0]?.myProfilePicture)) else ivFragmentMyVideoProfileImage.setImageResource(R.drawable.img_empty_profile_picture)
+            if (myInfo[0]?.myProfilePicture == null) ivFragmentMyVideoProfileImage.setImageURI(
+                Uri.parse(
+                    myInfo[0]?.myProfilePicture
+                )
+            ) else ivFragmentMyVideoProfileImage.setImageResource(R.drawable.img_empty_profile_picture)
 
-            if (myInfo[0]?.myBackgroundPicture == null) ivFragmentMyVideoImgBackground.setImageURI(Uri.parse(myInfo[0]?.myBackgroundPicture)) else ivFragmentMyVideoImgBackground.setImageResource(R.drawable.img_thumbnail)
+            if (myInfo[0]?.myBackgroundPicture == null) ivFragmentMyVideoImgBackground.setImageURI(
+                Uri.parse(myInfo[0]?.myBackgroundPicture)
+            ) else ivFragmentMyVideoImgBackground.setImageResource(R.drawable.img_thumbnail)
 
 
         }
@@ -167,9 +172,12 @@ class MyVideoFragment : Fragment() {
                 null,
                 binding.tvActivityEditChannelUserDescription.text.toString()
             )
-            val editIntent = Intent(activity, EditChannelActivity::class.java)
-            editIntent.putExtra("my Channel Info", myInfo)
-            startActivity(editIntent)
+            binding.ibtnFragmentMyVideoEdit.setOnClickListener {
+                AnimationView.shakeView(it)
+                val editIntent = Intent(activity, EditChannelActivity::class.java)
+                editIntent.putExtra("my Channel Info", myInfo)
+                startActivity(editIntent)
+            }
         }
     }
 

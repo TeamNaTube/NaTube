@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.natube.AnimationView
 import com.example.natube.databinding.VideoKeywordBinding
 import com.example.natube.model.Chip
 import com.example.natube.ui.home.HomeViewModel
@@ -39,6 +40,7 @@ class KeywordAdapter(private val viewModel: HomeViewModel) : ListAdapter<Chip, R
             chip.apply{
                 text = item.name
                 setOnCloseIconClickListener {
+                    AnimationView.shakeView(it)
                     // 클릭시 제거
                     viewModel.deleteKeywordChip(item)
                 }

@@ -82,4 +82,8 @@ dependencies {
     // add to clipboard
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.0")
 
+    // smoothBottomBar
+    implementation("com.github.ibrahimsn98:SmoothBottomBar:1.7.9")
+
+
 }
