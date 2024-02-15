@@ -13,8 +13,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
-import androidx.lifecycle.viewmodel.CreationExtras
-import com.example.natube.MainActivity
 import com.example.natube.MyChannelPreferencesManager
 import com.example.natube.R
 import com.example.natube.databinding.ActivityEditChannelBinding
@@ -53,21 +51,32 @@ class EditChannelActivity : AppCompatActivity() {
     }
 
     private fun initViewModel() {
-        editViewModel.nameErrorMessage.observe(this) {
-            when {
-                getString(it.message).isEmpty() -> setCompleteButton()
-                else -> {
-                    binding.btnActivityEditChannelComplete.isEnabled = false
-                    binding.etActivityEditChannelChannelName.error = getString(it.message)
+
+        with(editViewModel) {
+            nameVM.observe(this@EditChannelActivity) {
+                name = it
+            }
+            descriptionVM.observe(this@EditChannelActivity) {
+                description = it
+            }
+            nameErrorMessage.observe(this@EditChannelActivity) {
+                when {
+                    getString(it.message).isEmpty() -> setCompleteButton()
+                    else -> {
+                        binding.btnActivityEditChannelComplete.isEnabled = false
+                        binding.etActivityEditChannelChannelName.error = getString(it.message)
+                    }
                 }
             }
+
         }
+
     }
 
     private fun setCompleteButton() {
         binding.btnActivityEditChannelComplete.isEnabled = true
         binding.btnActivityEditChannelComplete.setOnClickListener {
-            myInfo = MyChannel(name,profileUri.toString(),backgroundUri.toString(),description)
+            myInfo = MyChannel(name,description)
             when (allInfo.size) {
                 0 -> {
                     MyChannelPreferencesManager.put(myInfo, myInfo.myChannelName!!)
@@ -107,10 +116,10 @@ class EditChannelActivity : AppCompatActivity() {
 
             // editText Listeners
             etActivityEditChannelChannelName.addTextChangedListener {
-                name = it.toString()
                 editViewModel.validateName(it.toString())
             }
             etActivityEditChannelChannelDescription.addTextChangedListener{
+                editViewModel.setDescription(it.toString())
                 description = it.toString()
             }
 
@@ -174,7 +183,7 @@ class EditChannelActivity : AppCompatActivity() {
             myInfo = intent.getParcelableExtra<MyChannel>("my Channel Info")!!
             setView()
         } else {
-            myInfo = MyChannel(null, null, null, null)
+            myInfo = MyChannel(null, null)
         }
     }
 

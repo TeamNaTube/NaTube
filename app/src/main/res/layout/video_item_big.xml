@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/cl_video_item"
-    android:layout_width="190dp"
+    android:id="@+id/cl_video_item_big"
+    android:layout_width="280dp"
     android:layout_height="wrap_content"
     android:clipToPadding="true"
     android:padding="2dp">
 
     <ImageView
-        android:id="@+id/iv_video_item_thumbnail"
+        android:id="@+id/iv_video_item_thumbnail_big"
         android:layout_width="0dp"
-        android:layout_height="135dp"
+        android:layout_height="200dp"
         android:scaleType="centerCrop"
         android:src="@drawable/img_thumbnail"
         android:elevation="10dp"
@@ -21,18 +21,18 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_video_item_title"
+        android:id="@+id/tv_video_item_title_big"
         android:layout_width="match_parent"
-        android:layout_height="50sp"
+        android:layout_height="45sp"
         android:ellipsize="end"
         android:maxLines="2"
         android:text="@string/title"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_video_item_thumbnail" />
+        app:layout_constraintTop_toBottomOf="@id/iv_video_item_thumbnail_big" />
 
     <TextView
-        android:id="@+id/tv_video_item_channel_name"
+        android:id="@+id/tv_video_item_channel_name_big"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/channel_name"
@@ -41,16 +41,16 @@
         android:ellipsize="end"
         android:maxLines="1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_video_item_title" />
+        app:layout_constraintTop_toBottomOf="@id/tv_video_item_title_big" />
 
     <TextView
-        android:id="@+id/tv_video_item_upload_date"
+        android:id="@+id/tv_video_item_upload_date_big"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/upload_date"
         android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="@+id/tv_video_item_channel_name"
-        app:layout_constraintTop_toBottomOf="@+id/tv_video_item_channel_name" />
+        app:layout_constraintStart_toStartOf="@+id/tv_video_item_channel_name_big"
+        app:layout_constraintTop_toBottomOf="@+id/tv_video_item_channel_name_big" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
