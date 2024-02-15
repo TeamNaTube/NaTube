@@ -56,7 +56,10 @@ class EditChannelActivity : AppCompatActivity() {
         editViewModel.nameErrorMessage.observe(this) {
             when {
                 getString(it.message).isEmpty() -> setCompleteButton()
-                else -> binding.etActivityEditChannelChannelName.error = getString(it.message)
+                else -> {
+                    binding.btnActivityEditChannelComplete.isEnabled = false
+                    binding.etActivityEditChannelChannelName.error = getString(it.message)
+                }
             }
         }
     }
@@ -92,6 +95,7 @@ class EditChannelActivity : AppCompatActivity() {
         MyChannelPreferencesManager.with(this)
         getMyChannelInfo()
         setListener()
+        editViewModel.validateName(binding.etActivityEditChannelChannelName.toString())
 
     }
 
