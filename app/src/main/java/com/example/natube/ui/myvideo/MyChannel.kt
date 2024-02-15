@@ -7,7 +7,5 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class MyChannel(
     val myChannelName: String?,
-    val myProfilePicture: String?,
-    val myBackgroundPicture: String?,
-    var myChannelDescription: String?
+    var myChannelDescription: String?,
 ) : Parcelable
