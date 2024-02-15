@@ -5,7 +5,7 @@
     android:layout_width="205dp"
     android:layout_height="wrap_content"
     android:clipToPadding="true"
-    android:padding="10dp">
+    android:padding="2dp">
 
     <ImageView
         android:id="@+id/iv_video_item_thumbnail"
@@ -23,7 +23,7 @@
     <TextView
         android:id="@+id/tv_video_item_title"
         android:layout_width="match_parent"
-        android:layout_height="60sp"
+        android:layout_height="50sp"
         android:ellipsize="end"
         android:maxLines="2"
         android:text="@string/title"
