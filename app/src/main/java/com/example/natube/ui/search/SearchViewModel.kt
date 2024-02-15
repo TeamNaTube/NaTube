@@ -20,10 +20,15 @@ class SearchViewModel : ViewModel() {
     private val searchResults = MutableLiveData<List<UnifiedItem>>()
     private val youtubeAPI: YoutubeAPI = RetrofitInstance.api
 
+    private var query : String = ""
     fun getSearchResults(): LiveData<List<UnifiedItem>> {
         return searchResults
     }
 
+    fun saveQuery(inputQuery:String){
+        query = inputQuery
+    }
+    fun getQuery():String = query
 
 
     suspend fun searchVideos(query: String) {
@@ -73,4 +78,5 @@ class SearchViewModel : ViewModel() {
         //1.빈 문자열 이면 안됨
         return query.trim().isNotEmpty()
     }
+
 }

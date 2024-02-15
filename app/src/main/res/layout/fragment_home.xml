@@ -83,15 +83,15 @@
             android:id="@+id/lav_waring"
             android:layout_width="258dp"
             android:layout_height="154dp"
-            android:layout_marginTop="160dp"
+            android:layout_marginBottom="24dp"
             android:adjustViewBounds="true"
+            app:layout_constraintBottom_toBottomOf="@+id/textView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.496"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:lottie_autoPlay="true"
             app:lottie_rawRes="@raw/animation_waring"
-            app:lottie_speed="2.0" />
+            app:lottie_speed="1.5" />
 
         <TextView
             android:id="@+id/textView"
@@ -102,8 +102,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lav_waring"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/btn_waring_setting_chips_btn"
@@ -111,6 +110,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="@string/homefragment_setting_btn"
+            android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="@+id/textView"
             app:layout_constraintStart_toStartOf="@+id/textView"
             app:layout_constraintTop_toBottomOf="@+id/textView" />
