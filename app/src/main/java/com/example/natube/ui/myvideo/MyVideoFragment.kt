@@ -13,6 +13,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.natube.AnimationView
+import com.example.natube.MainActivity
 import com.example.natube.MyChannelPreferencesManager
 import com.example.natube.R
 import com.example.natube.VideoDetailActivity
@@ -99,7 +100,6 @@ class MyVideoFragment : Fragment() {
 
     private fun initView() {
 
-
         setViewModelValues()
         setMyVideoAdapter()
         setListeners()
@@ -129,15 +129,15 @@ class MyVideoFragment : Fragment() {
         with(binding) {
             tvActivityEditChannelUsername.text = myInfo[0]?.myChannelName
             tvActivityEditChannelUserDescription.text = myInfo[0]?.myChannelDescription
-            if (myInfo[0]?.myProfilePicture == null) ivFragmentMyVideoProfileImage.setImageURI(
-                Uri.parse(
-                    myInfo[0]?.myProfilePicture
-                )
-            ) else ivFragmentMyVideoProfileImage.setImageResource(R.drawable.img_empty_profile_picture)
-
-            if (myInfo[0]?.myBackgroundPicture == null) ivFragmentMyVideoImgBackground.setImageURI(
-                Uri.parse(myInfo[0]?.myBackgroundPicture)
-            ) else ivFragmentMyVideoImgBackground.setImageResource(R.drawable.img_thumbnail)
+//            if (myInfo[0]?.myProfilePicture == null) ivFragmentMyVideoProfileImage.setImageURI(
+//                Uri.parse(
+//                    myInfo[0]?.myProfilePicture
+//                )
+//            ) else ivFragmentMyVideoProfileImage.setImageResource(R.drawable.img_empty_profile_picture)
+//
+//            if (myInfo[0]?.myBackgroundPicture == null) ivFragmentMyVideoImgBackground.setImageURI(
+//                Uri.parse(myInfo[0]?.myBackgroundPicture)
+//            ) else ivFragmentMyVideoImgBackground.setImageResource(R.drawable.img_thumbnail)
 
 
         }
@@ -157,10 +157,15 @@ class MyVideoFragment : Fragment() {
                     val addIntent = Intent(activity, EditChannelActivity::class.java)
                     startActivity(addIntent)
                 }
+                DialogInterface.BUTTON_NEGATIVE -> {
+                    val moveIntent = Intent(activity, MainActivity::class.java)
+                    startActivity(moveIntent)
+                }
             }
         }
 
         builder.setPositiveButton("내 채널 추가", listener)
+        builder.setNegativeButton("홈으로 돌아가기", listener)
 
         builder.show()
     }
@@ -169,8 +174,7 @@ class MyVideoFragment : Fragment() {
         binding.ibtnFragmentMyVideoEdit.setOnClickListener {
             val myInfo = MyChannel(
                 binding.tvActivityEditChannelUsername.text.toString(),
-                null,
-                null,
+
                 binding.tvActivityEditChannelUserDescription.text.toString()
             )
             binding.ibtnFragmentMyVideoEdit.setOnClickListener {

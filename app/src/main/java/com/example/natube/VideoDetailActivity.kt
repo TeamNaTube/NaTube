@@ -136,7 +136,7 @@ class VideoDetailActivity : AppCompatActivity() {
         Glide.with(this).load(itemDetail?.thumbnailsUrl).into(binding.ivActivityDetailThumbnail)
 
         with(binding) {
-            tvActivityDetailTitle.text = itemDetail.videoTitle
+            tvActivityDetailVideoTitle.text = itemDetail.videoTitle
             tvActivityDetailChannelName.text = itemDetail.channelTitle
             tvActivityDetailDescription.text = itemDetail.description
             tvActivityDetailUploadDate.text = itemDetail.dateTime
