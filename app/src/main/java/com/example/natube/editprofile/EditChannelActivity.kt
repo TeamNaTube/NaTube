@@ -13,6 +13,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.natube.MainActivity
 import com.example.natube.MyChannelPreferencesManager
 import com.example.natube.R
@@ -174,7 +175,10 @@ class EditChannelActivity : AppCompatActivity() {
     }
 
     private fun setView() {
+
+
         with(binding) {
+
             when (etActivityEditChannelChannelName.text.toString()) {
                 getString(R.string.title_my_video) -> Unit
                 else -> etActivityEditChannelChannelName.setText(myInfo.myChannelName.toString())

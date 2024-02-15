@@ -168,6 +168,7 @@ class MyVideoFragment : Fragment() {
                 binding.tvActivityEditChannelUserDescription.text.toString()
             )
             val editIntent = Intent(activity, EditChannelActivity::class.java)
+            editIntent.putExtra("my Channel Info", myInfo)
             startActivity(editIntent)
         }
     }
