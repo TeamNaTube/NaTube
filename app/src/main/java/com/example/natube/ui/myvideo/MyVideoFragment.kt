@@ -203,8 +203,14 @@ class MyVideoFragment : Fragment() {
         val layout = binding.clEmptyFavoriteList
         // 비디오 리스트가 비어져있는가를 확인
         likedItems = LikedItemPreferencesManager.getAll()
-        if(likedItems.isEmpty()) layout.visibility = View.VISIBLE
-        else layout.visibility = View.GONE
+        if(likedItems.isEmpty()) {
+            layout.visibility = View.VISIBLE
+            binding.rvFragmentMyVideoFavourites.visibility = View.GONE
+        }
+        else {
+            layout.visibility = View.GONE
+            binding.rvFragmentMyVideoFavourites.visibility = View.VISIBLE
+        }
 
     }
 

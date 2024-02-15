@@ -15,6 +15,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.natube.R
 import com.example.natube.AnimationView
+import com.example.natube.MainActivity
+import com.example.natube.databinding.ActivityMainBinding
 import com.example.natube.databinding.DialogSettingChipsBinding
 import com.example.natube.databinding.VideoCategoryBinding
 import com.example.natube.ui.home.HomeViewModel
@@ -120,6 +122,7 @@ class SettingChipsDialog : DialogFragment() {
                             homeViewModel.addKeywordChip(query)
                             etKeyword.text = null
                             hideKeyboard()
+                            binding.etKeyword.clearFocus()
                         }
 
                         1 -> {// 키워드 에 빈 문자만 있을시
