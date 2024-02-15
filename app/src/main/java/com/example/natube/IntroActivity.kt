@@ -14,6 +14,7 @@ class IntroActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+
         val laLogo = binding.laLogo
         val laTitle = binding.laTitle
 
@@ -24,6 +25,7 @@ class IntroActivity : AppCompatActivity() {
             override fun onAnimationEnd(animation: Animator) {
                 val intent = Intent(this@IntroActivity,MainActivity::class.java)
                 startActivity(intent)
+                finish()
             }
 
             override fun onAnimationCancel(animation: Animator) {

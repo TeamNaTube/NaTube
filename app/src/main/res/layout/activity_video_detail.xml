@@ -11,7 +11,7 @@
         android:id="@+id/tb_activity_detail_toolbar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="@color/teal"
+        android:background="@drawable/background_rounded_bottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -41,6 +41,7 @@
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:src="@drawable/img_thumbnail"
+        android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tb_activity_detail_toolbar"

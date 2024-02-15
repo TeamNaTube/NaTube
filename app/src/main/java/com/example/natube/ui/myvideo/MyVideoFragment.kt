@@ -1,19 +1,26 @@
 package com.example.natube.ui.myvideo
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
-import com.example.natube.EditChannelActivity
-import com.example.natube.LikedItemPreferencesManager
+import com.example.natube.AnimationView
+import com.example.natube.MyChannelPreferencesManager
+import com.example.natube.R
 import com.example.natube.VideoDetailActivity
 import com.example.natube.databinding.FragmentMyVideosBinding
+import com.example.natube.editprofile.EditChannelActivity
+import com.example.natube.editprofile.LikedItemPreferencesManager
 import com.example.natube.model.UnifiedItem
+import com.google.gson.GsonBuilder
 
 class MyVideoFragment : Fragment() {
 
@@ -25,7 +32,13 @@ class MyVideoFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private val likedItems = LikedItemPreferencesManager.getAll<UnifiedItem>()
+    private val gsonBuilder = GsonBuilder()
+
+    private var likedItems = LikedItemPreferencesManager.getAll<UnifiedItem>()
+    private var myInfo = MyChannelPreferencesManager.getAll<MyChannel>()
+
+
+    lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
 
 
     override fun onCreateView(
@@ -34,21 +47,20 @@ class MyVideoFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         Log.d("HappyMyVideo", "^^ from sharedpref $likedItems")
-        val myVideoViewModel =
-            ViewModelProvider(this)[MyVideoViewModel::class.java]
 
         _binding = FragmentMyVideosBinding.inflate(inflater, container, false)
-        val root: View = binding.root
 
 
 
-        return root
+
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         initView()
+        Log.d("happymyvid", " 온 크 리 에 이 트 뷰")
         initViewModel()
 
     }
@@ -71,37 +83,116 @@ class MyVideoFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        val likedItems = LikedItemPreferencesManager.getAll<UnifiedItem>()
+        likedItems = LikedItemPreferencesManager.getAll()
         myVideoAdapter.submitList(likedItems)
+        myInfo = MyChannelPreferencesManager.getAll()
+        onResumeView()
+
     }
+
+    private fun onResumeView() {
+        Log.d("happymyvid", " 온 리 쥼 뷰")
+        setView()
+
+    }
+
     private fun initView() {
+
+
         setViewModelValues()
         setMyVideoAdapter()
         setListeners()
+
+
+    }
+
+    private fun setView() {
+        myInfo = MyChannelPreferencesManager.getAll()
+        Log.d("myInfo", "$myInfo")
+        when (myInfo.size) {
+            0 -> {
+                setMyProfileDialog()
+                Log.d("happymyVid", "** 다이얼로그 창 열리기 전 or 후?")
+            }
+
+            else -> {
+
+                setMyProfile()
+            }
+        }
+    }
+
+    private fun setMyProfile() {
+
+
+        with(binding) {
+            tvActivityEditChannelUsername.text = myInfo[0]?.myChannelName
+            tvActivityEditChannelUserDescription.text = myInfo[0]?.myChannelDescription
+            if (myInfo[0]?.myProfilePicture == null) ivFragmentMyVideoProfileImage.setImageURI(
+                Uri.parse(
+                    myInfo[0]?.myProfilePicture
+                )
+            ) else ivFragmentMyVideoProfileImage.setImageResource(R.drawable.img_empty_profile_picture)
+
+            if (myInfo[0]?.myBackgroundPicture == null) ivFragmentMyVideoImgBackground.setImageURI(
+                Uri.parse(myInfo[0]?.myBackgroundPicture)
+            ) else ivFragmentMyVideoImgBackground.setImageResource(R.drawable.img_thumbnail)
+
+
+        }
+    }
+
+    private fun setMyProfileDialog() {
+        var builder = AlertDialog.Builder(activity)
+        builder.setTitle("내 채널 설정")
+        builder.setMessage("내가 좋아요한 영상들 리스트를 보려면 내 채널 추가를 해야합니다.")
+        builder.setIcon(R.mipmap.ic_launcher)
+        builder.setCancelable(false)
+
+        // 버튼 클릭시에 무슨 작업을 할 것인가!
+        val listener = DialogInterface.OnClickListener { p0, p1 ->
+            when (p1) {
+                DialogInterface.BUTTON_POSITIVE -> {
+                    val addIntent = Intent(activity, EditChannelActivity::class.java)
+                    startActivity(addIntent)
+                }
+            }
+        }
+
+        builder.setPositiveButton("내 채널 추가", listener)
+
+        builder.show()
     }
 
     private fun setListeners() {
-        binding.ibtnFragmentMyVideoEdit.setOnClickListener{
-            val editIntent = Intent(activity, EditChannelActivity::class.java)
-            editIntent.putExtra("profile image", binding.ivActivityEditChannelProfileImage.id)
-            editIntent.putExtra("name", binding.tvActivityEditChannelUsername.text.toString())
-            editIntent.putExtra("description", binding.tvActivityEditChannelUserDescription.text.toString())
-            startActivity(editIntent)
+        binding.ibtnFragmentMyVideoEdit.setOnClickListener {
+            val myInfo = MyChannel(
+                binding.tvActivityEditChannelUsername.text.toString(),
+                null,
+                null,
+                binding.tvActivityEditChannelUserDescription.text.toString()
+            )
+            binding.ibtnFragmentMyVideoEdit.setOnClickListener {
+                AnimationView.shakeView(it)
+                val editIntent = Intent(activity, EditChannelActivity::class.java)
+                editIntent.putExtra("my Channel Info", myInfo)
+                startActivity(editIntent)
+            }
         }
     }
 
     private fun setViewModelValues() {
         myVideoViewModel.getSelectedItem(null)
     }
+
     private fun setMyVideoAdapter() {
 
         binding.rvFragmentMyVideoFavourites.adapter = myVideoAdapter
 
-        Log.d("happyMyVideoFragment_TagRV", "^^get SHaredPref ? ${likedItems.size}")
+        Log.d("happyMyVideoFragment TagRV", "^^get SHaredPref ? ${likedItems.size}")
         myVideoAdapter.submitList(likedItems)
 
     }
-
 
 
     override fun onDestroyView() {

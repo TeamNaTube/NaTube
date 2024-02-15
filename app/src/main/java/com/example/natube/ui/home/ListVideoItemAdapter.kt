@@ -1,6 +1,5 @@
 package com.example.natube.ui.home
 
-import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -30,7 +29,7 @@ class ListVideoItemAdapter(private val viewModel: HomeViewModel) : ListAdapter<U
         RecyclerView.ViewHolder(binding.root), View.OnClickListener {
 
         // 아이템
-        var cl_video_item: ConstraintLayout = binding.clVideoItem
+        private var clVideoItem: ConstraintLayout = binding.clVideoItem
 
         // 이미지
         val ivVideoItemThumbnail = binding.ivVideoItemThumbnail
@@ -41,7 +40,7 @@ class ListVideoItemAdapter(private val viewModel: HomeViewModel) : ListAdapter<U
         val tvVideoItemUploadTime = binding.tvVideoItemUploadDate
 
         init {
-            cl_video_item.setOnClickListener(this)
+            clVideoItem.setOnClickListener(this)
         }
 
         // 클릭 이벤트 처리

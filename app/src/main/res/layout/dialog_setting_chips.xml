@@ -22,17 +22,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="카테코리 선택"
+        android:text="@string/title_category"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_category_chips"
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/cg_category_chips"
         android:layout_width="360dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:padding="5dp"
+        app:chipSpacingVertical="-10dp"
+        app:chipSpacingHorizontal="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_title_category" />
@@ -42,10 +45,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="키워드 추가"
+        android:text="@string/title_keyword"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rv_category_chips" />
+        app:layout_constraintTop_toBottomOf="@+id/cg_category_chips" />
 
     <EditText
         android:id="@+id/et_keyword"
@@ -54,7 +57,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:ems="10"
-        android:hint="키워드를 입력하세요!"
+        android:hint="@string/setting_dialog_input_keyword"
         android:inputType="text"
         android:textSize="20sp"
         app:layout_constraintEnd_toStartOf="@+id/btn_keyword"
@@ -66,7 +69,7 @@
         style="@style/Widget.Material3.Button.IconButton.Filled"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
-        android:text="+"
+        android:text="@string/str_plus"
         app:layout_constraintBottom_toBottomOf="@+id/et_keyword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/et_keyword" />

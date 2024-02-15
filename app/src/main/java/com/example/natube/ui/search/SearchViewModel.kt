@@ -12,6 +12,11 @@ import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 
 class SearchViewModel : ViewModel() {
+    // 클릭된 아이템 전달
+    private var _selectedItem = MutableLiveData<UnifiedItem?>()
+
+    val selectedItem : LiveData<UnifiedItem?> = _selectedItem
+
     private val searchResults = MutableLiveData<List<UnifiedItem>>()
     private val youtubeAPI: YoutubeAPI = RetrofitInstance.api
 
@@ -19,10 +24,12 @@ class SearchViewModel : ViewModel() {
         return searchResults
     }
 
-    suspend fun searchVideos(query: String, apiKey: String) {
+
+
+    suspend fun searchVideos(query: String) {
         try {
             val searchModel: SearchModel = withContext(Dispatchers.IO) {
-                youtubeAPI.getSearchingVideos("snippet", 10, "KR", apiKey, query,"")
+                youtubeAPI.getSearchingVideos(query= query, maxResults = 50)
             }
 
             if (searchModel.items != null) {
@@ -53,5 +60,13 @@ class SearchViewModel : ViewModel() {
             items.add(item)
         }
         return items
+    }
+    fun getSelectedItem(item: UnifiedItem?) {
+        val chosenItem: UnifiedItem? = item?.copy()
+        _selectedItem.value = chosenItem
+    }
+
+    fun initializeSelectedItem() {
+        _selectedItem.value = null
     }
 }

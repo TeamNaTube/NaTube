@@ -3,6 +3,7 @@ package com.example.natube.ui.settingchips
 import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,18 +12,17 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.natube.R
+import com.example.natube.AnimationView
 import com.example.natube.databinding.DialogSettingChipsBinding
-import com.example.natube.ui.home.CategoryAdapter
+import com.example.natube.databinding.VideoCategoryBinding
 import com.example.natube.ui.home.HomeViewModel
 import com.google.android.material.snackbar.Snackbar
 
 class SettingChipsDialog : DialogFragment() {
     private lateinit var binding: DialogSettingChipsBinding
     private val homeViewModel: HomeViewModel by activityViewModels()
-    private val categoryAdapter by lazy { CategoryAdapter(homeViewModel) }
     private val keywordAdapter by lazy { KeywordAdapter(homeViewModel) }
 
     private var isShotDown = true
@@ -33,9 +33,42 @@ class SettingChipsDialog : DialogFragment() {
     ): View? {
         binding = DialogSettingChipsBinding.inflate(inflater, container, false)
         with(binding) {
-            rvCategoryChips.apply {
-                layoutManager = GridLayoutManager(context, 2, GridLayoutManager.HORIZONTAL, false)
-                adapter = categoryAdapter
+            cgCategoryChips.apply {
+                homeViewModel.mCategoryList.value?.forEachIndexed { index, chip ->
+                    // 각 반복마다 새로운 Chip 인스턴스를 생성
+                    val chipBinding = VideoCategoryBinding.inflate(inflater, null, false)
+                    chipBinding.chipCategory.apply {
+                        isChecked = chip.isClicked
+                        text = chip.name
+
+                        if (isChecked) {
+                            setChipBackgroundColorResource(R.color.green)
+                            setTextColor(Color.WHITE)
+                            setTypeface(null, Typeface.BOLD)
+                        } else {
+                            setChipBackgroundColorResource(R.color.grey)
+                            setTextColor(Color.BLACK)
+                            setTypeface(null, Typeface.NORMAL)
+                        }
+
+                        setOnClickListener {
+                            AnimationView.shakeView(it)
+                            homeViewModel.isClickedItem(index)
+
+                            if (isChecked) {
+                                setChipBackgroundColorResource(R.color.green)
+                                setTextColor(Color.WHITE)
+                                setTypeface(null, Typeface.BOLD)
+                            } else {
+                                setChipBackgroundColorResource(R.color.grey)
+                                setTextColor(Color.BLACK)
+                                setTypeface(null, Typeface.NORMAL)
+                            }
+                        }
+                    }
+                    // 생성된 Chip 인스턴스를 ChipGroup에 추가
+                    addView(chipBinding.root)
+                }
             }
             rvKeywordChips.apply {
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -50,8 +83,6 @@ class SettingChipsDialog : DialogFragment() {
         with(homeViewModel) {
             //최초 실행
             backupChipList()
-            val list = mCategoryList.value
-            categoryAdapter.submitList(list)
             checkedValidate()
             //관찰
             preKeywordList.observe(viewLifecycleOwner) {
@@ -64,6 +95,12 @@ class SettingChipsDialog : DialogFragment() {
                             ContextCompat.getColor(context, R.color.green)
                         )
                     } else {
+                        AnimationView.shakeView(this)
+                        Snackbar.make(
+                            view,
+                            "각 최소 1개 최대 5개 선택/추가 이(가) 가능 합니다!",
+                            Snackbar.LENGTH_SHORT
+                        ).show()
                         setColorFilter(Color.GRAY)
                     }
 
@@ -78,17 +115,19 @@ class SettingChipsDialog : DialogFragment() {
             btnKeyword.apply {
                 setOnClickListener {
                     val query = etKeyword.text.toString()
-                    when(homeViewModel.checkedQueryValidate(query)){
-                        0 ->{ //유효성 검사 성공시
+                    when (homeViewModel.checkedQueryValidate(query)) {
+                        0 -> { //유효성 검사 성공시
                             homeViewModel.addKeywordChip(query)
                             etKeyword.text = null
                             hideKeyboard()
                         }
-                        1 ->{// 키워드 에 빈 문자만 있을시
-                            Snackbar.make(view,"키워드가 비어 있습니다!",Snackbar.LENGTH_SHORT).show()
+
+                        1 -> {// 키워드 에 빈 문자만 있을시
+                            Snackbar.make(view, "키워드가 비어 있습니다!", Snackbar.LENGTH_SHORT).show()
                         }
-                        2 ->{// 이미 존재하는 키워드 일 경우
-                            Snackbar.make(view,"이미 존재하는 키워드 입니다!",Snackbar.LENGTH_SHORT).show()
+
+                        2 -> {// 이미 존재하는 키워드 일 경우
+                            Snackbar.make(view, "이미 존재하는 키워드 입니다!", Snackbar.LENGTH_SHORT).show()
                         }
                     }
                 }
@@ -113,7 +152,7 @@ class SettingChipsDialog : DialogFragment() {
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        if(isShotDown) homeViewModel.rollBackChipList()
+        if (isShotDown) homeViewModel.rollBackChipList()
 
     }
 

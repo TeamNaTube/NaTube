@@ -4,4 +4,7 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
+    <style name="OverflowButtonStyle" parent="Widget.AppCompat.ActionButton.Overflow">
+        <item name="android:tint">@color/teal</item> <!-- 색상 지정 -->
+    </style>
 </resources>

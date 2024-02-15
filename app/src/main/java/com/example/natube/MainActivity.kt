@@ -2,13 +2,15 @@ package com.example.natube
 
 import android.os.Bundle
 import android.util.Log
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import android.view.Menu
+
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupWithNavController
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.natube.databinding.ActivityMainBinding
+import com.example.natube.editprofile.LikedItemPreferencesManager
 import com.example.natube.model.UnifiedItem
 import com.example.natube.ui.home.HomeRepository
 import com.example.natube.ui.home.HomeViewModel
@@ -16,8 +18,10 @@ import com.example.natube.ui.home.HomeViewModel
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private val appData by lazy{ AppData(application) }
+    private val appData by lazy { AppData(application) }
     private lateinit var homeViewModel: HomeViewModel
+
+    private lateinit var navController: NavController
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -26,21 +30,18 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val navView: BottomNavigationView = binding.navView
+        setSupportActionBar(binding.toolbarMainActivty)
 
-        val navController = findNavController(R.id.nav_host_fragment_activity_main)
-
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.navigation_home, R.id.navigation_search, R.id.navigation_my_video
-            )
-        )
-
-        navView.setupWithNavController(navController)
+        navController = findNavController(R.id.main_frame_layout)
 
         initView()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.bottom_nav_menu, menu)
+        binding.navView.setupWithNavController(menu!!, navController)
+        return true
+    }
 
     override fun onStart() {
         super.onStart()
@@ -49,7 +50,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initView() {
+        MyChannelPreferencesManager.with(this)
         LikedItemPreferencesManager.with(this)
+
     }
 
     private fun updateLike() {
@@ -63,7 +66,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-//    private fun initViewModel() {
+    //    private fun initViewModel() {
 //        // getting selected items in either category rv or keyword rv
 //        selectedItem.observe(viewLifecycleOwner){
 //
@@ -76,9 +79,16 @@ class MainActivity : AppCompatActivity() {
 //
 //        }
 //    }
+    override fun onResume() {
+        super.onResume()
 
-    private fun initViewModel(){
-        val factory = ViewModelFactory(HomeRepository(appData))
-        homeViewModel = ViewModelProvider(this,factory)[HomeViewModel::class.java]
+        MyChannelPreferencesManager.with(this)
+        LikedItemPreferencesManager.with(this)
     }
+
+    private fun initViewModel() {
+        val factory = ViewModelFactory(HomeRepository(appData))
+        homeViewModel = ViewModelProvider(this, factory)[HomeViewModel::class.java]
+    }
+
 }

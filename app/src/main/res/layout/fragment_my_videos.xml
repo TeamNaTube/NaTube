@@ -10,7 +10,7 @@
         android:id="@+id/tb_activity_detail_toolbar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="@color/teal"
+        android:background="@drawable/background_rounded_bottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -25,22 +25,23 @@
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:layout_marginEnd="4dp"
-                android:scaleType="fitCenter"
                 android:backgroundTint="@color/teal"
+                android:scaleType="fitCenter"
                 android:src="@drawable/ic_editing"
+                app:tint="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
 
-                />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/activity_edit_channel_natube_icon"
                 android:layout_width="45dp"
                 android:layout_height="50dp"
-                android:src="@drawable/ic_natube"
                 android:backgroundTint="@color/teal"
                 android:scaleType="fitCenter"
+                android:src="@drawable/ic_natube"
+                app:tint="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -49,8 +50,9 @@
                 android:id="@+id/activity_edit_channel_natube"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/natube"
                 android:layout_marginStart="5dp"
+                android:text="@string/natube"
+                android:textColor="@color/white"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/activity_edit_channel_natube_icon"
@@ -61,18 +63,20 @@
     </androidx.appcompat.widget.Toolbar>
 
     <ImageView
-        android:id="@+id/iv_activity_edit_channel_img_background"
+        android:id="@+id/iv_fragment_my_video_img_background"
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:src="@drawable/img_thumbnail"
+        android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tb_activity_detail_toolbar" />
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/iv_activity_edit_channel_profile_image"
+        android:id="@+id/iv_fragment_my_video_profile_image"
         android:layout_width="120dp"
         android:layout_height="120dp"
+        android:scaleType="centerCrop"
         android:src="@drawable/img_empty_profile_picture"
         app:shapeAppearanceOverlay="@style/circleImageView"
         android:layout_marginTop="180dp"
@@ -89,7 +93,7 @@
         android:layout_marginTop="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_activity_edit_channel_profile_image" />
+        app:layout_constraintTop_toBottomOf="@id/iv_fragment_my_video_profile_image" />
 
     <TextView
         android:id="@+id/tv_activity_edit_channel_user_description"

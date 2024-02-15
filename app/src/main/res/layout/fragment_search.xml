@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".ui.search.SearchFragment">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/activity_detail_toolbar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="@color/teal"
+        android:background="@drawable/background_rounded_bottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -23,19 +24,21 @@
                 android:id="@+id/fragment_my_video_natube_icon"
                 android:layout_width="45dp"
                 android:layout_height="50dp"
-                android:src="@drawable/ic_natube"
                 android:backgroundTint="@color/teal"
                 android:scaleType="fitCenter"
+                android:src="@drawable/ic_natube"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/white" />
 
             <TextView
                 android:id="@+id/fragment_my_video_natube"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/natube"
                 android:layout_marginStart="5dp"
+                android:text="@string/natube"
+                android:textColor="@color/white"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/fragment_my_video_natube_icon"
@@ -51,7 +54,9 @@
         android:id="@+id/rl_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/grey"
+
+
+        android:background="@color/white"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -59,29 +64,28 @@
         app:layout_constraintTop_toBottomOf="@+id/activity_detail_toolbar">
 
 
-    <EditText
-        android:id="@+id/et_search"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_toLeftOf="@+id/btn_search"
-        android:hint="검색어를 입력해주세요."
-        android:paddingLeft="10dp"
-        android:textColor="@color/black"
-        android:background="@drawable/edittext_rounded_corner_rectangle"
-        android:textSize="16sp">
-    </EditText>
+        <EditText
+            android:id="@+id/et_search"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/btn_search"
+            android:background="@drawable/edittext_rounded_corner_rectangle"
+            android:hint="검색어를 입력해주세요."
+            android:paddingLeft="10dp"
+            android:textColor="@color/black"
+            android:textSize="16sp"/>
 
         <Button
             android:id="@+id/btn_search"
-            android:background="@drawable/button_background"
             android:layout_width="100dp"
             android:layout_height="40dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="16dp"
+            android:background="@drawable/button_background"
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
