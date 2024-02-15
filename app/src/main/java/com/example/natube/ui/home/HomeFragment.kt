@@ -183,6 +183,10 @@ class HomeFragment : Fragment() {
         homeAdapter.submitList(list)
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.lavWaring.playAnimation()
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

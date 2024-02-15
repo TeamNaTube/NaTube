@@ -9,21 +9,27 @@ import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.view.inputmethod.InputMethodManager
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.airbnb.lottie.LottieProperty
+import com.airbnb.lottie.SimpleColorFilter
+import com.airbnb.lottie.model.KeyPath
 import com.example.natube.R
 import com.example.natube.VideoDetailActivity
 import com.example.natube.databinding.FragmentSearchBinding
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
 class SearchFragment : Fragment() {
 
-    private val searchViewModel : SearchViewModel by viewModels()
+    private val searchViewModel: SearchViewModel by viewModels()
     private lateinit var searchAdapter: SearchAdapter
     private lateinit var binding: FragmentSearchBinding
 
@@ -46,14 +52,21 @@ class SearchFragment : Fragment() {
 
         binding.btnSearch.setOnClickListener {
             val query = binding.etSearch.text.toString()
-
-
-            lifecycleScope.launch {
-                searchViewModel.searchVideos(query)
-                animateButton()
+            searchViewModel.saveQuery(query)
+            val isValidated =
+                searchViewModel.checkedQueryValidate(query)
+            if (isValidated) {
+                binding.clEmptySearch.visibility = View.GONE
+                lifecycleScope.launch {
+                    searchViewModel.searchVideos(query)
+                    animateButton()
+                }
+                hideKeyboard()
+                binding.etSearch.clearFocus()
+            } else {
+                binding.clEmptySearch.visibility = View.VISIBLE
+                Snackbar.make(requireView(), "검색어를 입력 해주세요!", Snackbar.LENGTH_SHORT).show()
             }
-            hideKeyboard()
-            binding.etSearch.clearFocus()
         }
 
         searchViewModel.getSearchResults().observe(viewLifecycleOwner) { results ->
@@ -67,7 +80,27 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        emptyAnimation()
 
+    }
+
+    //애니메이션 추가
+    private fun emptyAnimation() {
+        val emptyAnimation = binding.lavEmptySearch
+        val color = ResourcesCompat.getColor(resources, R.color.grey, null)
+        emptyAnimation.addValueCallback(
+            KeyPath("**"),
+            LottieProperty.COLOR_FILTER
+        ) {
+            SimpleColorFilter(color)
+        }
+        val query = searchViewModel.getQuery()
+        val isValidated = searchViewModel.checkedQueryValidate(query)
+        if (isValidated) {
+            binding.clEmptySearch.visibility = View.GONE
+            emptyAnimation.playAnimation()
+        } else
+            binding.clEmptySearch.visibility = View.VISIBLE
     }
 
     override fun onResume() {
